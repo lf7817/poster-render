@@ -81,9 +81,9 @@ export interface QMPosterProps {
   showMenuByLongpress?: boolean;
   onLongPress?: (url: string) => void;
   onSave?: (url: string) => void;
-  onSaveFail?: () => void;
+  onSaveFail?: (err: any) => void;
   onRender?: (url: string) => void;
-  onRenderFail?: () => void;
+  onRenderFail?: (err: any) => void;
 }
 
 export interface QMPosterRef {

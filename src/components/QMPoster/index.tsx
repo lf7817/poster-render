@@ -1,5 +1,6 @@
-import { Canvas, Image } from '@tarojs/components';
-import {
+import { Canvas, Image } from "@tarojs/components";
+import Taro from "@tarojs/taro";
+import React, {
   forwardRef,
   ForwardRefRenderFunction,
   memo,
@@ -7,12 +8,15 @@ import {
   useImperativeHandle,
   useRef,
   useState,
-} from 'react';
-import FreePoster from './FreePoster';
-import Taro from '@tarojs/taro';
-import { QMPosterProps, QMPosterRef } from './types';
+  Fragment
+} from "react";
+import FreePoster from "./FreePoster";
+import { QMPosterProps, QMPosterRef } from "./types";
 
-const QMPoster: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (props, ref) => {
+const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
+  props,
+  ref
+) => {
   const [url, setUrl] = useState<string>();
   const $freePoster = useRef<FreePoster>();
 
@@ -27,9 +31,9 @@ const QMPoster: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (props, r
         onSaveFail: props.onSaveFail,
       });
       $freePoster.current = freePoster;
-      freePoster.setCanvasBackground('rgba(0,0,0,0)');
+      freePoster.setCanvasBackground("rgba(0,0,0,0)");
       await generateImage();
-    })()
+    })();
   }, []);
 
   async function generateImage() {
@@ -43,7 +47,7 @@ const QMPoster: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (props, r
         setUrl(temp);
         props?.onRender?.(temp);
       } catch (e) {
-        props?.onRenderFail?.();
+        props?.onRenderFail?.(e);
       }
     }
   }
@@ -54,24 +58,24 @@ const QMPoster: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (props, r
         if ($freePoster.current?.savePosterToPhoto) {
           return await $freePoster.current?.savePosterToPhoto();
         }
-        return '';
+        return "";
       } catch (e) {
-        return '';
+        return "";
       }
     },
   }));
 
   return (
-    <>
+    <Fragment>
       <Canvas
         canvas-id="posterCanvasId"
         style={{
-          position: 'absolute',
+          position: "absolute",
           left: 0,
           bottom: 0,
           width: Taro.pxTransform(props.width),
           height: Taro.pxTransform(props.height),
-          transform: 'translate3d(-9999rpx, 0, 0)',
+          transform: "translate3d(-9999rpx, 0, 0)",
         }}
       />
       {url && (
@@ -87,8 +91,12 @@ const QMPoster: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (props, r
           onLongPress={() => props?.onLongPress?.(url)}
         />
       )}
-    </>
+    </Fragment>
   );
 };
 
-export default memo(forwardRef(QMPoster));
+export {QMPosterRef, QMPosterProps}
+
+export const QMPoster = memo(forwardRef(QMPosterCore))
+
+export default QMPoster;

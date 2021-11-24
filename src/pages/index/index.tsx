@@ -1,6 +1,5 @@
-import { FC, useRef } from 'react';
-import QMPoster from '../../components/QMPoster';
-import { QMPosterRef } from '../../components/QMPoster/types';
+import React, { FC, useRef } from 'react';
+import {QMPoster, QMPosterRef} from '../../components/QMPoster';
 
 const Index: FC = () => {
   const poster = useRef<QMPosterRef>(null);
@@ -12,6 +11,7 @@ const Index: FC = () => {
       height={1000}
       debug
       quality={1}
+      showMenuByLongpress
       onLongPress={() => poster.current?.savePosterToPhoto()}
       onRender={(url) => console.log('onRender', url)}
       onSave={(url) => console.log('onSave', url)}

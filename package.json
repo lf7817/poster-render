@@ -1,14 +1,38 @@
 {
-  "name": "taro-poster",
-  "version": "1.0.0",
-  "private": true,
-  "description": "海报",
+  "name": "taro-qm-poster",
+  "version": "1.0.3",
+  "description": "taro海报组件，兼容企微",
   "templateInfo": {
     "name": "default",
     "typescript": true,
     "css": "none"
   },
+  "browser": "dist/index.umd.js",
+  "module": "dist/index.esm.js",
+  "main": "dist/index.js",
+  "source": "src/components/QMPoster/index.tsx",
+  "types": "types/index.d.ts",
+  "homepage": "https://github.com/lf7817/taro-qm-poster",
+  "files": [
+    "dist",
+    "lib",
+    "types"
+  ],
+  "keywords": [
+    "taro",
+    "poster",
+    "canvas"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:lf7817/taro-qm-poster.git"
+  },
   "scripts": {
+    "clean": "rm -rf dist/ types/ lib/",
+    "prepublish": "npm run clean && npm run build",
+    "build": "yarn run build:rollup && yarn run build:lib",
+    "build:lib": "tsc --project ./tsconfig.build.json --declaration --declarationDir types",
+    "build:rollup": "rollup --config ./rollup.config.js",
     "build:weapp": "taro build --type weapp",
     "build:swan": "taro build --type swan",
     "build:alipay": "taro build --type alipay",
@@ -44,20 +68,25 @@
     "react": "^17.0.0"
   },
   "devDependencies": {
-    "@types/webpack-env": "^1.13.6",
-    "@types/react": "^17.0.2",
-    "@tarojs/mini-runner": "3.3.14",
     "@babel/core": "^7.8.0",
+    "@rollup/plugin-commonjs": "^13.0.2",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^8.4.0",
+    "@tarojs/mini-runner": "3.3.14",
     "@tarojs/webpack-runner": "3.3.14",
-    "babel-preset-taro": "3.3.14",
-    "eslint-config-taro": "3.3.14",
-    "eslint": "^6.8.0",
-    "eslint-plugin-react": "^7.8.2",
-    "eslint-plugin-import": "^2.12.0",
-    "eslint-plugin-react-hooks": "^4.2.0",
-    "stylelint": "9.3.0",
-    "@typescript-eslint/parser": "^4.15.1",
+    "@types/react": "^17.0.2",
+    "@types/webpack-env": "^1.13.6",
     "@typescript-eslint/eslint-plugin": "^4.15.1",
+    "@typescript-eslint/parser": "^4.15.1",
+    "babel-preset-taro": "3.3.14",
+    "eslint": "^6.8.0",
+    "eslint-config-taro": "3.3.14",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-react": "^7.8.2",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "rollup": "^2.60.1",
+    "rollup-plugin-typescript2": "^0.31.1",
+    "stylelint": "9.3.0",
     "typescript": "^4.1.0"
   }
 }
