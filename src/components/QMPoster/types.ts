@@ -71,6 +71,7 @@ export interface PaintText extends Common<'text'> {
 export type PosterItemConfig = PaintImage | PaintShape | PaintText;
 
 export interface QMPosterProps {
+  canvasId?: string;
   className?: string;
   style?: CSSProperties;
   width: number;

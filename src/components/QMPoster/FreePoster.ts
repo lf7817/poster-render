@@ -285,6 +285,10 @@ export default class FreePoster {
     return textWidth;
   }
 
+  public clearRect() {
+    this.ctx.clearRect(0,0, this.toPx(this.options.width), this.toPx(this.options.height))
+    this.ctx.draw();
+  }
   /**
    * 生成临时文件
    */

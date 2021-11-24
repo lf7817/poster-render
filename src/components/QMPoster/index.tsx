@@ -18,6 +18,8 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
   props,
   ref
 ) => {
+  const {canvasId = 'posterCanvasId'} = props;
+  const $isFirst = useRef<boolean>(true)
   const [url, setUrl] = useState<string>();
   const $freePoster = useRef<FreePoster>();
 
@@ -25,6 +27,7 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
     (async () => {
       await delay(100);
       const freePoster = new FreePoster({
+        canvasId,
         debug: props.debug,
         width: props.width,
         height: props.height,
@@ -35,6 +38,7 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
       $freePoster.current = freePoster;
       freePoster.setCanvasBackground("rgba(0,0,0,0)");
       await generateImage();
+      $isFirst.current = false;
     })();
   }, []);
 
@@ -54,6 +58,13 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
     }
   }
 
+  useEffect(() => {
+    if (!$isFirst.current) {
+      $freePoster.current?.clearRect();
+      generateImage();
+    }
+  }, [props.list])
+
   useImperativeHandle(ref, () => ({
     savePosterToPhoto: async () => {
       try {
@@ -70,7 +81,7 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
   return (
     <Fragment>
       <Canvas
-        canvas-id="posterCanvasId"
+        canvas-id={canvasId}
         style={{
           position: "absolute",
           left: 0,
@@ -79,6 +90,7 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
           height: Taro.pxTransform(props.height),
           transform: "translate3d(-9999rpx, 0, 0)",
         }}
+
       />
       {url && (
         <Image

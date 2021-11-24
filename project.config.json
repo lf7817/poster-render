@@ -2,7 +2,7 @@
   "miniprogramRoot": "./dist",
   "projectname": "taro-poster",
   "description": "海报",
-  "appid": "touristappid",
+  "appid": "wxefe04ab87b064dab",
   "setting": {
     "urlCheck": true,
     "es6": false,
