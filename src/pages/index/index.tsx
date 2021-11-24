@@ -23,8 +23,9 @@ const Index: FC = () => {
           src: 'https://img.1000.com/shumou/mp/poster-activity-bg.png',
           width: 560,
           height: 800,
-          radius: '20 20 0 0',
+          // radius: '100 100 0 0',
         },
+        
         {
           type: 'shape',
           x: 100,
@@ -58,8 +59,17 @@ const Index: FC = () => {
           y: 800,
           width: 560,
           height: 200,
-          radius: '0 0 20 20',
+          radius: '1 1 20 20',
           fillStyle: 'red',
+        },
+        {
+          type: 'image',
+          x: 200,
+          y: 200,
+          src: 'https://img.1000.com/shumou/interaction/avatar.png',
+          width: 100,
+          height: 100,
+          radius: 10,
         },
       ]}
     />

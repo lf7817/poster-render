@@ -1,18 +1,18 @@
-import Taro, { CanvasContext } from '@tarojs/taro';
+import Taro, { CanvasContext } from "@tarojs/taro";
 import {
   FreePosterOptions,
   PaintImage,
   PaintShape,
   PaintText,
   PosterItemConfig,
-} from './types';
+} from "./types";
 
 const { screenWidth } = Taro.getSystemInfoSync();
 
 export default class FreePoster {
   private ctx: CanvasContext;
   private options: FreePosterOptions = {
-    canvasId: 'posterCanvasId',
+    canvasId: "posterCanvasId",
     debug: true,
     width: 750,
     height: 1334,
@@ -31,7 +31,7 @@ export default class FreePoster {
     if (canvasBackground) {
       const color = canvasBackground;
       const { width, height, debug } = this.options;
-      if (debug) console.log('canvas的背景色为：', color);
+      if (debug) console.log("canvas的背景色为：", color);
       this.ctx.save();
       this.ctx.setFillStyle(color);
       this.ctx.fillRect(0, 0, width, height);
@@ -40,15 +40,12 @@ export default class FreePoster {
     }
   }
 
-  private toPx(rpx: number, int?: boolean) {
-    if (int) {
-      return Math.round((screenWidth / 750) * rpx);
-    }
-    return (screenWidth / 750) * rpx;
+  private toPx(rpx: number) {
+    return Math.round((screenWidth / 750) * rpx);
   }
 
   private toRpx(px: number) {
-    return px / (screenWidth / 750);
+    return Math.round(px / (screenWidth / 750));
   }
 
   /**
@@ -58,20 +55,20 @@ export default class FreePoster {
    */
   private async loadImage(url: string): Promise<string> {
     if (this.options.debug) {
-      console.log('开始下载图片', url);
-      console.time('图片下载时间');
+      console.log("开始下载图片", url);
+      console.time("图片下载时间");
     }
     return new Promise(async (resolve, reject) => {
       try {
         const localUrl = await Taro.downloadFile({ url });
         if (this.options.debug) {
-          console.log('图片下载成功', url);
-          console.timeEnd('图片下载时间');
+          console.log("图片下载成功", url);
+          console.timeEnd("图片下载时间");
         }
         resolve((localUrl as any).tempFilePath);
       } catch (e) {
         if (this.options.debug) {
-          console.log('图片下载失败', url);
+          console.log("图片下载失败", url);
         }
         reject(e);
       }
@@ -82,13 +79,13 @@ export default class FreePoster {
    * 绘制图片
    * @param options
    */
-  public async paintImage(options: Omit<PaintImage, 'type'>) {
-    if (this.options.debug) console.log('开始绘制图片', options);
+  public async paintImage(options: Omit<PaintImage, "type">) {
+    if (this.options.debug) console.log("开始绘制图片", options);
 
-    const { x, y, width, height, radius = 0, src, backgroundColor } = options;
+    const { x, y, width, height, radius = 1, src, backgroundColor } = options;
     const [r1, r2, r3, r4] =
-      typeof radius === 'string'
-        ? radius.split(' ').map((item) => Number(item))
+      typeof radius === "string"
+        ? radius.split(" ").map((item) => Number(item))
         : new Array<number>(4).fill(radius);
 
     const newSrc = await this.loadImage(src);
@@ -101,24 +98,42 @@ export default class FreePoster {
       this.toPx(y),
       this.toPx(x + width),
       this.toPx(y + height),
-      this.toPx(r2),
+      this.toPx(Math.max(r2, 1))
     );
     this.ctx.arcTo(
       this.toPx(x + width),
       this.toPx(y + height),
       this.toPx(x),
       this.toPx(y + height),
-      this.toPx(r3),
+      this.toPx(Math.max(r3, 1))
     );
-    this.ctx.arcTo(this.toPx(x), this.toPx(y + height), this.toPx(x), this.toPx(y), this.toPx(r4));
-    this.ctx.arcTo(this.toPx(x), this.toPx(y), this.toPx(x + width), this.toPx(y), this.toPx(r1));
+    this.ctx.arcTo(
+      this.toPx(x),
+      this.toPx(y + height),
+      this.toPx(x),
+      this.toPx(y),
+      this.toPx(Math.max(r4, 1))
+    );
+    this.ctx.arcTo(
+      this.toPx(x),
+      this.toPx(y),
+      this.toPx(x + width),
+      this.toPx(y),
+      this.toPx(Math.max(r1, 1))
+    );
     this.ctx.closePath();
     this.ctx.clip();
     if (backgroundColor) {
       this.ctx.setFillStyle(backgroundColor);
       this.ctx.fill();
     }
-    this.ctx.drawImage(newSrc, this.toPx(x), this.toPx(y), this.toPx(width), this.toPx(height));
+    this.ctx.drawImage(
+      newSrc,
+      this.toPx(x),
+      this.toPx(y),
+      this.toPx(width),
+      this.toPx(height)
+    );
     this.ctx.draw(true);
     this.ctx.restore();
   }
@@ -127,32 +142,55 @@ export default class FreePoster {
    * 绘制shape
    * @param options
    */
-  public async paintShape(options: Omit<PaintShape, 'type'>) {
-    const { x, y, width, height, radius = 0, fillStyle, lineWidth, strokeStyle } = options;
+  public async paintShape(options: Omit<PaintShape, "type">) {
+    const {
+      x,
+      y,
+      width,
+      height,
+      radius = 1,
+      fillStyle,
+      lineWidth,
+      strokeStyle,
+    } = options;
     const [r1, r2, r3, r4] =
-      typeof radius === 'string'
-        ? radius.split(' ').map((item) => Number(item))
+      typeof radius === "string"
+        ? radius.split(" ").map((item) => Number(item))
         : new Array<number>(4).fill(radius);
 
     this.ctx.save();
     this.ctx.beginPath();
     this.ctx.moveTo(this.toPx(x + r1), this.toPx(y));
+
     this.ctx.arcTo(
       this.toPx(x + width),
       this.toPx(y),
       this.toPx(x + width),
       this.toPx(y + height),
-      this.toPx(r2),
+      this.toPx(Math.max(r2, 1))
     );
+
     this.ctx.arcTo(
       this.toPx(x + width),
       this.toPx(y + height),
       this.toPx(x),
       this.toPx(y + height),
-      this.toPx(r3),
+      this.toPx(Math.max(r3, 1))
     );
-    this.ctx.arcTo(this.toPx(x), this.toPx(y + height), this.toPx(x), this.toPx(y), this.toPx(r4));
-    this.ctx.arcTo(this.toPx(x), this.toPx(y), this.toPx(x + width), this.toPx(y), this.toPx(r1));
+    this.ctx.arcTo(
+      this.toPx(x),
+      this.toPx(y + height),
+      this.toPx(x),
+      this.toPx(y),
+      this.toPx(Math.max(r4, 1))
+    );
+    this.ctx.arcTo(
+      this.toPx(x),
+      this.toPx(y),
+      this.toPx(x + width),
+      this.toPx(y),
+      this.toPx(Math.max(r1, 1))
+    );
     this.ctx.closePath();
     this.ctx.clip();
 
@@ -175,29 +213,37 @@ export default class FreePoster {
    * 绘制文字
    * @param options
    */
-  public paintText(options: Omit<PaintText, 'type'>) {
+  public paintText(options: Omit<PaintText, "type">) {
     const {
-      textAlign = 'left',
+      textAlign = "left",
       opacity = 1,
       lineNum = 1,
       lineHeight = 0,
-      fontWeight = 'normal',
-      fontStyle = 'normal',
-      fontFamily = 'sans-serif',
+      fontWeight = "normal",
+      fontStyle = "normal",
+      fontFamily = "sans-serif",
     } = options;
     this.ctx.save();
     this.ctx.font =
-      fontStyle + ' ' + fontWeight + ' ' + this.toPx(options.fontSize, true) + 'px ' + fontFamily;
+      fontStyle +
+      " " +
+      fontWeight +
+      " " +
+      this.toPx(options.fontSize) +
+      "px " +
+      fontFamily;
     this.ctx.setGlobalAlpha(opacity);
     this.ctx.setFillStyle(options.color);
     this.ctx.setTextBaseline(options.baseLine);
     this.ctx.setTextAlign(textAlign);
     // measureText返回的是px
-    let textWidth: number = this.toRpx(this.ctx.measureText(options.text).width);
+    let textWidth: number = this.toRpx(
+      this.ctx.measureText(options.text).width
+    );
     const textArr: string[] = [];
     if (textWidth > options.width) {
       // 文本宽度 大于 渲染宽度
-      let fillText = '';
+      let fillText = "";
       let line = 1;
       for (let i = 0; i <= options.text.length - 1; i++) {
         // 将文字转为数组，一行文字一个元素
@@ -205,13 +251,13 @@ export default class FreePoster {
         if (this.toRpx(this.ctx.measureText(fillText).width) >= options.width) {
           if (line === lineNum) {
             if (i !== options.text.length - 1) {
-              fillText = fillText.substring(0, fillText.length - 1) + '...';
+              fillText = fillText.substring(0, fillText.length - 1) + "...";
             }
           }
           if (line <= lineNum) {
             textArr.push(fillText);
           }
-          fillText = '';
+          fillText = "";
           line++;
         } else {
           if (line <= lineNum) {
@@ -230,7 +276,7 @@ export default class FreePoster {
       this.ctx.fillText(
         item,
         this.toPx(options.x),
-        this.toPx(options.y + (lineHeight || options.fontSize) * index),
+        this.toPx(options.y + (lineHeight || options.fontSize) * index)
       );
     });
 
@@ -247,24 +293,34 @@ export default class FreePoster {
       setTimeout(async () => {
         try {
           if (this.options.debug) {
-            console.log('开始截取canvas目前的图像');
-            console.time('canvas截取图片');
+            console.log("开始截取canvas目前的图像");
+            console.time("canvas截取图片");
           }
-          const res = await Taro.canvasToTempFilePath({
+          Taro.canvasToTempFilePath({
             x: 0,
             y: 0,
             quality: 0.4,
             canvasId: this.options.canvasId,
-          });
-          if (this.options.debug) {
-            console.log('截取canvas目前的图像成功', res.tempFilePath);
-            console.timeEnd('canvas截取图片');
-          }
-          resolve(res.tempFilePath);
+            success: res => {
+              if (this.options.debug) {
+                console.log("截取canvas目前的图像成功", res.tempFilePath);
+                console.timeEnd("canvas截取图片");
+              }
+              resolve(res.tempFilePath);
+            },
+            fail: err => {
+              if (this.options.debug) {
+                console.log('截取canvas目前的图像失败', err)
+              }
+            }
+          }, this)
         } catch (e) {
+          if (this.options.debug) {
+            console.log('截取canvas目前的图像失败', e)
+          }
           reject(e);
         }
-      }, 100);
+      }, 200);
     });
   }
 
@@ -273,7 +329,7 @@ export default class FreePoster {
    */
   public async savePosterToPhoto(): Promise<string> {
     if (this.options.debug) {
-      console.log('开始保存到相册');
+      console.log("开始保存到相册");
     }
     return new Promise(async (resolve, reject) => {
       try {
@@ -282,18 +338,21 @@ export default class FreePoster {
           filePath: tmp,
           success: () => {
             if (this.options.debug) {
-              console.log('保存到相册成功');
+              console.log("保存到相册成功");
             }
             this.options?.onSave?.(tmp);
-            Taro.showToast({ icon: 'none', title: '已保存到相册，快去分享哟～' });
+            Taro.showToast({
+              icon: "none",
+              title: "已保存到相册，快去分享哟～",
+            });
             resolve(tmp);
           },
           fail: (err) => {
-            if (err.errMsg !== 'saveImageToPhotosAlbum:fail cancel') {
+            if (err.errMsg !== "saveImageToPhotosAlbum:fail cancel") {
               this.getAuth();
             }
             if (this.options.debug) {
-              console.log('保存到相册失败');
+              console.log("保存到相册失败");
             }
             this.options?.onSaveFail?.(err);
             reject(err);
@@ -302,7 +361,7 @@ export default class FreePoster {
       } catch (e) {
         this.options?.onSaveFail?.(e);
         if (this.options.debug) {
-          console.log('保存到相册失败');
+          console.log("保存到相册失败");
         }
       }
     });
@@ -315,33 +374,33 @@ export default class FreePoster {
     Taro.hideLoading();
     // 这边微信做过调整，必须要在按钮中触发，因此需要在弹框回调中进行调用
     Taro.showModal({
-      content: '需要您授权保存相册',
-      confirmColor: '#E23A4E',
+      content: "需要您授权保存相册",
+      confirmColor: "#E23A4E",
       showCancel: false,
       success: ({ confirm }) => {
         confirm &&
           Taro.openSetting({
             success(settingdata) {
-              console.log('settingdata', settingdata);
-              if (settingdata.authSetting['scope.writePhotosAlbum']) {
+              console.log("settingdata", settingdata);
+              if (settingdata.authSetting["scope.writePhotosAlbum"]) {
                 Taro.showToast({
-                  title: '获取权限成功,再操作一次',
-                  icon: 'none',
+                  title: "获取权限成功,再操作一次",
+                  icon: "none",
                   duration: 3000,
                 });
               } else {
                 Taro.showToast({
-                  title: '获取权限失败，将无法保存到相册',
-                  icon: 'none',
+                  title: "获取权限失败，将无法保存到相册",
+                  icon: "none",
                   duration: 3000,
                 });
               }
             },
             fail(failData) {
-              console.log('failData', failData);
+              console.log("failData", failData);
             },
             complete(finishData) {
-              console.log('finishData', finishData);
+              console.log("finishData", finishData);
             },
           });
       },
@@ -350,9 +409,9 @@ export default class FreePoster {
 
   public exec = (options: PosterItemConfig) => {
     const funcMap = {
-      image: 'paintImage',
-      shape: 'paintShape',
-      text: 'paintText',
+      image: "paintImage",
+      shape: "paintShape",
+      text: "paintText",
     };
 
     if (!funcMap[options.type]) {

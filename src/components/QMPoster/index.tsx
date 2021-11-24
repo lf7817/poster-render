@@ -11,7 +11,8 @@ import React, {
   Fragment
 } from "react";
 import FreePoster from "./FreePoster";
-import { QMPosterProps, QMPosterRef } from "./types";
+import type { QMPosterProps, QMPosterRef } from "./types";
+import { delay } from "./utils";
 
 const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
   props,
@@ -22,6 +23,7 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
 
   useEffect(() => {
     (async () => {
+      await delay(100);
       const freePoster = new FreePoster({
         debug: props.debug,
         width: props.width,
