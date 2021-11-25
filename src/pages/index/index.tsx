@@ -1,132 +1,102 @@
-import React, {FC, useEffect, useRef, useState} from 'react';
+import Taro from "@tarojs/taro";
+import React, {FC, useRef} from 'react';
 import {QMPoster, QMPosterRef} from '../../components/QMPoster';
 
 const Index: FC = () => {
   const poster = useRef<QMPosterRef>(null);
-  const [list, setList] = useState([
-    {
-      type: 'image',
-      x: 0,
-      y: 0,
-      src: 'https://img.1000.com/shumou/mp/poster-activity-bg.png',
-      width: 560,
-      height: 800,
-      // radius: '100 100 0 0',
-    },
-
-    {
-      type: 'shape',
-      x: 100,
-      y: 100,
-      width: 340,
-      height: 340,
-      radius: 170,
-      strokeStyle: '#fff',
-      lineWidth: 10,
-      fillStyle: 'red',
-    },
-    {
-      type: 'text',
-      x: 180,
-      y: 250,
-      width: 200,
-      height: 200,
-      fontSize: 36,
-      lineNum: 2,
-      lineHeight: 36,
-      textAlign: 'left',
-      color: '#000',
-      text: '你好你好你canvas 你好你好你canvas 你好你好你canvas ',
-      baseLine: 'top',
-      fontFamily: '黑体',
-      fontWeight: 'bold',
-    },
-    {
-      type: 'shape',
-      x: 0,
-      y: 800,
-      width: 560,
-      height: 200,
-      radius: '1 1 20 20',
-      fillStyle: 'red',
-    },
-    {
-      type: 'image',
-      x: 200,
-      y: 200,
-      src: 'https://img.1000.com/shumou/interaction/avatar.png',
-      width: 100,
-      height: 100,
-      radius: 10,
-    },
-  ])
-
-  useEffect(() => {
-    setTimeout(() => {
-      setList([ 
-        {
-          type: 'image',
-          x: 200,
-          y: 200,
-          src: 'https://img.1000.com/shumou/interaction/avatar.png',
-          width: 100,
-          height: 100,
-          radius: 10,
-        },
-
-        {
-          type: 'shape',
-          x: 100,
-          y: 100,
-          width: 340,
-          height: 340,
-          radius: 170,
-          strokeStyle: '#fff',
-          lineWidth: 10,
-          fillStyle: 'red',
-        },
-        {
-          type: 'text',
-          x: 180,
-          y: 250,
-          width: 200,
-          height: 200,
-          fontSize: 36,
-          lineNum: 2,
-          lineHeight: 36,
-          textAlign: 'left',
-          color: '#000',
-          text: '122',
-          baseLine: 'top',
-          fontFamily: '黑体',
-          fontWeight: 'bold',
-        },
-        {
-          type: 'shape',
-          x: 0,
-          y: 800,
-          width: 560,
-          height: 200,
-          radius: '1 1 20 20',
-          fillStyle: 'red',
-        },
-
-      ])
-    }, 4000)
-  }, [])
 
   return (
     <QMPoster
+      style={{marginLeft: Taro.pxTransform(55)}}
+      width={644}
+      height={1104}
       ref={poster}
-      width={560}
-      height={1000}
       debug
       quality={1}
       showMenuByLongpress
       onLongPress={() => poster.current?.savePosterToPhoto()}
       onRender={(url) => console.log('onRender', url)}
       onSave={(url) => console.log('onSave', url)}
-      list={list}
+      list={[
+        {
+          type: 'image',
+          x: 0,
+          y: 0,
+          width: 644,
+          height: 1104,
+          src: 'https://img.1000.com/shumou/interaction/bg3.png',
+          radius: '100 100 0 0'
+        },
+        {
+          type: 'image',
+          x: 294,
+          y: 30,
+          width: 96,
+          height: 96,
+          radius: 48,
+          src: 'https://img.1000.com/shumou/interaction/avatar.png',
+        },
+        {
+          type: 'text',
+          x: 200,
+          y: 180,
+          width: 100,
+          height: 30,
+          text: '啊实打实',
+          color: '#fff',
+          fontSize: 28,
+          baseLine: 'normal',
+        },
+        {
+          type: 'text',
+          x: 316,
+          y: 180,
+          width: 200,
+          height: 30,
+          text: '的助力邀请',
+          color: '#FEEE93',
+          fontSize: 28,
+          baseLine: 'normal',
+        },
+        {
+          type: 'image',
+          x: 70,
+          y: 240,
+          width: 508,
+          height: 68,
+          src: 'https://img.1000.com/shumou/interaction/text.png',
+        },
+        {
+          type: 'image',
+          x: 60,
+          y: 380,
+          width: 590,
+          height: 354,
+          src: 'https://img.1000.com/shumou/interaction/img2.png',
+        },
+        {
+          type: 'shape',
+          x: 22,
+          y: 760,
+          width: 600,
+          height: 320,
+          fillStyle: '#fff',
+          radius: 20,
+          strokeStyle: "#000",
+          lineWidth: 10
+        },
+        {
+          type: 'shape',
+          x: 100,
+          y: 800,
+          width: 100,
+          height: 100,
+          fillStyle: 'red',
+          radius: 50,
+          strokeStyle: "yellow",
+          lineWidth: 10
+        },
+      ]}
     />
   );
 };

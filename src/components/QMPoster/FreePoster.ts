@@ -27,7 +27,7 @@ export default class FreePoster {
   /**
    * canvas绘制背景色
    */
-  public setCanvasBackground(canvasBackground) {
+  public async setCanvasBackground(canvasBackground) {
     if (canvasBackground) {
       const color = canvasBackground;
       const { width, height, debug } = this.options;
@@ -35,12 +35,13 @@ export default class FreePoster {
       this.ctx.save();
       this.ctx.setFillStyle(color);
       this.ctx.fillRect(0, 0, width, height);
-      this.ctx.draw(true);
+      await this.draw(true);
       this.ctx.restore();
     }
   }
 
   private toPx(rpx: number) {
+    // 这里要取整，否则安卓会出问题
     return Math.round((screenWidth / 750) * rpx);
   }
 
@@ -55,21 +56,19 @@ export default class FreePoster {
    */
   private async loadImage(url: string): Promise<string> {
     if (this.options.debug) {
-      console.log("开始下载图片", url);
+      this.log("开始下载图片", url);
       console.time("图片下载时间");
     }
     return new Promise(async (resolve, reject) => {
       try {
         const localUrl = await Taro.downloadFile({ url });
         if (this.options.debug) {
-          console.log("图片下载成功", url);
+          this.log("图片下载成功", url);
           console.timeEnd("图片下载时间");
         }
         resolve((localUrl as any).tempFilePath);
       } catch (e) {
-        if (this.options.debug) {
-          console.log("图片下载失败", url);
-        }
+        this.log("图片下载失败", url);
         reject(e);
       }
     });
@@ -80,9 +79,9 @@ export default class FreePoster {
    * @param options
    */
   public async paintImage(options: Omit<PaintImage, "type">) {
-    if (this.options.debug) console.log("开始绘制图片", options);
+    this.log("开始绘制图片", options);
 
-    const { x, y, width, height, radius = 1, src, backgroundColor } = options;
+    const { x, y, width, height, radius = 2, src, backgroundColor } = options;
     const [r1, r2, r3, r4] =
       typeof radius === "string"
         ? radius.split(" ").map((item) => Number(item))
@@ -98,28 +97,29 @@ export default class FreePoster {
       this.toPx(y),
       this.toPx(x + width),
       this.toPx(y + height),
-      this.toPx(Math.max(r2, 1))
+      // 圆角小于2的话安卓会出问题
+      this.toPx(Math.max(r2, 2))
     );
     this.ctx.arcTo(
       this.toPx(x + width),
       this.toPx(y + height),
       this.toPx(x),
       this.toPx(y + height),
-      this.toPx(Math.max(r3, 1))
+      this.toPx(Math.max(r3, 2))
     );
     this.ctx.arcTo(
       this.toPx(x),
       this.toPx(y + height),
       this.toPx(x),
       this.toPx(y),
-      this.toPx(Math.max(r4, 1))
+      this.toPx(Math.max(r4, 2))
     );
     this.ctx.arcTo(
       this.toPx(x),
       this.toPx(y),
       this.toPx(x + width),
       this.toPx(y),
-      this.toPx(Math.max(r1, 1))
+      this.toPx(Math.max(r1, 2))
     );
     this.ctx.closePath();
     this.ctx.clip();
@@ -134,7 +134,7 @@ export default class FreePoster {
       this.toPx(width),
       this.toPx(height)
     );
-    this.ctx.draw(true);
+    await this.draw(true);
     this.ctx.restore();
   }
 
@@ -148,7 +148,7 @@ export default class FreePoster {
       y,
       width,
       height,
-      radius = 1,
+      radius = 2,
       fillStyle,
       lineWidth,
       strokeStyle,
@@ -167,7 +167,7 @@ export default class FreePoster {
       this.toPx(y),
       this.toPx(x + width),
       this.toPx(y + height),
-      this.toPx(Math.max(r2, 1))
+      this.toPx(Math.max(r2, 2))
     );
 
     this.ctx.arcTo(
@@ -175,21 +175,21 @@ export default class FreePoster {
       this.toPx(y + height),
       this.toPx(x),
       this.toPx(y + height),
-      this.toPx(Math.max(r3, 1))
+      this.toPx(Math.max(r3, 2))
     );
     this.ctx.arcTo(
       this.toPx(x),
       this.toPx(y + height),
       this.toPx(x),
       this.toPx(y),
-      this.toPx(Math.max(r4, 1))
+      this.toPx(Math.max(r4, 2))
     );
     this.ctx.arcTo(
       this.toPx(x),
       this.toPx(y),
       this.toPx(x + width),
       this.toPx(y),
-      this.toPx(Math.max(r1, 1))
+      this.toPx(Math.max(r1, 2))
     );
     this.ctx.closePath();
     this.ctx.clip();
@@ -205,7 +205,7 @@ export default class FreePoster {
       this.ctx.stroke();
     }
 
-    this.ctx.draw(true);
+    await this.draw(true);
     this.ctx.restore();
   }
 
@@ -213,7 +213,7 @@ export default class FreePoster {
    * 绘制文字
    * @param options
    */
-  public paintText(options: Omit<PaintText, "type">) {
+  public async paintText(options: Omit<PaintText, "type">) {
     const {
       textAlign = "left",
       opacity = 1,
@@ -280,14 +280,20 @@ export default class FreePoster {
       );
     });
 
-    this.ctx.draw(true);
+    await this.draw(true);
     this.ctx.restore();
     return textWidth;
   }
 
-  public clearRect() {
+  public async clearRect() {
     this.ctx.clearRect(0,0, this.toPx(this.options.width), this.toPx(this.options.height))
-    this.ctx.draw();
+    await this.draw()
+  }
+
+  private async draw(reserve?: boolean) {
+    return new Promise((resolve) => {
+      this.ctx.draw(reserve, (res) => resolve(res))
+    })
   }
   /**
    * 生成临时文件
@@ -295,36 +301,28 @@ export default class FreePoster {
   public canvasToTempFilePath(): Promise<string> {
     return new Promise((resolve, reject) => {
       setTimeout(async () => {
-        try {
-          if (this.options.debug) {
-            console.log("开始截取canvas目前的图像");
-            console.time("canvas截取图片");
-          }
-          Taro.canvasToTempFilePath({
-            x: 0,
-            y: 0,
-            quality: 0.4,
-            canvasId: this.options.canvasId,
-            success: res => {
-              if (this.options.debug) {
-                console.log("截取canvas目前的图像成功", res.tempFilePath);
-                console.timeEnd("canvas截取图片");
-              }
-              resolve(res.tempFilePath);
-            },
-            fail: err => {
-              if (this.options.debug) {
-                console.log('截取canvas目前的图像失败', err)
-              }
-            }
-          }, this)
-        } catch (e) {
-          if (this.options.debug) {
-            console.log('截取canvas目前的图像失败', e)
-          }
-          reject(e);
+        if (this.options.debug) {
+          this.log("开始截取canvas目前的图像");
+          console.time("canvas截取图片");
         }
-      }, 200);
+        Taro.canvasToTempFilePath({
+          x: 0,
+          y: 0,
+          quality: this.options.quality,
+          canvasId: this.options.canvasId,
+          success: res => {
+            if (this.options.debug) {
+              this.log("截取canvas目前的图像成功", res.tempFilePath);
+              console.timeEnd("canvas截取图片");
+            }
+            resolve(res.tempFilePath);
+          },
+          fail: err => {
+            this.log('截取canvas目前的图像失败', err)
+            reject(err)
+          }
+        }, this)
+      }, 50);
     });
   }
 
@@ -332,18 +330,14 @@ export default class FreePoster {
    * 保存到相册
    */
   public async savePosterToPhoto(): Promise<string> {
-    if (this.options.debug) {
-      console.log("开始保存到相册");
-    }
+    this.log("开始保存到相册");
     return new Promise(async (resolve, reject) => {
       try {
         const tmp = await this.canvasToTempFilePath();
         Taro.saveImageToPhotosAlbum({
           filePath: tmp,
           success: () => {
-            if (this.options.debug) {
-              console.log("保存到相册成功");
-            }
+            this.log("保存到相册成功");
             this.options?.onSave?.(tmp);
             Taro.showToast({
               icon: "none",
@@ -355,20 +349,22 @@ export default class FreePoster {
             if (err.errMsg !== "saveImageToPhotosAlbum:fail cancel") {
               this.getAuth();
             }
-            if (this.options.debug) {
-              console.log("保存到相册失败");
-            }
-            this.options?.onSaveFail?.(err);
+            this.log("保存到相册失败");
             reject(err);
+            this.options?.onSaveFail?.(err);
           },
         });
       } catch (e) {
         this.options?.onSaveFail?.(e);
-        if (this.options.debug) {
-          console.log("保存到相册失败");
-        }
+          this.log("保存到相册失败");
       }
     });
+  }
+
+  public log = (message?: any, ...optionalParams: any[]) => {
+    if (this.options.debug) {
+      console.log(message, ...optionalParams)
+    }
   }
 
   /**

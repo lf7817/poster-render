@@ -1,5 +1,5 @@
-import { Canvas, Image } from "@tarojs/components";
-import Taro from "@tarojs/taro";
+import {Canvas, Image} from "@tarojs/components";
+import Taro, {useReady} from "@tarojs/taro";
 import React, {
   forwardRef,
   ForwardRefRenderFunction,
@@ -12,38 +12,36 @@ import React, {
 } from "react";
 import FreePoster from "./FreePoster";
 import type { QMPosterProps, QMPosterRef } from "./types";
-import { delay } from "./utils";
 
 const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
   props,
   ref
 ) => {
+  const $retryCounter = useRef<number>(0)
   const {canvasId = 'posterCanvasId'} = props;
   const $isFirst = useRef<boolean>(true)
   const [url, setUrl] = useState<string>();
   const $freePoster = useRef<FreePoster>();
 
-  useEffect(() => {
-    (async () => {
-      await delay(100);
-      const freePoster = new FreePoster({
-        canvasId,
-        debug: props.debug,
-        width: props.width,
-        height: props.height,
-        quality: props.quality,
-        onSave: props.onSave,
-        onSaveFail: props.onSaveFail,
-      });
-      $freePoster.current = freePoster;
-      freePoster.setCanvasBackground("rgba(0,0,0,0)");
-      await generateImage();
-      $isFirst.current = false;
-    })();
-  }, []);
+  useReady(async () => {
+    const freePoster = new FreePoster({
+      canvasId,
+      debug: props.debug,
+      width: props.width,
+      height: props.height,
+      quality: props.quality,
+      onSave: props.onSave,
+      onSaveFail: props.onSaveFail,
+    });
+    $freePoster.current = freePoster;
+    await freePoster.setCanvasBackground("rgba(0,0,0,0)");
+    await generateImage();
+    $isFirst.current = false;
+  });
 
   async function generateImage() {
     if ($freePoster.current) {
+      // const images = props.list.reduce(() => {}, [])
       for await (const item of props.list) {
         await $freePoster.current.exec(item);
       }
@@ -52,8 +50,15 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
         const temp = await $freePoster.current.canvasToTempFilePath();
         setUrl(temp);
         props?.onRender?.(temp);
+        $retryCounter.current = 0;
       } catch (e) {
-        props?.onRenderFail?.(e);
+        if (++$retryCounter.current <= 2) {
+          $freePoster.current.log(`第${$retryCounter.current}次重新渲染`)
+          await generateImage()
+        } else {
+          $freePoster.current.log(`重新渲染失败，放弃治疗`)
+          props?.onRenderFail?.(e);
+        }
       }
     }
   }
@@ -90,7 +95,6 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
           height: Taro.pxTransform(props.height),
           transform: "translate3d(-9999rpx, 0, 0)",
         }}
-
       />
       {url && (
         <Image
