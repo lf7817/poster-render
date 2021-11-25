@@ -71,6 +71,7 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
       $freePoster.current?.clearRect();
       generateImage();
     }
+    // eslint-disable-next-line
   }, [props.list]);
 
   useImperativeHandle(ref, () => ({

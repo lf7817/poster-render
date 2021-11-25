@@ -55,22 +55,34 @@ export default class FreePoster {
    * @private
    */
   private async loadImage(url: string): Promise<string> {
+    let retryCounter = 0;
     if (this.options.debug) {
       this.log("开始下载图片", url);
       console.time("图片下载时间");
     }
-    return new Promise(async (resolve, reject) => {
+
+    const downloadFile = async (resolve, reject) => {
       try {
         const localUrl = await Taro.downloadFile({ url });
         if (this.options.debug) {
           this.log("图片下载成功", url);
           console.timeEnd("图片下载时间");
         }
+        retryCounter = 0;
         resolve((localUrl as any).tempFilePath);
       } catch (e) {
-        this.log("图片下载失败", url);
-        reject(e);
+        if (++retryCounter <= 2) {
+          this.log(`图片下载失败, 开始第${retryCounter}次重试`, url);
+          await downloadFile(resolve, reject);
+        } else {
+          this.log("三次尝试图片仍下载失败,放弃治疗", url);
+          reject(e);
+        }
       }
+    };
+
+    return new Promise(async (resolve, reject) => {
+      await downloadFile(resolve, reject);
     });
   }
 
@@ -87,55 +99,58 @@ export default class FreePoster {
         ? radius.split(" ").map((item) => Number(item))
         : new Array<number>(4).fill(radius);
 
-    const newSrc = await this.loadImage(src);
-
-    this.ctx.save();
-    this.ctx.beginPath();
-    this.ctx.moveTo(this.toPx(x + r1), this.toPx(y));
-    this.ctx.arcTo(
-      this.toPx(x + width),
-      this.toPx(y),
-      this.toPx(x + width),
-      this.toPx(y + height),
-      // 圆角小于2的话安卓会出问题
-      this.toPx(Math.max(r2, 2))
-    );
-    this.ctx.arcTo(
-      this.toPx(x + width),
-      this.toPx(y + height),
-      this.toPx(x),
-      this.toPx(y + height),
-      this.toPx(Math.max(r3, 2))
-    );
-    this.ctx.arcTo(
-      this.toPx(x),
-      this.toPx(y + height),
-      this.toPx(x),
-      this.toPx(y),
-      this.toPx(Math.max(r4, 2))
-    );
-    this.ctx.arcTo(
-      this.toPx(x),
-      this.toPx(y),
-      this.toPx(x + width),
-      this.toPx(y),
-      this.toPx(Math.max(r1, 2))
-    );
-    this.ctx.closePath();
-    this.ctx.clip();
-    if (backgroundColor) {
-      this.ctx.setFillStyle(backgroundColor);
-      this.ctx.fill();
+    try {
+      const newSrc = await this.loadImage(src);
+      this.ctx.save();
+      this.ctx.beginPath();
+      this.ctx.moveTo(this.toPx(x + r1), this.toPx(y));
+      this.ctx.arcTo(
+        this.toPx(x + width),
+        this.toPx(y),
+        this.toPx(x + width),
+        this.toPx(y + height),
+        // 圆角小于2的话安卓会出问题
+        this.toPx(Math.max(r2, 2))
+      );
+      this.ctx.arcTo(
+        this.toPx(x + width),
+        this.toPx(y + height),
+        this.toPx(x),
+        this.toPx(y + height),
+        this.toPx(Math.max(r3, 2))
+      );
+      this.ctx.arcTo(
+        this.toPx(x),
+        this.toPx(y + height),
+        this.toPx(x),
+        this.toPx(y),
+        this.toPx(Math.max(r4, 2))
+      );
+      this.ctx.arcTo(
+        this.toPx(x),
+        this.toPx(y),
+        this.toPx(x + width),
+        this.toPx(y),
+        this.toPx(Math.max(r1, 2))
+      );
+      this.ctx.closePath();
+      this.ctx.clip();
+      if (backgroundColor) {
+        this.ctx.setFillStyle(backgroundColor);
+        this.ctx.fill();
+      }
+      this.ctx.drawImage(
+        newSrc,
+        this.toPx(x),
+        this.toPx(y),
+        this.toPx(width),
+        this.toPx(height)
+      );
+      await this.draw(true);
+      this.ctx.restore();
+    } catch (e) {
+      console.error(`图片${options.src}下载失败，跳过渲染`, e);
     }
-    this.ctx.drawImage(
-      newSrc,
-      this.toPx(x),
-      this.toPx(y),
-      this.toPx(width),
-      this.toPx(height)
-    );
-    await this.draw(true);
-    this.ctx.restore();
   }
 
   /**
@@ -286,14 +301,19 @@ export default class FreePoster {
   }
 
   public async clearRect() {
-    this.ctx.clearRect(0,0, this.toPx(this.options.width), this.toPx(this.options.height))
-    await this.draw()
+    this.ctx.clearRect(
+      0,
+      0,
+      this.toPx(this.options.width),
+      this.toPx(this.options.height)
+    );
+    await this.draw();
   }
 
   private async draw(reserve?: boolean) {
     return new Promise((resolve) => {
-      this.ctx.draw(reserve, (res) => resolve(res))
-    })
+      this.ctx.draw(reserve, (res) => resolve(res));
+    });
   }
   /**
    * 生成临时文件
@@ -305,23 +325,26 @@ export default class FreePoster {
           this.log("开始截取canvas目前的图像");
           console.time("canvas截取图片");
         }
-        Taro.canvasToTempFilePath({
-          x: 0,
-          y: 0,
-          quality: this.options.quality,
-          canvasId: this.options.canvasId,
-          success: res => {
-            if (this.options.debug) {
-              this.log("截取canvas目前的图像成功", res.tempFilePath);
-              console.timeEnd("canvas截取图片");
-            }
-            resolve(res.tempFilePath);
+        Taro.canvasToTempFilePath(
+          {
+            x: 0,
+            y: 0,
+            quality: this.options.quality,
+            canvasId: this.options.canvasId,
+            success: (res) => {
+              if (this.options.debug) {
+                this.log("截取canvas目前的图像成功", res.tempFilePath);
+                console.timeEnd("canvas截取图片");
+              }
+              resolve(res.tempFilePath);
+            },
+            fail: (err) => {
+              this.log("截取canvas目前的图像失败", err);
+              reject(err);
+            },
           },
-          fail: err => {
-            this.log('截取canvas目前的图像失败', err)
-            reject(err)
-          }
-        }, this)
+          this
+        );
       }, 50);
     });
   }
@@ -356,16 +379,16 @@ export default class FreePoster {
         });
       } catch (e) {
         this.options?.onSaveFail?.(e);
-          this.log("保存到相册失败");
+        this.log("保存到相册失败");
       }
     });
   }
 
   public log = (message?: any, ...optionalParams: any[]) => {
     if (this.options.debug) {
-      console.log(message, ...optionalParams)
+      console.log(message, ...optionalParams);
     }
-  }
+  };
 
   /**
    * 获取授权
