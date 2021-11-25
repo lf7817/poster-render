@@ -1,5 +1,5 @@
-import {Canvas, Image} from "@tarojs/components";
-import Taro, {useReady} from "@tarojs/taro";
+import { Canvas, Image } from "@tarojs/components";
+import Taro from "@tarojs/taro";
 import React, {
   forwardRef,
   ForwardRefRenderFunction,
@@ -8,7 +8,7 @@ import React, {
   useImperativeHandle,
   useRef,
   useState,
-  Fragment
+  Fragment,
 } from "react";
 import FreePoster from "./FreePoster";
 import type { QMPosterProps, QMPosterRef } from "./types";
@@ -17,27 +17,31 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
   props,
   ref
 ) => {
-  const $retryCounter = useRef<number>(0)
-  const {canvasId = 'posterCanvasId'} = props;
-  const $isFirst = useRef<boolean>(true)
+  const $retryCounter = useRef<number>(0);
+  const { canvasId = "posterCanvasId" } = props;
+  const $isFirst = useRef<boolean>(true);
   const [url, setUrl] = useState<string>();
   const $freePoster = useRef<FreePoster>();
 
-  useReady(async () => {
-    const freePoster = new FreePoster({
-      canvasId,
-      debug: props.debug,
-      width: props.width,
-      height: props.height,
-      quality: props.quality,
-      onSave: props.onSave,
-      onSaveFail: props.onSaveFail,
-    });
-    $freePoster.current = freePoster;
-    await freePoster.setCanvasBackground("rgba(0,0,0,0)");
-    await generateImage();
-    $isFirst.current = false;
-  });
+  useEffect(() => {
+    Taro.nextTick(async () => {
+      const freePoster = new FreePoster({
+        canvasId,
+        debug: props.debug,
+        width: props.width,
+        height: props.height,
+        quality: props.quality,
+        onSave: props.onSave,
+        onSaveFail: props.onSaveFail,
+      });
+      $freePoster.current = freePoster;
+      await freePoster.setCanvasBackground("rgba(0,0,0,0)");
+      await generateImage();
+      $isFirst.current = false;
+    })
+   
+    // eslint-disable-next-line
+  }, []);
 
   async function generateImage() {
     if ($freePoster.current) {
@@ -52,10 +56,10 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
         $retryCounter.current = 0;
       } catch (e) {
         if (++$retryCounter.current <= 2) {
-          $freePoster.current.log(`第${$retryCounter.current}次重新渲染`)
-          await generateImage()
+          $freePoster.current.log(`第${$retryCounter.current}次重新渲染`);
+          await generateImage();
         } else {
-          $freePoster.current.log(`重新渲染失败，放弃治疗`)
+          $freePoster.current.log(`重新渲染失败，放弃治疗`);
           props?.onRenderFail?.(e);
         }
       }
@@ -67,7 +71,7 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
       $freePoster.current?.clearRect();
       generateImage();
     }
-  }, [props.list])
+  }, [props.list]);
 
   useImperativeHandle(ref, () => ({
     savePosterToPhoto: async () => {
@@ -112,8 +116,8 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
   );
 };
 
-export {QMPosterRef, QMPosterProps}
+export { QMPosterRef, QMPosterProps };
 
-export const QMPoster = memo(forwardRef(QMPosterCore))
+export const QMPoster = memo(forwardRef(QMPosterCore));
 
 export default QMPoster;
