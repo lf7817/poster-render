@@ -41,7 +41,6 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
 
   async function generateImage() {
     if ($freePoster.current) {
-      // const images = props.list.reduce(() => {}, [])
       for await (const item of props.list) {
         await $freePoster.current.exec(item);
       }
