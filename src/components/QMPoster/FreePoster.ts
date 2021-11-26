@@ -11,6 +11,7 @@ const { screenWidth } = Taro.getSystemInfoSync();
 
 export default class FreePoster {
   private ctx: CanvasContext;
+  private images: Map<string, string> = new Map();
   private options: FreePosterOptions = {
     canvasId: "posterCanvasId",
     debug: true,
@@ -29,14 +30,16 @@ export default class FreePoster {
    */
   public async setCanvasBackground(canvasBackground) {
     if (canvasBackground) {
+      this.time("渲染背景色");
       const color = canvasBackground;
-      const { width, height, debug } = this.options;
-      if (debug) console.log("canvas的背景色为：", color);
+      const { width, height } = this.options;
+      this.log("设置canvas的背景色：", color);
       this.ctx.save();
       this.ctx.setFillStyle(color);
       this.ctx.fillRect(0, 0, width, height);
       await this.draw(true);
       this.ctx.restore();
+      this.timeEnd("渲染背景色");
     }
   }
 
@@ -54,22 +57,21 @@ export default class FreePoster {
    * @param src
    * @private
    */
-  private async loadImage(url: string): Promise<string> {
+  private loadImage = async (url: string): Promise<string> => {
     let retryCounter = 0;
-    if (this.options.debug) {
-      this.log("开始下载图片", url);
-      console.time("图片下载时间");
+
+    if (this.images.has(url)) {
+      return this.images.get(url)!;
     }
 
     const downloadFile = async (resolve, reject) => {
       try {
+        this.time(`下载图片${url}用时`);
         const localUrl = await Taro.downloadFile({ url });
-        if (this.options.debug) {
-          this.log("图片下载成功", url);
-          console.timeEnd("图片下载时间");
-        }
         retryCounter = 0;
         resolve((localUrl as any).tempFilePath);
+        this.images.set(url, (localUrl as any).tempFilePath);
+        this.timeEnd(`下载图片${url}用时`);
       } catch (e) {
         if (++retryCounter <= 2) {
           this.log(`图片下载失败, 开始第${retryCounter}次重试`, url);
@@ -77,6 +79,7 @@ export default class FreePoster {
         } else {
           this.log("三次尝试图片仍下载失败,放弃治疗", url);
           reject(e);
+          this.images.delete(url);
         }
       }
     };
@@ -84,13 +87,14 @@ export default class FreePoster {
     return new Promise(async (resolve, reject) => {
       await downloadFile(resolve, reject);
     });
-  }
+  };
 
   /**
    * 绘制图片
    * @param options
    */
   public async paintImage(options: Omit<PaintImage, "type">) {
+    this.time("绘制图片时间");
     this.log("开始绘制图片", options);
 
     const { x, y, width, height, radius = 2, src, backgroundColor } = options;
@@ -148,6 +152,7 @@ export default class FreePoster {
       );
       await this.draw(true);
       this.ctx.restore();
+      this.timeEnd("绘制图片时间");
     } catch (e) {
       console.error(`图片${options.src}下载失败，跳过渲染`, e);
     }
@@ -158,6 +163,8 @@ export default class FreePoster {
    * @param options
    */
   public async paintShape(options: Omit<PaintShape, "type">) {
+    this.time("绘制图形时间");
+    this.log("开始绘制图形", options);
     const {
       x,
       y,
@@ -222,6 +229,7 @@ export default class FreePoster {
 
     await this.draw(true);
     this.ctx.restore();
+    this.timeEnd("绘制图形时间");
   }
 
   /**
@@ -229,6 +237,8 @@ export default class FreePoster {
    * @param options
    */
   public async paintText(options: Omit<PaintText, "type">) {
+    this.time("绘制文字时间");
+    this.log("开始绘制文字", options);
     const {
       textAlign = "left",
       opacity = 1,
@@ -297,6 +307,7 @@ export default class FreePoster {
 
     await this.draw(true);
     this.ctx.restore();
+    this.timeEnd("绘制文字时间");
     return textWidth;
   }
 
@@ -321,10 +332,9 @@ export default class FreePoster {
   public canvasToTempFilePath(): Promise<string> {
     return new Promise((resolve, reject) => {
       setTimeout(async () => {
-        if (this.options.debug) {
-          this.log("开始截取canvas目前的图像");
-          console.time("canvas截取图片");
-        }
+        this.log("开始截取canvas图片");
+        this.time("截取canvas图片时间");
+
         Taro.canvasToTempFilePath(
           {
             x: 0,
@@ -332,10 +342,9 @@ export default class FreePoster {
             quality: this.options.quality,
             canvasId: this.options.canvasId,
             success: (res) => {
-              if (this.options.debug) {
-                this.log("截取canvas目前的图像成功", res.tempFilePath);
-                console.timeEnd("canvas截取图片");
-              }
+              this.log("截取canvas图片成功", res.tempFilePath);
+              this.timeEnd("截取canvas图片时间");
+
               resolve(res.tempFilePath);
             },
             fail: (err) => {
@@ -347,6 +356,22 @@ export default class FreePoster {
         );
       }, 50);
     });
+  }
+
+  /**
+   * 提前下载图片
+   * @param images
+   */
+  public async preloadImage(images: string[]) {
+    this.log("开始提前下载图片");
+    this.time("提前下载图片用时");
+    await Promise.all(
+      images
+        .filter((item) => !this.images.has(item))
+        .map((item) => this.loadImage(item))
+    );
+
+    this.timeEnd("提前下载图片用时");
   }
 
   /**
@@ -387,6 +412,18 @@ export default class FreePoster {
   public log = (message?: any, ...optionalParams: any[]) => {
     if (this.options.debug) {
       console.log(message, ...optionalParams);
+    }
+  };
+
+  public time = (message: string) => {
+    if (this.options.debug) {
+      console.time(message);
+    }
+  };
+
+  public timeEnd = (message: string) => {
+    if (this.options.debug) {
+      console.timeEnd(message);
     }
   };
 

@@ -10,7 +10,7 @@ import React, {
   useState,
   Fragment,
 } from "react";
-import isEqual from 'lodash.isequal';
+import isEqual from "lodash.isequal";
 import FreePoster from "./FreePoster";
 import type { QMPosterProps, QMPosterRef } from "./types";
 
@@ -39,13 +39,24 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
       await freePoster.setCanvasBackground("rgba(0,0,0,0)");
       await generateImage();
       $isFirst.current = false;
-    })
-   
+    });
+
     // eslint-disable-next-line
   }, []);
 
   async function generateImage() {
     if ($freePoster.current) {
+      $freePoster.current.time("渲染海报完成");
+      // 提前加载图片
+      await $freePoster.current.preloadImage(
+        props.list.reduce((arr, item) => {
+          if (item.type === "image") {
+            arr.push(item.src);
+          }
+          return arr;
+        }, [] as string[])
+      );
+      // 按顺序渲染
       for await (const item of props.list) {
         await $freePoster.current.exec(item);
       }
@@ -55,6 +66,7 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
         setUrl(temp);
         props?.onRender?.(temp);
         $retryCounter.current = 0;
+        $freePoster.current.timeEnd("渲染海报完成");
       } catch (e) {
         if (++$retryCounter.current <= 2) {
           $freePoster.current.log(`第${$retryCounter.current}次重新渲染`);

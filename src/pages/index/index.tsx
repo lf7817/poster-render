@@ -1,16 +1,9 @@
 import Taro from "@tarojs/taro";
-import React, {FC, useEffect, useRef, useState} from 'react';
+import React, {FC, useRef} from 'react';
 import {QMPoster, QMPosterRef} from '../../components/QMPoster';
 
 const Index: FC = () => {
   const poster = useRef<QMPosterRef>(null);
-  const [counter, setCounter] = useState(0)
-
-  useEffect(() => {
-    setInterval(() => setCounter(Math.random()), 3000)
-  }, [])
-
-  console.log(counter)
 
   return (
     <QMPoster
