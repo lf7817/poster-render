@@ -10,6 +10,7 @@ import React, {
   useState,
   Fragment,
 } from "react";
+import isEqual from 'lodash.isequal';
 import FreePoster from "./FreePoster";
 import type { QMPosterProps, QMPosterRef } from "./types";
 
@@ -119,6 +120,8 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
 
 export { QMPosterRef, QMPosterProps };
 
-export const QMPoster = memo(forwardRef(QMPosterCore));
+export const QMPoster = memo(forwardRef(QMPosterCore), (prev, next) => {
+  return isEqual(prev.list, next.list);
+});
 
 export default QMPoster;
