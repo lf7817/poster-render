@@ -1,4 +1,4 @@
-import { CSSProperties } from 'react';
+import { CSSProperties } from "react";
 
 export interface FreePosterOptions {
   debug: boolean;
@@ -22,10 +22,10 @@ interface Common<T> {
 /**
  * 绘制图片
  */
-export interface PaintImage extends Common<'image'> {
+export interface PaintImage extends Common<"image"> {
   width: number;
   height: number;
-  /** 图片路径 */
+  /** 图片路径，支持https、wxfile协议 */
   src: string;
   /** 背景色 */
   backgroundColor?: string;
@@ -36,7 +36,7 @@ export interface PaintImage extends Common<'image'> {
   radius?: number | `${number} ${number} ${number} ${number}`;
 }
 
-export interface PaintShape extends Common<'shape'> {
+export interface PaintShape extends Common<"shape"> {
   /** 矩形宽 */
   width: number;
   /** 矩形高 */
@@ -51,20 +51,20 @@ export interface PaintShape extends Common<'shape'> {
   fillStyle?: string;
 }
 
-export interface PaintText extends Common<'text'> {
+export interface PaintText extends Common<"text"> {
   width: number;
   height: number;
   text: string;
   /** 文字对齐方式 */
-  textAlign?: 'left' | 'center' | 'right';
-  fontWeight?: 'normal' | 'bold';
+  textAlign?: "left" | "center" | "right";
+  fontWeight?: "normal" | "bold";
   color: string;
   fontSize: number;
   lineHeight?: number;
-  baseLine: 'top' | 'bottom' | 'middle' | 'normal';
+  baseLine: "top" | "bottom" | "middle" | "normal";
   opacity?: number;
   lineNum?: number;
-  fontStyle?: 'normal' | 'italic' | 'oblique';
+  fontStyle?: "normal" | "italic" | "oblique";
   fontFamily?: string;
 }
 

@@ -83,6 +83,7 @@ export default Index;
 
 ```ts
 export interface QMPosterProps {
+  canvasId?: string;
   className?: string;
   style?: CSSProperties;
   width: number;
@@ -108,7 +109,7 @@ export interface PaintImage {
   y: number;
   width: number;
   height: number;
-  /** 图片路径 */
+  /** 图片路径，支持https、wxfile协议 */
   src: string;
   /** 背景色 */
   backgroundColor?: string;

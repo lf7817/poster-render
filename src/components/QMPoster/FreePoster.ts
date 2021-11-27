@@ -60,6 +60,11 @@ export default class FreePoster {
   private loadImage = async (url: string): Promise<string> => {
     let retryCounter = 0;
 
+    // 支持本地临时文件
+    if (url.startsWith("wxfile://")) {
+      return url;
+    }
+
     if (this.images.has(url)) {
       return this.images.get(url)!;
     }
@@ -365,6 +370,7 @@ export default class FreePoster {
   public async preloadImage(images: string[]) {
     this.log("开始提前下载图片");
     this.time("提前下载图片用时");
+
     await Promise.all(
       images
         .filter((item) => !this.images.has(item))
