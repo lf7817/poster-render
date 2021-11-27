@@ -92,7 +92,9 @@ export interface QMPosterProps {
   quality?: number;
   list: PosterItemConfig[];
   showMenuByLongpress?: boolean;
-  onLongPress?: (url: string) => void;
+  /** 海报渲染方式，默认渲染图片 */
+  renderType?: "image" | "canvas";
+  onLongPress?: (url?: string) => void;
   onSave?: (url: string) => void;
   onSaveFail?: (err: any) => void;
   onRender?: (url: string) => void;

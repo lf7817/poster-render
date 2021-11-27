@@ -19,7 +19,7 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
   ref
 ) => {
   const $retryCounter = useRef<number>(0);
-  const { canvasId = "posterCanvasId" } = props;
+  const { canvasId = "posterCanvasId", renderType = "image" } = props;
   const $isFirst = useRef<boolean>(true);
   const [url, setUrl] = useState<string>();
   const $freePoster = useRef<FreePoster>();
@@ -37,14 +37,14 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
       });
       $freePoster.current = freePoster;
       await freePoster.setCanvasBackground("rgba(0,0,0,0)");
-      await generateImage();
+      await render();
       $isFirst.current = false;
     });
 
     // eslint-disable-next-line
   }, []);
 
-  async function generateImage() {
+  async function render() {
     if ($freePoster.current) {
       $freePoster.current.time("渲染海报完成");
       // 提前加载图片
@@ -61,20 +61,25 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
         await $freePoster.current.exec(item);
       }
 
-      try {
-        const temp = await $freePoster.current.canvasToTempFilePath();
-        setUrl(temp);
-        props?.onRender?.(temp);
+      if (renderType === "image") {
+        try {
+          const temp = await $freePoster.current.canvasToTempFilePath();
+          setUrl(temp);
+          props?.onRender?.(temp);
+          $retryCounter.current = 0;
+          $freePoster.current.timeEnd("渲染海报完成");
+        } catch (e) {
+          if (++$retryCounter.current <= 2) {
+            $freePoster.current.log(`第${$retryCounter.current}次重新渲染`);
+            await render();
+          } else {
+            $freePoster.current.log(`重新渲染失败，放弃治疗`);
+            props?.onRenderFail?.(e);
+          }
+        }
+      } else {
         $retryCounter.current = 0;
         $freePoster.current.timeEnd("渲染海报完成");
-      } catch (e) {
-        if (++$retryCounter.current <= 2) {
-          $freePoster.current.log(`第${$retryCounter.current}次重新渲染`);
-          await generateImage();
-        } else {
-          $freePoster.current.log(`重新渲染失败，放弃治疗`);
-          props?.onRenderFail?.(e);
-        }
       }
     }
   }
@@ -82,7 +87,7 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
   useEffect(() => {
     if (!$isFirst.current) {
       $freePoster.current?.clearRect();
-      generateImage();
+      render();
     }
     // eslint-disable-next-line
   }, [props.list]);
@@ -90,12 +95,22 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
   useImperativeHandle(ref, () => ({
     savePosterToPhoto: async () => {
       try {
-        if ($freePoster.current?.savePosterToPhoto) {
-          return await $freePoster.current?.savePosterToPhoto();
+        if ($freePoster.current) {
+          return await $freePoster.current.savePosterToPhoto();
         }
         return "";
       } catch (e) {
         return "";
+      }
+    },
+    preview: async () => {
+      try {
+        if ($freePoster.current) {
+          const res = await $freePoster.current.canvasToTempFilePath();
+          await Taro.previewImage({ urls: [res], current: res });
+        }
+      } catch (e) {
+        $freePoster.current?.log("预览图片出错", e);
       }
     },
   }));
@@ -104,16 +119,23 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
     <Fragment>
       <Canvas
         canvas-id={canvasId}
+        onLongTap={() => props.onLongPress?.()}
+        className={props.className}
         style={{
-          position: "absolute",
-          left: 0,
-          bottom: 0,
+          ...(renderType === "canvas"
+            ? {}
+            : {
+                position: "absolute",
+                left: 0,
+                bottom: 0,
+                transform: "translate3d(-9999rpx, 0, 0)",
+              }),
           width: Taro.pxTransform(props.width),
           height: Taro.pxTransform(props.height),
-          transform: "translate3d(-9999rpx, 0, 0)",
+          ...props.style,
         }}
       />
-      {url && (
+      {url && renderType === "image" && (
         <Image
           className={props.className}
           src={url}
