@@ -82,9 +82,9 @@ interface QMPosterCanvasProps {
   onRender?: () => void;
 }
 
-type QMPosterRestProps = QMPosterImageProps | QMPosterCanvasProps;
+export type QMPosterProps = QMPosterCanvasProps | QMPosterImageProps;
 
-export type QMPosterProps = QMPosterRestProps & {
+interface QMPosterBaseProps {
   canvasId?: string;
   className?: string;
   style?: CSSProperties;
@@ -97,7 +97,19 @@ export type QMPosterProps = QMPosterRestProps & {
   onSave?: (url: string) => void;
   onSaveFail?: (err: any) => void;
   onRenderFail?: (err: any) => void;
-};
+}
+
+interface QMPosterImageProps extends QMPosterBaseProps {
+  renderType: "image";
+  onLongPress?: (url: string) => void;
+  onRender?: (url: string) => void;
+}
+
+interface QMPosterCanvasProps extends QMPosterBaseProps {
+  renderType: "canvas";
+  onLongPress?: () => void;
+  onRender?: () => void;
+}
 
 export interface QMPosterRef {
   /** 保存到相册 */
