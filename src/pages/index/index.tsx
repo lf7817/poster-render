@@ -14,7 +14,7 @@ const Index: FC = () => {
       debug
       quality={1}
       showMenuByLongpress
-      renderType="canvas"
+      renderType="image"
       onLongPress={() => poster.current?.preview()}
       onRender={(url) => console.log("onRender", url)}
       onSave={(url) => console.log("onSave", url)}

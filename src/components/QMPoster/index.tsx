@@ -61,7 +61,7 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
         await $freePoster.current.exec(item);
       }
 
-      if (renderType === "image") {
+      if (props.renderType === "image") {
         try {
           const temp = await $freePoster.current.canvasToTempFilePath();
           setUrl(temp);
@@ -79,6 +79,7 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
         }
       } else {
         $retryCounter.current = 0;
+        props?.onRender?.();
         $freePoster.current.timeEnd("渲染海报完成");
       }
     }
@@ -106,8 +107,10 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
     preview: async () => {
       try {
         if ($freePoster.current) {
+          $freePoster.current.time("渲染预览用时");
           const res = await $freePoster.current.canvasToTempFilePath();
           await Taro.previewImage({ urls: [res], current: res });
+          $freePoster.current.timeEnd("渲染预览用时");
         }
       } catch (e) {
         $freePoster.current?.log("预览图片出错", e);
@@ -119,7 +122,7 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
     <Fragment>
       <Canvas
         canvas-id={canvasId}
-        onLongTap={() => props.onLongPress?.()}
+        onLongTap={() => props.renderType === "canvas" && props.onLongPress?.()}
         className={props.className}
         style={{
           ...(renderType === "canvas"
