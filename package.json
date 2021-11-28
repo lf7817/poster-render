@@ -10,7 +10,7 @@
   "browser": "dist/index.umd.js",
   "module": "dist/index.esm.js",
   "main": "dist/index.js",
-  "source": "src/components/QMPoster/index.tsx",
+  "source": "src/components/Poster/index.tsx",
   "types": "types/index.d.ts",
   "homepage": "https://github.com/lf7817/taro-poster-render",
   "files": [
