@@ -1,6 +1,6 @@
 {
   "name": "taro-poster-render",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "taro海报组件，兼容企微",
   "templateInfo": {
     "name": "default",

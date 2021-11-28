@@ -70,21 +70,21 @@ export interface PaintText extends Common<"text"> {
 
 export type PosterItemConfig = PaintImage | PaintShape | PaintText;
 
-interface QMPosterImageProps {
+interface PosterImageProps {
   renderType: "image";
   onLongPress?: (url: string) => void;
   onRender?: (url: string) => void;
 }
 
-interface QMPosterCanvasProps {
+interface PosterCanvasProps {
   renderType: "canvas";
   onLongPress?: () => void;
   onRender?: () => void;
 }
 
-export type QMPosterProps = QMPosterCanvasProps | QMPosterImageProps;
+export type PosterProps = PosterCanvasProps | PosterImageProps;
 
-interface QMPosterBaseProps {
+interface PosterBaseProps {
   canvasId?: string;
   className?: string;
   style?: CSSProperties;
@@ -99,19 +99,19 @@ interface QMPosterBaseProps {
   onRenderFail?: (err: any) => void;
 }
 
-interface QMPosterImageProps extends QMPosterBaseProps {
+interface PosterImageProps extends PosterBaseProps {
   renderType: "image";
   onLongPress?: (url: string) => void;
   onRender?: (url: string) => void;
 }
 
-interface QMPosterCanvasProps extends QMPosterBaseProps {
+interface PosterCanvasProps extends PosterBaseProps {
   renderType: "canvas";
   onLongPress?: () => void;
   onRender?: () => void;
 }
 
-export interface QMPosterRef {
+export interface PosterRef {
   /** 保存到相册 */
   savePosterToPhoto: () => Promise<string>;
   /** 预览图片 */

@@ -12,10 +12,10 @@ import React, {
 } from "react";
 import isEqual from "lodash.isequal";
 import FreePoster from "./FreePoster";
-import type { QMPosterProps, QMPosterRef } from "./types";
+import type { PosterProps, PosterRef } from "./types";
 import { toPx } from "./utils";
 
-const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
+const QMPosterCore: ForwardRefRenderFunction<PosterRef, PosterProps> = (
   props,
   ref
 ) => {
@@ -161,10 +161,10 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
   );
 };
 
-export { QMPosterRef, QMPosterProps };
+export { PosterRef, PosterProps };
 
-export const QMPoster = memo(forwardRef(QMPosterCore), (prev, next) => {
+export const Poster = memo(forwardRef(QMPosterCore), (prev, next) => {
   return isEqual(prev.list, next.list);
 });
 
-export default QMPoster;
+export default Poster;

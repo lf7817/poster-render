@@ -1,12 +1,12 @@
 import Taro from "@tarojs/taro";
 import React, { FC, useRef } from "react";
-import { QMPoster, QMPosterRef } from "../../components/QMPoster";
+import { Poster, PosterRef } from "../../components/Poster";
 
 const Index: FC = () => {
-  const poster = useRef<QMPosterRef>(null);
+  const poster = useRef<PosterRef>(null);
 
   return (
-    <QMPoster
+    <Poster
       style={{ marginLeft: Taro.pxTransform(55) }}
       width={644}
       height={1104}

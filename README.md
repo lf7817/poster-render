@@ -1,6 +1,6 @@
 # taro-poster-render
 
-为了兼容企微采用了老版的canvas封装，后续会兼容h5
+为了兼容企微采用了老版的canvas封装，兼容支付宝小程序, 后续会兼容h5
 
 ## 使用
 
@@ -9,14 +9,14 @@ npm install taro-poster-render
 ```
 
 ```tsx
-import { QMPoster, QMPosterRef } from 'taro-poster-render';
+import { Poster, PosterRef } from 'taro-poster-render';
 import { FC, useRef } from 'react';
 
 const Index: FC = () => {
-  const poster = useRef<QMPosterRef>(null);
+  const poster = useRef<PosterRef>(null);
 
   return (
-    <QMPoster
+    <Poster
       ref={poster}
       width={560}
       height={1000}
