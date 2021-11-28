@@ -6,8 +6,7 @@ import {
   PaintText,
   PosterItemConfig,
 } from "./types";
-
-const { screenWidth } = Taro.getSystemInfoSync();
+import { isAlipay, toPx, toRpx } from "./utils";
 
 export default class FreePoster {
   private ctx: CanvasContext;
@@ -41,15 +40,6 @@ export default class FreePoster {
       this.ctx.restore();
       this.timeEnd("渲染背景色");
     }
-  }
-
-  private toPx(rpx: number) {
-    // 这里要取整，否则安卓会出问题
-    return Math.round((screenWidth / 750) * rpx);
-  }
-
-  private toRpx(px: number) {
-    return Math.round(px / (screenWidth / 750));
   }
 
   /**
@@ -112,35 +102,35 @@ export default class FreePoster {
       const newSrc = await this.loadImage(src);
       this.ctx.save();
       this.ctx.beginPath();
-      this.ctx.moveTo(this.toPx(x + r1), this.toPx(y));
+      this.ctx.moveTo(toPx(x + r1), toPx(y));
       this.ctx.arcTo(
-        this.toPx(x + width),
-        this.toPx(y),
-        this.toPx(x + width),
-        this.toPx(y + height),
+        toPx(x + width),
+        toPx(y),
+        toPx(x + width),
+        toPx(y + height),
         // 圆角小于2的话安卓会出问题
-        this.toPx(Math.max(r2, 2))
+        toPx(Math.max(r2, 2))
       );
       this.ctx.arcTo(
-        this.toPx(x + width),
-        this.toPx(y + height),
-        this.toPx(x),
-        this.toPx(y + height),
-        this.toPx(Math.max(r3, 2))
+        toPx(x + width),
+        toPx(y + height),
+        toPx(x),
+        toPx(y + height),
+        toPx(Math.max(r3, 2))
       );
       this.ctx.arcTo(
-        this.toPx(x),
-        this.toPx(y + height),
-        this.toPx(x),
-        this.toPx(y),
-        this.toPx(Math.max(r4, 2))
+        toPx(x),
+        toPx(y + height),
+        toPx(x),
+        toPx(y),
+        toPx(Math.max(r4, 2))
       );
       this.ctx.arcTo(
-        this.toPx(x),
-        this.toPx(y),
-        this.toPx(x + width),
-        this.toPx(y),
-        this.toPx(Math.max(r1, 2))
+        toPx(x),
+        toPx(y),
+        toPx(x + width),
+        toPx(y),
+        toPx(Math.max(r1, 2))
       );
       this.ctx.closePath();
       this.ctx.clip();
@@ -148,13 +138,7 @@ export default class FreePoster {
         this.ctx.setFillStyle(backgroundColor);
         this.ctx.fill();
       }
-      this.ctx.drawImage(
-        newSrc,
-        this.toPx(x),
-        this.toPx(y),
-        this.toPx(width),
-        this.toPx(height)
-      );
+      this.ctx.drawImage(newSrc, toPx(x), toPx(y), toPx(width), toPx(height));
       await this.draw(true);
       this.ctx.restore();
       this.timeEnd("绘制图片时间");
@@ -187,36 +171,36 @@ export default class FreePoster {
 
     this.ctx.save();
     this.ctx.beginPath();
-    this.ctx.moveTo(this.toPx(x + r1), this.toPx(y));
+    this.ctx.moveTo(toPx(x + r1), toPx(y));
 
     this.ctx.arcTo(
-      this.toPx(x + width),
-      this.toPx(y),
-      this.toPx(x + width),
-      this.toPx(y + height),
-      this.toPx(Math.max(r2, 2))
+      toPx(x + width),
+      toPx(y),
+      toPx(x + width),
+      toPx(y + height),
+      toPx(Math.max(r2, 2))
     );
 
     this.ctx.arcTo(
-      this.toPx(x + width),
-      this.toPx(y + height),
-      this.toPx(x),
-      this.toPx(y + height),
-      this.toPx(Math.max(r3, 2))
+      toPx(x + width),
+      toPx(y + height),
+      toPx(x),
+      toPx(y + height),
+      toPx(Math.max(r3, 2))
     );
     this.ctx.arcTo(
-      this.toPx(x),
-      this.toPx(y + height),
-      this.toPx(x),
-      this.toPx(y),
-      this.toPx(Math.max(r4, 2))
+      toPx(x),
+      toPx(y + height),
+      toPx(x),
+      toPx(y),
+      toPx(Math.max(r4, 2))
     );
     this.ctx.arcTo(
-      this.toPx(x),
-      this.toPx(y),
-      this.toPx(x + width),
-      this.toPx(y),
-      this.toPx(Math.max(r1, 2))
+      toPx(x),
+      toPx(y),
+      toPx(x + width),
+      toPx(y),
+      toPx(Math.max(r1, 2))
     );
     this.ctx.closePath();
     this.ctx.clip();
@@ -259,7 +243,7 @@ export default class FreePoster {
       " " +
       fontWeight +
       " " +
-      this.toPx(options.fontSize) +
+      toPx(options.fontSize) +
       "px " +
       fontFamily;
     this.ctx.setGlobalAlpha(opacity);
@@ -267,9 +251,7 @@ export default class FreePoster {
     this.ctx.setTextBaseline(options.baseLine);
     this.ctx.setTextAlign(textAlign);
     // measureText返回的是px
-    let textWidth: number = this.toRpx(
-      this.ctx.measureText(options.text).width
-    );
+    let textWidth: number = toRpx(this.ctx.measureText(options.text).width);
     const textArr: string[] = [];
     if (textWidth > options.width) {
       // 文本宽度 大于 渲染宽度
@@ -278,7 +260,7 @@ export default class FreePoster {
       for (let i = 0; i <= options.text.length - 1; i++) {
         // 将文字转为数组，一行文字一个元素
         fillText = fillText + options.text[i];
-        if (this.toRpx(this.ctx.measureText(fillText).width) >= options.width) {
+        if (toRpx(this.ctx.measureText(fillText).width) >= options.width) {
           if (line === lineNum) {
             if (i !== options.text.length - 1) {
               fillText = fillText.substring(0, fillText.length - 1) + "...";
@@ -305,8 +287,8 @@ export default class FreePoster {
     textArr.forEach((item, index) => {
       this.ctx.fillText(
         item,
-        this.toPx(options.x),
-        this.toPx(options.y + (lineHeight || options.fontSize) * index)
+        toPx(options.x),
+        toPx(options.y + (lineHeight || options.fontSize) * index)
       );
     });
 
@@ -320,8 +302,8 @@ export default class FreePoster {
     this.ctx.clearRect(
       0,
       0,
-      this.toPx(this.options.width),
-      this.toPx(this.options.height)
+      toPx(this.options.width),
+      toPx(this.options.height)
     );
     await this.draw();
   }
@@ -347,10 +329,13 @@ export default class FreePoster {
             quality: this.options.quality,
             canvasId: this.options.canvasId,
             success: (res) => {
-              this.log("截取canvas图片成功", res.tempFilePath);
+              const localUrl = isAlipay
+                ? (res as any).apFilePath
+                : res.tempFilePath;
+              this.log("截取canvas图片成功", localUrl);
               this.timeEnd("截取canvas图片时间");
 
-              resolve(res.tempFilePath);
+              resolve(localUrl);
             },
             fail: (err) => {
               this.log("截取canvas目前的图像失败", err);

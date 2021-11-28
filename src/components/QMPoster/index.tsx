@@ -13,6 +13,7 @@ import React, {
 import isEqual from "lodash.isequal";
 import FreePoster from "./FreePoster";
 import type { QMPosterProps, QMPosterRef } from "./types";
+import { toPx } from "./utils";
 
 const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
   props,
@@ -121,9 +122,14 @@ const QMPosterCore: ForwardRefRenderFunction<QMPosterRef, QMPosterProps> = (
   return (
     <Fragment>
       <Canvas
+        id={canvasId}
         canvas-id={canvasId}
         onLongTap={() => props.renderType === "canvas" && props.onLongPress?.()}
         className={props.className}
+        // @ts-ignore 兼容支付宝
+        width={toPx(props.width)}
+        // @ts-ignore 兼容支付宝
+        height={toPx(props.height)}
         style={{
           ...(renderType === "canvas"
             ? {}
