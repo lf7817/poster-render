@@ -16,6 +16,7 @@ export default class FreePoster {
     debug: true,
     width: 750,
     height: 1334,
+    fileType: "png",
     quality: 1,
   };
 
@@ -327,6 +328,7 @@ export default class FreePoster {
             x: 0,
             y: 0,
             quality: this.options.quality,
+            fileType: this.options.fileType,
             canvasId: this.options.canvasId,
             success: (res) => {
               const localUrl = isAlipay

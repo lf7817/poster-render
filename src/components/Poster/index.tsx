@@ -33,6 +33,7 @@ const QMPosterCore: ForwardRefRenderFunction<PosterRef, PosterProps> = (
         width: props.width,
         height: props.height,
         quality: props.quality,
+        fileType: props.fileType,
         onSave: props.onSave,
         onSaveFail: props.onSaveFail,
       });

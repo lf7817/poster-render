@@ -5,8 +5,10 @@ export interface FreePosterOptions {
   canvasId: string;
   width: number;
   height: number;
-  /** 图片质量 0-1 */
-  quality: number;
+  /** 导出图片格式 */
+  fileType?: "png" | "jpg";
+  /** 图片质量 0-1，只对jpg生效 */
+  quality?: number;
   onSave?: (url: string) => void;
   onSaveFail?: (err: any) => void;
 }
@@ -91,6 +93,9 @@ interface PosterBaseProps {
   width: number;
   height: number;
   debug?: boolean;
+  /** 导出图片格式 */
+  fileType?: "png" | "jpg";
+  /** 图片质量 0-1，只对jpg生效 */
   quality?: number;
   list: PosterItemConfig[];
   showMenuByLongpress?: boolean;
@@ -115,5 +120,5 @@ export interface PosterRef {
   /** 保存到相册 */
   savePosterToPhoto: () => Promise<string>;
   /** 预览图片 */
-  preview: () => void;
+  preview: () => Promise<void>;
 }
