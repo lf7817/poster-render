@@ -1,7 +1,7 @@
 {
   "name": "taro-poster-render",
   "version": "1.7.2",
-  "description": "taro海报组件，兼容企微",
+  "description": "taro海报组件，兼容企微、支付宝",
   "templateInfo": {
     "name": "default",
     "typescript": true,
@@ -21,7 +21,10 @@
   "keywords": [
     "taro",
     "poster",
-    "canvas"
+    "canvas",
+    "微信",
+    "企微",
+    "支付宝"
   ],
   "repository": {
     "type": "git",
