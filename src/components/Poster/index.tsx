@@ -12,7 +12,7 @@ import React, {
 } from "react";
 import isEqual from "lodash.isequal";
 import FreePoster from "./FreePoster";
-import type { PosterProps, PosterRef } from "./types";
+import type { PosterProps, PosterRef, PosterItemConfig } from "./types";
 import { toPx } from "./utils";
 
 const QMPosterCore: ForwardRefRenderFunction<PosterRef, PosterProps> = (
@@ -161,7 +161,7 @@ const QMPosterCore: ForwardRefRenderFunction<PosterRef, PosterProps> = (
   );
 };
 
-export { PosterRef, PosterProps };
+export { PosterRef, PosterProps, PosterItemConfig };
 
 export const Poster = memo(forwardRef(QMPosterCore), (prev, next) => {
   return isEqual(prev.list, next.list);
