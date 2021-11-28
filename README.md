@@ -1,15 +1,15 @@
-# taro-qm-poster
+# taro-poster-render
 
 为了兼容企微采用了老版的canvas封装，后续会兼容h5
 
 ## 使用
 
 ```bash
-npm install taro-qm-poster
+npm install taro-poster-render
 ```
 
 ```tsx
-import { QMPoster, QMPosterRef } from 'taro-qm-poster';
+import { QMPoster, QMPosterRef } from 'taro-poster-render';
 import { FC, useRef } from 'react';
 
 const Index: FC = () => {

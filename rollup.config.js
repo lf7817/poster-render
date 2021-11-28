@@ -30,7 +30,7 @@ export default {
     {
       file: resolveFile(Package.browser),
       format: 'umd',
-      name: 'taro-qm-poster',
+      name: 'taro-poster-render',
       sourcemap: true,
       globals: {
         react: 'React',

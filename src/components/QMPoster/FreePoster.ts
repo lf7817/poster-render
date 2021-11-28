@@ -466,7 +466,7 @@ export default class FreePoster {
     };
 
     if (!funcMap[options.type]) {
-      throw new Error(`[poster]: ${options.type}类型不存在`);
+      throw new Error(`[taro-poster-render]: ${options.type}类型不存在`);
     }
 
     return this[funcMap[options.type]](options);

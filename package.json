@@ -1,5 +1,5 @@
 {
-  "name": "taro-qm-poster",
+  "name": "taro-poster-render",
   "version": "1.7.0",
   "description": "taro海报组件，兼容企微",
   "templateInfo": {
@@ -12,7 +12,7 @@
   "main": "dist/index.js",
   "source": "src/components/QMPoster/index.tsx",
   "types": "types/index.d.ts",
-  "homepage": "https://github.com/lf7817/taro-qm-poster",
+  "homepage": "https://github.com/lf7817/taro-poster-render",
   "files": [
     "dist",
     "lib",
@@ -25,7 +25,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git@github.com:lf7817/taro-qm-poster.git"
+    "url": "git@github.com:lf7817/taro-poster-render.git"
   },
   "scripts": {
     "clean": "rm -rf dist/ types/ lib/",
