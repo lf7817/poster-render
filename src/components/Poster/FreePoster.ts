@@ -60,7 +60,7 @@ export default class FreePoster {
       return this.images.get(url)!;
     }
 
-    const downloadFile = async (resolve, reject) => {
+    const downloadFile = async (resolve) => {
       try {
         this.time(`下载图片${url}用时`);
         const localUrl = await Taro.downloadFile({ url });
@@ -71,17 +71,17 @@ export default class FreePoster {
       } catch (e) {
         if (++retryCounter <= 2) {
           this.log(`图片下载失败, 开始第${retryCounter}次重试`, url);
-          await downloadFile(resolve, reject);
+          await downloadFile(resolve);
         } else {
-          this.log("三次尝试图片仍下载失败,放弃治疗", url);
-          reject(e);
+          this.log("三次尝试图片仍下载失败,放弃治疗", url, e);
+          resolve(undefined);
           this.images.delete(url);
         }
       }
     };
 
-    return new Promise(async (resolve, reject) => {
-      await downloadFile(resolve, reject);
+    return new Promise(async (resolve) => {
+      await downloadFile(resolve);
     });
   };
 
@@ -99,8 +99,9 @@ export default class FreePoster {
         ? radius.split(" ").map((item) => Number(item))
         : new Array<number>(4).fill(radius);
 
-    try {
-      const newSrc = await this.loadImage(src);
+    const newSrc = await this.loadImage(src);
+
+    if (newSrc) {
       this.ctx.save();
       this.ctx.beginPath();
       this.ctx.moveTo(toPx(x + r1), toPx(y));
@@ -143,8 +144,8 @@ export default class FreePoster {
       await this.draw(true);
       this.ctx.restore();
       this.timeEnd("绘制图片时间");
-    } catch (e) {
-      console.error(`图片${options.src}下载失败，跳过渲染`, e);
+    } else {
+      console.error(`图片${options.src}下载失败，跳过渲染`);
     }
   }
 
