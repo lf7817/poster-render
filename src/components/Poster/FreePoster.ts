@@ -57,9 +57,16 @@ export default class FreePoster {
   private loadImage = async (url: string): Promise<string | undefined> => {
     let retryCounter = 0;
 
-    // 支持本地临时文件
+    // 支持微信本地临时文件
     if (url.startsWith("wxfile://")) {
-      return url;
+      try {
+        Taro.getFileSystemManager().accessSync(url);
+        return url;
+      } catch (e) {
+        this.log(e);
+        this.log(`本地临时文件不存在`, url);
+        return undefined;
+      }
     }
 
     if (this.images.has(url)) {
