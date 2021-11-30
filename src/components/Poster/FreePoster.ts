@@ -1,4 +1,5 @@
 import Taro, { CanvasContext } from "@tarojs/taro";
+import pLimit from "p-limit";
 import {
   FreePosterOptions,
   PaintImage,
@@ -6,10 +7,12 @@ import {
   PaintText,
   PosterItemConfig,
 } from "./types";
+
 import { isAlipay, toPx, toRpx } from "./utils";
 
 export default class FreePoster {
   private ctx: CanvasContext;
+  private downloadLimit: ReturnType<typeof pLimit>;
   private images: Map<string, string> = new Map();
   private options: FreePosterOptions = {
     canvasId: "posterCanvasId",
@@ -18,10 +21,12 @@ export default class FreePoster {
     height: 1334,
     fileType: "png",
     quality: 1,
+    downloadLimit: 10,
   };
 
   constructor(options: Partial<FreePosterOptions>) {
     this.options = Object.assign(this.options, options);
+    this.downloadLimit = pLimit(this.options.downloadLimit || 10);
     this.ctx = Taro.createCanvasContext(this.options.canvasId, this);
   }
 
@@ -48,7 +53,7 @@ export default class FreePoster {
    * @param src
    * @private
    */
-  private loadImage = async (url: string): Promise<string> => {
+  private loadImage = async (url: string): Promise<string | undefined> => {
     let retryCounter = 0;
 
     // 支持本地临时文件
@@ -354,18 +359,21 @@ export default class FreePoster {
   /**
    * 提前下载图片
    * @param images
+   * @returns boolean 有一张图下载失败都会返回false,但不会阻塞后续图片下载
    */
-  public async preloadImage(images: string[]) {
+  public async preloadImage(images: string[]): Promise<boolean> {
     this.log("开始提前下载图片");
     this.time("提前下载图片用时");
-
-    await Promise.all(
-      images
-        .filter((item) => !this.images.has(item))
-        .map((item) => this.loadImage(item))
+    const needLoadImages = Array.from(
+      new Set(images.filter((item) => !this.images.has(item)))
     );
-
+    const loadedImages = await Promise.all(
+      needLoadImages.map((item) =>
+        this.downloadLimit(() => this.loadImage(item))
+      )
+    );
     this.timeEnd("提前下载图片用时");
+    return !loadedImages.includes(undefined);
   }
 
   /**

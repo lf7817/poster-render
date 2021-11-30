@@ -15,6 +15,7 @@ const Index: FC = () => {
       quality={1}
       showMenuByLongpress
       renderType="image"
+      downloadLimit={1}
       onLongPress={() => poster.current?.preview()}
       onRender={(url) => console.log("onRender", url)}
       onSave={(url) => console.log("onSave", url)}

@@ -1,10 +1,14 @@
 import { CSSProperties } from "react";
 
+type DownloadLimit = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+
 export interface FreePosterOptions {
   debug: boolean;
   canvasId: string;
   width: number;
   height: number;
+  /** 图片并行下载数, 默认10 */
+  downloadLimit?: DownloadLimit;
   /** 导出图片格式 */
   fileType?: "png" | "jpg";
   /** 图片质量 0-1，只对jpg生效 */
@@ -93,6 +97,8 @@ interface PosterBaseProps {
   width: number;
   height: number;
   debug?: boolean;
+  /** 图片并行下载数, 默认10 */
+  downloadLimit?: DownloadLimit;
   /** 导出图片格式 */
   fileType?: "png" | "jpg";
   /** 图片质量 0-1，只对jpg生效 */
