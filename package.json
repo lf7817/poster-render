@@ -31,6 +31,8 @@
     "url": "git@github.com:lf7817/taro-poster-render.git"
   },
   "scripts": {
+    "lint-staged": "lint-staged",
+    "prepare": "husky install",
     "clean": "rm -rf dist/ types/ lib/",
     "prepublish": "npm run clean && npm run build",
     "build": "yarn run build:rollup && yarn run build:lib",
@@ -61,6 +63,10 @@
     "ios >= 8"
   ],
   "author": "lf7817 <535536456@qq.com>",
+  "lint-staged": {
+    "src/**/*.ts?(x)": "eslint --fix",
+    "src/**/*.{ts?(x),css,less,scss,md,json,html}": "prettier --write"
+  },
   "dependencies": {
     "@babel/runtime": "^7.7.7",
     "@tarojs/components": "3.3.14",
@@ -86,10 +92,15 @@
     "@typescript-eslint/parser": "^4.15.1",
     "babel-preset-taro": "3.3.14",
     "eslint": "^6.8.0",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-config-taro": "3.3.14",
     "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.8.2",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.1.2",
+    "prettier": "^2.5.0",
     "rollup": "^2.60.1",
     "rollup-plugin-typescript2": "^0.31.1",
     "stylelint": "9.3.0",
