@@ -11,5 +11,6 @@ module.exports = {
     '@typescript-eslint/no-empty-interface': 0,
     '@typescript-eslint/no-non-null-assertion': 0,
     '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/ban-ts-comment': 0,
   },
 };

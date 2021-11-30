@@ -1,4 +1,4 @@
-import { CSSProperties } from "react";
+import { CSSProperties } from 'react';
 
 type DownloadLimit = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
@@ -7,10 +7,12 @@ export interface FreePosterOptions {
   canvasId: string;
   width: number;
   height: number;
+  /** 背景颜色 */
+  backgroundColor?: string;
   /** 图片并行下载数, 默认10 */
   downloadLimit?: DownloadLimit;
   /** 导出图片格式 */
-  fileType?: "png" | "jpg";
+  fileType?: 'png' | 'jpg';
   /** 图片质量 0-1，只对jpg生效 */
   quality?: number;
   onSave?: (url: string) => void;
@@ -28,11 +30,17 @@ interface Common<T> {
 /**
  * 绘制图片
  */
-export interface PaintImage extends Common<"image"> {
+export interface PaintImage extends Common<'image'> {
   width: number;
   height: number;
   /** 图片路径，支持https、wxfile协议 */
   src: string;
+  /**
+   * fill-填充模式，图片会占满绘制区域
+   * contain-保持纵横比缩放图片，使图片的长边能完全显示出来
+   * cover-保持纵横比缩放图片，只保证图片的短边能完全显示出来
+   */
+  mode?: 'fill' | 'cover' | 'contain';
   /** 背景色 */
   backgroundColor?: string;
   /**
@@ -42,7 +50,7 @@ export interface PaintImage extends Common<"image"> {
   radius?: number | `${number} ${number} ${number} ${number}`;
 }
 
-export interface PaintShape extends Common<"shape"> {
+export interface PaintShape extends Common<'shape'> {
   /** 矩形宽 */
   width: number;
   /** 矩形高 */
@@ -57,33 +65,33 @@ export interface PaintShape extends Common<"shape"> {
   fillStyle?: string;
 }
 
-export interface PaintText extends Common<"text"> {
+export interface PaintText extends Common<'text'> {
   width: number;
   height: number;
   text: string;
   /** 文字对齐方式 */
-  textAlign?: "left" | "center" | "right";
-  fontWeight?: "normal" | "bold";
+  textAlign?: 'left' | 'center' | 'right';
+  fontWeight?: 'normal' | 'bold';
   color: string;
   fontSize: number;
   lineHeight?: number;
-  baseLine: "top" | "bottom" | "middle" | "normal";
+  baseLine: 'top' | 'bottom' | 'middle' | 'normal';
   opacity?: number;
   lineNum?: number;
-  fontStyle?: "normal" | "italic" | "oblique";
+  fontStyle?: 'normal' | 'italic' | 'oblique';
   fontFamily?: string;
 }
 
 export type PosterItemConfig = PaintImage | PaintShape | PaintText;
 
 interface PosterImageProps {
-  renderType: "image";
+  renderType: 'image';
   onLongPress?: (url: string) => void;
   onRender?: (url: string) => void;
 }
 
 interface PosterCanvasProps {
-  renderType: "canvas";
+  renderType: 'canvas';
   onLongPress?: () => void;
   onRender?: () => void;
 }
@@ -97,10 +105,12 @@ interface PosterBaseProps {
   width: number;
   height: number;
   debug?: boolean;
+  /** 背景颜色 */
+  backgroundColor?: string;
   /** 图片并行下载数, 默认10 */
   downloadLimit?: DownloadLimit;
   /** 导出图片格式 */
-  fileType?: "png" | "jpg";
+  fileType?: 'png' | 'jpg';
   /** 图片质量 0-1，只对jpg生效 */
   quality?: number;
   list: PosterItemConfig[];
@@ -111,13 +121,13 @@ interface PosterBaseProps {
 }
 
 interface PosterImageProps extends PosterBaseProps {
-  renderType: "image";
+  renderType: 'image';
   onLongPress?: (url: string) => void;
   onRender?: (url: string) => void;
 }
 
 interface PosterCanvasProps extends PosterBaseProps {
-  renderType: "canvas";
+  renderType: 'canvas';
   onLongPress?: () => void;
   onRender?: () => void;
 }

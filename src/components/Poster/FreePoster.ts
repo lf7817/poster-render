@@ -139,12 +139,79 @@ export default class FreePoster {
         this.ctx.setFillStyle(backgroundColor);
         this.ctx.fill();
       }
-      this.ctx.drawImage(newSrc, toPx(x), toPx(y), toPx(width), toPx(height));
+      this.fitImage(options);
       await this.draw(true);
       this.ctx.restore();
       this.timeEnd('绘制图片时间');
     } else {
       console.error(`图片${options.src}下载失败，跳过渲染`);
+    }
+  }
+
+  /**
+   * 图片处理
+   * @param options
+   */
+  private fitImage(options: Omit<PaintImage, 'type'>) {
+    const image = this.images.get(options.src)!;
+    const mode = options.mode || 'fill';
+    // 图片宽高比
+    const imageRatio = image.width / image.height;
+    // 绘制区域宽高比
+    const rectRatio = options.width / options.height;
+    let sw: number,
+      sh: number,
+      sx: number,
+      sy: number,
+      dx: number,
+      dy: number,
+      dw: number,
+      dh: number;
+
+    if (mode === 'contain') {
+      if (imageRatio <= rectRatio) {
+        dh = options.height;
+        dw = dh * imageRatio;
+        dx = options.x + (options.width - dw) / 2;
+        dy = options.y;
+      } else {
+        dw = options.width;
+        dh = dw / imageRatio;
+        dx = options.x;
+        dy = options.y + (options.height - dh) / 2;
+      }
+      this.ctx.drawImage(image.path, toPx(dx), toPx(dy), toPx(dw), toPx(dh));
+    } else if (mode === 'cover') {
+      if (imageRatio <= rectRatio) {
+        sw = image.width;
+        sh = sw / rectRatio;
+        sx = 0;
+        sy = (image.height - sh) / 2;
+      } else {
+        sh = image.height;
+        sw = sh * rectRatio;
+        sx = (image.width - sw) / 2;
+        sy = 0;
+      }
+      this.ctx.drawImage(
+        image.path,
+        sx,
+        sy,
+        sw,
+        sh,
+        toPx(options.x),
+        toPx(options.y),
+        toPx(options.width),
+        toPx(options.height),
+      );
+    } else {
+      this.ctx.drawImage(
+        image.path,
+        toPx(options.x),
+        toPx(options.y),
+        toPx(options.width),
+        toPx(options.height),
+      );
     }
   }
 

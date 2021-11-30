@@ -38,6 +38,7 @@ const Index: FC = () => {
           width: 560,
           height: 800,
           radius: 20,
+          mode: 'cover'
         },
         {
           type: 'shape',
@@ -95,6 +96,7 @@ export default Index;
 | debug | boolean | 否 | 开启调试日志 |
 | fileType | 'png' \| 'jpg' | 否 | 导出图片格式，默认png |
 | quality | number | 否 | 导出图片质量0-1，默认为1，只对jpg生效 |
+| backgroundColor | string | 否 | 背景色 |
 | renderType | 'image' \| 'canvas' | 是 | 渲染方式，默认是图片方式兼容性好，canvas方式速度快，但是不支持识别二维码 |
 | showMenuByLongpress | boolean | 否 | 开启长按图片显示识别小程序码菜单（支持转发、下载、收藏、识别二维码），图片模式时生效 |
 | downloadLimit | number | 否 | 图片并行下载数，范围1-10，默认10 |
@@ -119,6 +121,7 @@ image类型
 | src             | string                                               | 是       | 图片路径，支持https、wxfile协议，暂不支持base64              |
 | backgroundColor | string                                               | 否       | 背景色                                                       |
 | radius          | number \|\`${number} ${number} ${number} ${number}\` | 否       | 圆角半径，顺序：左上 -> 右上 -> 右下 -> 左下，如果要绘制圆形，宽高一致，radius设为宽高一半 |
+| mode            | "fill" \| "cover" \| "contain"                       | 否       | 图片裁剪方式，默认fill。fill-填充模式，图片会占满绘制区域，contain-保持纵横比缩放图片，使图片的长边能完全显示出来，cover-保持纵横比缩放图片，只保证图片的短边能完全显示出来 |
 
 text类型
 
@@ -157,10 +160,10 @@ shape类型
 
 ## 实例方法
 
-| 方法              | 类型                  | 描述                     |
-| ----------------- | --------------------- | ------------------------ |
-| savePosterToPhoto | () => Promise<string> | 保存到相册，返回图片路径 |
-| preview           | () => Promise<void>   | 预览图片                 |
+| 方法              | 类型                             | 描述                     |
+| ----------------- | -------------------------------- | ------------------------ |
+| savePosterToPhoto | (url: string) => Promise<string> | 保存到相册，返回图片路径 |
+| preview           | () => Promise<void>              | 预览图片                 |
 
 ## 注意
 
