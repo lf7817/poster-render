@@ -10,7 +10,6 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     '@typescript-eslint/no-empty-interface': 0,
     '@typescript-eslint/no-non-null-assertion': 0,
-    "react-hooks/exhaustive-deps": 0,
-    "@typescript-eslint/no-unused-vars": 'off'
+    '@typescript-eslint/no-unused-vars': 'off',
   },
 };
