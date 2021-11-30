@@ -27,7 +27,7 @@ const Index: FC = () => {
           width: 644,
           height: 1104,
           src: "https://img.1000.com/shumou/interaction/bg3.png",
-          radius: "100 100 0 0",
+          radius: 16,
         },
         {
           type: "image",

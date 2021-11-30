@@ -4,6 +4,7 @@ import RollupNodeResolve from '@rollup/plugin-node-resolve';
 import RollupCommonjs from '@rollup/plugin-commonjs';
 import RollupTypescript from 'rollup-plugin-typescript2';
 import Package from './package.json';
+
 const externalPackages = [
   'react',
   'react-dom',

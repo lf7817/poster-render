@@ -24,6 +24,8 @@ const Index: FC = () => {
       height={1000}
       debug
       quality={1}
+      renderType="image"
+      downloadLimit={10}
       onLongPress={() => poster.current?.savePosterToPhoto()}
       onRender={(url) => console.log('onRender', url)}
       onSave={(url) => console.log('onSave', url)}
@@ -95,6 +97,7 @@ export default Index;
 | quality | number | 否 | 导出图片质量0-1，默认为1，只对jpg生效 |
 | renderType | 'image' \| 'canvas' | 是 | 渲染方式，默认是图片方式兼容性好，canvas方式速度快，但是不支持识别二维码 |
 | showMenuByLongpress | boolean | 否 | 开启长按图片显示识别小程序码菜单（支持转发、下载、收藏、识别二维码），图片模式时生效 |
+| downloadLimit | number | 否 | 图片并行下载数，范围1-10，默认10 |
 | onLongPress | (url?: string) => void; | 否 | 长按事件，图片模式时接收海报url参数，canvas模式时无参数 |
 | onRender | (url?: string) => void; | 否 | 渲染完成事件，图片模式时接收海报url参数，canvas模式时无参数 |
 | onRenderFail | (err: any) => void | 否 | 渲染失败事件 |

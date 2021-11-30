@@ -57,6 +57,12 @@ export default class FreePoster {
   private loadImage = async (url: string): Promise<string | undefined> => {
     let retryCounter = 0;
 
+
+    if (!url) {
+      this.log('图像路径不能为空')
+      return undefined
+    };
+
     // 支持微信本地临时文件
     if (url.startsWith("wxfile://")) {
       try {
@@ -313,6 +319,9 @@ export default class FreePoster {
     return textWidth;
   }
 
+  /**
+   * 清楚画布
+   */
   public async clearRect() {
     this.ctx.clearRect(
       0,
