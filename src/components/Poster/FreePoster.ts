@@ -13,7 +13,8 @@ import { isAlipay, toPx, toRpx } from "./utils";
 export default class FreePoster {
   private ctx: CanvasContext;
   private downloadLimit: ReturnType<typeof pLimit>;
-  private images: Map<string, string> = new Map();
+  private images: Map<string, Taro.getImageInfo.SuccessCallbackResult> =
+    new Map();
   private options: FreePosterOptions = {
     canvasId: "posterCanvasId",
     debug: true,
@@ -62,16 +63,16 @@ export default class FreePoster {
     }
 
     if (this.images.has(url)) {
-      return this.images.get(url)!;
+      return this.images.get(url)?.path;
     }
 
     const downloadFile = async (resolve) => {
       try {
         this.time(`下载图片${url}用时`);
-        const localUrl = await Taro.downloadFile({ url });
+        const res = await Taro.getImageInfo({ src: url });
         retryCounter = 0;
-        resolve((localUrl as any).tempFilePath);
-        this.images.set(url, (localUrl as any).tempFilePath);
+        resolve(res.path);
+        this.images.set(url, res);
         this.timeEnd(`下载图片${url}用时`);
       } catch (e) {
         if (++retryCounter <= 2) {
