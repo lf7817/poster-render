@@ -220,7 +220,7 @@ export default class FreePoster {
 
     if (lineWidth && strokeStyle) {
       this.ctx.setStrokeStyle(strokeStyle);
-      this.ctx.lineWidth = lineWidth;
+      this.ctx.lineWidth = toPx(lineWidth);
       this.ctx.stroke();
     }
 

@@ -4,7 +4,7 @@
   "description": "海报",
   "appid": "wx7a3f33d33e975b64",
   "setting": {
-    "urlCheck": true,
+    "urlCheck": false,
     "es6": false,
     "postcss": false,
     "minified": false
