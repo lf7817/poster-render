@@ -1,6 +1,6 @@
 {
   "name": "taro-poster-render",
-  "version": "1.10.0",
+  "version": "1.10.1",
   "description": "taro海报组件，兼容企微、支付宝",
   "templateInfo": {
     "name": "default",
