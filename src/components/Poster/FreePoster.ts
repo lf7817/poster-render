@@ -150,6 +150,7 @@ export default class FreePoster {
 
   /**
    * 图片处理
+   * @see https://www.cnblogs.com/AIonTheRoad/p/14063041.html
    * @param options
    */
   private fitImage(options: Omit<PaintImage, 'type'>) {
@@ -195,8 +196,8 @@ export default class FreePoster {
       }
       this.ctx.drawImage(
         image.path,
-        sx,
-        sy,
+        options.sx ?? sx,
+        options.sy ?? sy,
         sw,
         sh,
         toPx(options.x),

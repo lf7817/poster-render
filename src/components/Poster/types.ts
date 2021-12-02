@@ -41,6 +41,16 @@ export interface PaintImage extends Common<'image'> {
    * cover-保持纵横比缩放图片，只保证图片的短边能完全显示出来
    */
   mode?: 'fill' | 'cover' | 'contain';
+  /**
+   * 源图片被截取部分左上角顶点的横坐标
+   * cover模式下生效，默认长边局中显示
+   */
+  sx?: number;
+  /**
+   * 源图片被截取部分左上角顶点的纵坐标
+   * cover模式下生效，默认长边局中显示
+   */
+  sy?: number;
   /** 背景色 */
   backgroundColor?: string;
   /**

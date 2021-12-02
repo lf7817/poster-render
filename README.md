@@ -97,7 +97,7 @@ export default Index;
 | fileType | 'png' \| 'jpg' | 否 | 导出图片格式，默认png |
 | quality | number | 否 | 导出图片质量0-1，默认为1，只对jpg生效 |
 | backgroundColor | string | 否 | 背景色 |
-| renderType | 'image' \| 'canvas' | 是 | 渲染方式，默认是图片方式兼容性好，canvas方式速度快，但是不支持识别二维码 |
+| renderType | 'image' \| 'canvas' | 是 | 渲染方式，默认是图片方式兼容性好，canvas方式速度快，但是不支持识别二维码,也不支持同层渲染 |
 | showMenuByLongpress | boolean | 否 | 开启长按图片显示识别小程序码菜单（支持转发、下载、收藏、识别二维码），图片模式时生效 |
 | downloadLimit | number | 否 | 图片并行下载数，范围1-10，默认10 |
 | onLongPress | (url?: string) => void; | 否 | 长按事件，图片模式时接收海报url参数，canvas模式时无参数 |
@@ -116,6 +116,8 @@ image类型
 | type            | String                                               | 是       | 固定为image                                                  |
 | x               | number                                               | 是       | 左上角x坐标，单位rpx                                         |
 | y               | number                                               | 是       | 左上角y坐标，单位rpx                                         |
+| sx              | number                                               | 否       | 源图片被截取部分左上角顶点的横坐标，单位rpx，cover模式下生效，默认长边局中显示 |
+| sy              | number                                               | 否       | 源图片被截取部分左上角顶点的纵坐标，单位rpx，cover模式下生效，默认长边局中显示 |
 | width           | number                                               | 是       | 图片宽，单位rpx                                              |
 | height          | number                                               | 是       | 图片高，单位rpx                                              |
 | src             | string                                               | 是       | 图片路径，支持https、wxfile协议，暂不支持base64              |
