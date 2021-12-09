@@ -19,7 +19,7 @@ const Index: FC = () => {
       onLongPress={() => poster.current?.preview()}
       onRender={(url) => console.log('onRender', url)}
       onSave={(url) => console.log('onSave', url)}
-      list={[
+      list={(instance) => [
         {
           type: 'image',
           x: 0,
@@ -41,18 +41,22 @@ const Index: FC = () => {
         },
         {
           type: 'text',
-          x: 200,
+          x: (textWidth) => (644 - textWidth - instance.measureTextWidth('的助力邀请')) / 2,
           y: 180,
-          width: 100,
+          width: (textWidth) => textWidth,
           height: 30,
-          text: '啊实打实',
+          text: '中二猪猪猪猪猪猪',
           color: '#fff',
           fontSize: 28,
+          textAlign: 'left',
           baseLine: 'normal',
         },
         {
           type: 'text',
-          x: 316,
+          x: (textWidth) =>
+            (644 - textWidth - instance.measureTextWidth('中二猪猪猪猪猪猪')) / 2 +
+            instance.measureTextWidth('中二猪猪猪猪猪猪') +
+            10,
           y: 180,
           width: 200,
           height: 30,

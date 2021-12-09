@@ -1,4 +1,5 @@
 import { CSSProperties } from 'react';
+import FreePoster from './FreePoster';
 
 type DownloadLimit = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
@@ -75,8 +76,11 @@ export interface PaintShape extends Common<'shape'> {
   fillStyle?: string;
 }
 
-export interface PaintText extends Common<'text'> {
-  width: number;
+export interface PaintText {
+  type: 'text';
+  x: ((textWidth: number) => number) | number;
+  y: number;
+  width: ((textWidth: number) => number) | number;
   height: number;
   text: string;
   /** 文字对齐方式 */
@@ -123,7 +127,7 @@ interface PosterBaseProps {
   fileType?: 'png' | 'jpg';
   /** 图片质量 0-1，只对jpg生效 */
   quality?: number;
-  list: PosterItemConfig[];
+  list: PosterItemConfig[] | ((instance: FreePoster) => PosterItemConfig[]);
   showMenuByLongpress?: boolean;
   onSave?: (url: string) => void;
   onSaveFail?: (err: any) => void;

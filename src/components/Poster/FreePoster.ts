@@ -292,17 +292,20 @@ export default class FreePoster {
     this.ctx.setFillStyle(options.color);
     this.ctx.setTextBaseline(options.baseLine);
     this.ctx.setTextAlign(textAlign);
-    // measureText返回的是px
-    let textWidth: number = toRpx(this.ctx.measureText(options.text).width);
+
+    let textWidth: number = this.measureTextWidth(options.text);
+    const width = typeof options.width === 'number' ? options.width : options.width(textWidth);
+    const x = typeof options.x === 'number' ? options.x : options.x(textWidth);
+
     const textArr: string[] = [];
-    if (textWidth > options.width) {
+    if (textWidth > width) {
       // 文本宽度 大于 渲染宽度
       let fillText = '';
       let line = 1;
       for (let i = 0; i <= options.text.length - 1; i++) {
         // 将文字转为数组，一行文字一个元素
         fillText = fillText + options.text[i];
-        if (toRpx(this.ctx.measureText(fillText).width) >= options.width) {
+        if (this.measureTextWidth(fillText) >= width) {
           if (line === lineNum) {
             if (i !== options.text.length - 1) {
               fillText = fillText.substring(0, fillText.length - 1) + '...';
@@ -321,17 +324,13 @@ export default class FreePoster {
           }
         }
       }
-      textWidth = options.width;
+      textWidth = width;
     } else {
       textArr.push(options.text);
     }
 
     textArr.forEach((item, index) => {
-      this.ctx.fillText(
-        item,
-        toPx(options.x),
-        toPx(options.y + (lineHeight || options.fontSize) * index),
-      );
+      this.ctx.fillText(item, toPx(x), toPx(options.y + (lineHeight || options.fontSize) * index));
     });
 
     await this.draw(true);
@@ -346,6 +345,15 @@ export default class FreePoster {
   public async clearRect() {
     this.ctx.clearRect(0, 0, toPx(this.options.width), toPx(this.options.height));
     await this.draw();
+  }
+
+  /**
+   * 计算文本宽度
+   * @param text
+   */
+  public measureTextWidth(text: string) {
+    // measureText返回的是px
+    return toRpx(this.ctx.measureText(text).width);
   }
 
   private async draw(reserve?: boolean) {

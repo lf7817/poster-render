@@ -9,6 +9,7 @@ export const factor = screenWidth / 750;
 export function toPx(rpx: number) {
   return isAlipay ? Math.round(pixelRatio * rpx * factor) : Math.round(factor * rpx);
 }
+
 export function toRpx(px: number) {
   return isAlipay ? Math.round(px / pixelRatio / factor) : Math.round(px / factor);
 }

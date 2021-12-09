@@ -19,62 +19,106 @@ const Index: FC = () => {
 
   return (
     <Poster
+      style={{ marginLeft: Taro.pxTransform(55) }}
+      width={644}
+      height={1104}
       ref={poster}
-      width={560}
-      height={1000}
       debug
       quality={1}
+      showMenuByLongpress
       renderType="image"
       downloadLimit={10}
-      onLongPress={() => poster.current?.savePosterToPhoto()}
+      onLongPress={() => poster.current?.preview()}
       onRender={(url) => console.log('onRender', url)}
       onSave={(url) => console.log('onSave', url)}
-      list={[
+      list={(instance) => [
         {
           type: 'image',
           x: 0,
           y: 0,
-          src: 'https://img.1000.com/shumou/mp/poster-activity-bg.png',
-          width: 560,
-          height: 800,
+          width: 644,
+          height: 1104,
+          mode: 'cover',
+          src: 'https://img.1000.com/shumou/interaction/bg3.png',
+          radius: 16,
+        },
+        {
+          type: 'image',
+          x: 294,
+          y: 30,
+          width: 96,
+          height: 96,
+          radius: 48,
+          src: 'https://img.1000.com/shumou/interaction/avatar.png',
+        },
+        // 这里的文字与下一个文字要联动居中
+        {
+          type: 'text',
+          x: (textWidth) => (644 - textWidth - instance.measureTextWidth('的助力邀请')) / 2,
+          y: 180,
+          width: (textWidth) => textWidth,
+          height: 30,
+          text: '中二猪猪猪猪猪猪',
+          color: '#fff',
+          fontSize: 28,
+          textAlign: 'left',
+          baseLine: 'normal',
+        },
+        {
+          type: 'text',
+          x: (textWidth) =>
+            (644 - textWidth - instance.measureTextWidth('中二猪猪猪猪猪猪')) / 2 +
+            instance.measureTextWidth('中二猪猪猪猪猪猪') +
+            10,
+          y: 180,
+          width: 200,
+          height: 30,
+          text: '的助力邀请',
+          color: '#FEEE93',
+          fontSize: 28,
+          baseLine: 'normal',
+        },
+        {
+          type: 'image',
+          x: 70,
+          y: 240,
+          width: 508,
+          height: 68,
+          src: 'https://img.1000.com/shumou/interaction/text.png',
+        },
+        {
+          type: 'shape',
+          x: 22,
+          y: 760,
+          width: 600,
+          height: 320,
+          fillStyle: '#fff',
           radius: 20,
-          mode: 'cover'
+          strokeStyle: '#000',
+          lineWidth: 10,
         },
         {
           type: 'shape',
           x: 100,
-          y: 100,
-          width: 340,
-          height: 340,
-          radius: 170,
-          strokeStyle: '#fff',
-          lineWidth: 10,
-          fillStyle: 'red',
-        },
-        {
-          type: 'text',
-          x: 0,
-          y: 0,
-          width: 200,
-          height: 200,
-          fontSize: 36,
-          lineNum: 2,
-          lineHeight: 36,
-          textAlign: 'left',
-          color: '#000',
-          text: '你好你好你canvas ',
-          baseLine: 'top',
-          fontFamily: '黑体',
-          fontWeight: 'bold',
-        },
-        {
-          type: 'shape',
-          x: 0,
           y: 800,
-          width: 560,
-          height: 200,
-          radius: '0 0 20 20',
+          width: 100,
+          height: 100,
           fillStyle: 'red',
+          radius: 50,
+          strokeStyle: 'yellow',
+          lineWidth: 10,
+        },
+        {
+          type: 'image',
+          x: 60,
+          y: 380,
+          sx: 0,
+          sy: 0,
+          width: 400,
+          height: 300,
+          backgroundColor: 'red',
+          mode: 'cover',
+          src: 'https://img.1000.com/shumou/interaction/img2.png',
         },
       ]}
     />
@@ -83,6 +127,35 @@ const Index: FC = () => {
 
 export default Index;
 ```
+
+如果不喜欢我的封装可以使用api的方式自己封装react组件
+
+```ts
+import { FreePoster } from 'taro-poster-render';
+
+const freePoster = new FreePoster({
+  canvasId,
+  debug: props.debug,
+  width: props.width,
+  height: props.height,
+  quality: props.quality,
+  fileType: props.fileType,
+  downloadLimit: props.downloadLimit,
+  onSave: props.onSave,
+  onSaveFail: props.onSaveFail,
+});
+
+// 设置背景色
+freePoster.setCanvasBackground('red')
+// 绘制文本
+freePoster.paintText({...})
+// 绘制图片
+freePoster.paintImage({...}) 
+// 绘制shape
+freePoster.paintShape({...})   
+```
+
+## 
 
 ## props
 
@@ -105,7 +178,7 @@ export default Index;
 | onRenderFail | (err: any) => void | 否 | 渲染失败事件 |
 | onSave | (url: string) => void | 否 | 保存成功事件 |
 | onSaveFail | (err: any) => void | 否 | 保存失败事件 |
-| list | [PosterItemConfig](https://github.com/lf7817/taro-poster-render/blob/main/src/components/Poster/types.ts#L71)[] | 是 | 图片、文字、图形配置 |
+| list | [PosterItemConfig](https://github.com/lf7817/taro-poster-render/blob/main/src/components/Poster/types.ts#L71)[] \| (instance: FreePoster) => PosterItemConfig[] | 是 | 图片、文字、图形配置,当为函数时接受FreePoster实例。一般传数组即可，如果要实现上面多段文字联动局中效果，可以改用函数（如果传函数的话需要自己处理re-render的问题） |
 
 list支持三种类型：``image``、``text``、``shape``
 
@@ -130,12 +203,12 @@ text类型
 | 字段       | 类型                                      | 是否必填 | 描述                                                         |
 | ---------- | ----------------------------------------- | -------- | ------------------------------------------------------------ |
 | type       | String                                    | 是       | 固定为text                                                   |
-| x          | number                                    | 是       | 左上角x坐标，单位rpx                                         |
+| x          | ((textWidth: number) => number) \| number | 是       | 左上角x坐标，单位rpx。当为函数时参数为text宽度，可以根据文字宽度动态计算x坐标 |
 | y          | number                                    | 是       | 左上角y坐标，单位rpx                                         |
-| width      | number                                    | 是       | 文字宽，单位rpx                                              |
+| width      | ((textWidth: number) => number) \| number | 是       | 文字宽，单位rpx，当为函数时参数为text宽度                    |
 | height     | number                                    | 是       | 文字高，单位rpx                                              |
 | text       | string                                    | 是       | 文字内容                                                     |
-| textAlign  | "left" \| "center" \| "right"             | 否       | 文字对齐方式，注意这里跟css文字对齐方式不一样，请仔细[查看      文档](https://developers.weixin.qq.com/miniprogram/dev/api/canvas/CanvasContext.setTextAlign.html) |
+| textAlign  | "left" \| "center" \| "right"             | 否       | 文字对齐方式，注意这里跟css文字对齐方式不一样，请仔细[查看文档](https://developers.weixin.qq.com/miniprogram/dev/api/canvas/CanvasContext.setTextAlign.html) |
 | fontWeight | "normal" ｜ "bold"                        | 否       |                                                              |
 | color      | string                                    | 是       | 字体颜色                                                     |
 | fontSize   | number                                    | 是       | 字体大小，单位rpx                                            |
@@ -166,6 +239,10 @@ shape类型
 | ----------------- | -------------------------------- | ------------------------ |
 | savePosterToPhoto | (url: string) => Promise<string> | 保存到相册，返回图片路径 |
 | preview           | () => Promise<void>              | 预览图片                 |
+
+
+
+
 
 ## 注意
 

@@ -48,9 +48,10 @@ const QMPosterCore: ForwardRefRenderFunction<PosterRef, PosterProps> = (props, r
   async function render() {
     if ($freePoster.current) {
       $freePoster.current.time('渲染海报完成');
+      const list = Array.isArray(props.list) ? props.list : props.list($freePoster.current);
       // 提前加载图片
       await $freePoster.current.preloadImage(
-        props.list.reduce((arr, item) => {
+        list.reduce((arr, item) => {
           if (item.type === 'image') {
             arr.push(item.src);
           }
@@ -58,7 +59,7 @@ const QMPosterCore: ForwardRefRenderFunction<PosterRef, PosterProps> = (props, r
         }, [] as string[]),
       );
       // 按顺序渲染
-      for await (const item of props.list) {
+      for await (const item of list) {
         await $freePoster.current.exec(item);
       }
 
@@ -161,7 +162,9 @@ const QMPosterCore: ForwardRefRenderFunction<PosterRef, PosterProps> = (props, r
   );
 };
 
-export { PosterRef, PosterProps, PosterItemConfig };
+export type { PosterRef, PosterProps, PosterItemConfig };
+
+export { FreePoster };
 
 export const Poster = memo(forwardRef(QMPosterCore), (prev, next) => {
   return isEqual(prev.list, next.list);
