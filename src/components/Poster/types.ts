@@ -78,9 +78,9 @@ export interface PaintShape extends Common<'shape'> {
 
 export interface PaintText {
   type: 'text';
-  x: ((textWidth: number) => number) | number;
+  x: ((textWidth: number, instance: FreePoster) => number) | number;
   y: number;
-  width: ((textWidth: number) => number) | number;
+  width: ((textWidth: number, instance: FreePoster) => number) | number;
   height: number;
   text: string;
   /** 文字对齐方式 */

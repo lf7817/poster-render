@@ -293,9 +293,15 @@ export default class FreePoster {
     this.ctx.setTextBaseline(options.baseLine);
     this.ctx.setTextAlign(textAlign);
 
-    let textWidth: number = this.measureTextWidth(options.text);
-    const width = typeof options.width === 'number' ? options.width : options.width(textWidth);
-    const x = typeof options.x === 'number' ? options.x : options.x(textWidth);
+    let textWidth: number = this.measureTextWidth(options.text, {
+      fontSize: options.fontSize,
+      fontFamily,
+      fontStyle,
+      fontWeight,
+    });
+    const width =
+      typeof options.width === 'number' ? options.width : options.width(textWidth, this);
+    const x = typeof options.x === 'number' ? options.x : options.x(textWidth, this);
 
     const textArr: string[] = [];
     if (textWidth > width) {
@@ -305,7 +311,14 @@ export default class FreePoster {
       for (let i = 0; i <= options.text.length - 1; i++) {
         // 将文字转为数组，一行文字一个元素
         fillText = fillText + options.text[i];
-        if (this.measureTextWidth(fillText) >= width) {
+        if (
+          this.measureTextWidth(fillText, {
+            fontSize: options.fontSize,
+            fontFamily,
+            fontStyle,
+            fontWeight,
+          }) >= width
+        ) {
           if (line === lineNum) {
             if (i !== options.text.length - 1) {
               fillText = fillText.substring(0, fillText.length - 1) + '...';
@@ -351,9 +364,25 @@ export default class FreePoster {
    * 计算文本宽度
    * @param text
    */
-  public measureTextWidth(text: string) {
+  public measureTextWidth(
+    text: string,
+    options?: { fontSize: number; fontWeight?: string; fontStyle?: string; fontFamily?: string },
+  ) {
+    this.ctx.save();
+
+    if (options) {
+      const {
+        fontStyle = 'normal',
+        fontFamily = 'normal',
+        fontWeight = 'normal',
+        fontSize,
+      } = options;
+      this.ctx.font = fontStyle + ' ' + fontWeight + ' ' + toPx(fontSize) + 'px ' + fontFamily;
+    }
     // measureText返回的是px
-    return toRpx(this.ctx.measureText(text).width);
+    const textWidth = toRpx(this.ctx.measureText(text).width);
+    this.ctx.restore();
+    return textWidth;
   }
 
   private async draw(reserve?: boolean) {

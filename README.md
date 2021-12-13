@@ -31,7 +31,7 @@ const Index: FC = () => {
       onLongPress={() => poster.current?.preview()}
       onRender={(url) => console.log('onRender', url)}
       onSave={(url) => console.log('onSave', url)}
-      list={(instance) => [
+      list={[
         {
           type: 'image',
           x: 0,
@@ -54,7 +54,7 @@ const Index: FC = () => {
         // 这里的文字与下一个文字要联动居中
         {
           type: 'text',
-          x: (textWidth) => (644 - textWidth - instance.measureTextWidth('的助力邀请')) / 2,
+          x: (textWidth, instance) => (644 - textWidth - instance.measureTextWidth('的助力邀请')) / 2,
           y: 180,
           width: (textWidth) => textWidth,
           height: 30,
@@ -66,7 +66,7 @@ const Index: FC = () => {
         },
         {
           type: 'text',
-          x: (textWidth) =>
+          x: (textWidth, instance) =>
             (644 - textWidth - instance.measureTextWidth('中二猪猪猪猪猪猪')) / 2 +
             instance.measureTextWidth('中二猪猪猪猪猪猪') +
             10,
@@ -200,24 +200,24 @@ image类型
 
 text类型
 
-| 字段       | 类型                                      | 是否必填 | 描述                                                         |
-| ---------- | ----------------------------------------- | -------- | ------------------------------------------------------------ |
-| type       | String                                    | 是       | 固定为text                                                   |
-| x          | ((textWidth: number) => number) \| number | 是       | 左上角x坐标，单位rpx。当为函数时参数为text宽度，可以根据文字宽度动态计算x坐标 |
-| y          | number                                    | 是       | 左上角y坐标，单位rpx                                         |
-| width      | ((textWidth: number) => number) \| number | 是       | 文字宽，单位rpx，当为函数时参数为text宽度                    |
-| height     | number                                    | 是       | 文字高，单位rpx                                              |
-| text       | string                                    | 是       | 文字内容                                                     |
-| textAlign  | "left" \| "center" \| "right"             | 否       | 文字对齐方式，注意这里跟css文字对齐方式不一样，请仔细[查看文档](https://developers.weixin.qq.com/miniprogram/dev/api/canvas/CanvasContext.setTextAlign.html) |
-| fontWeight | "normal" ｜ "bold"                        | 否       |                                                              |
-| color      | string                                    | 是       | 字体颜色                                                     |
-| fontSize   | number                                    | 是       | 字体大小，单位rpx                                            |
-| fontStyle  | "normal" \| "italic" \| "oblique"         | 否       |                                                              |
-| fontFamily | string                                    | 否       |                                                              |
-| lineHeight | number                                    | 否       | 行高，单位rpx                                                |
-| baseLine   | "top" \| "bottom" \| "middle" \| "normal" | 是       | baseLine                                                     |
-| opacity    | number                                    | 否       | 字体透明度                                                   |
-| lineNum    | number                                    | 否       | 行数，默认1行，超出自动显示...                               |
+| 字段       | 类型                                                         | 是否必填 | 描述                                                         |
+| ---------- | ------------------------------------------------------------ | -------- | ------------------------------------------------------------ |
+| type       | String                                                       | 是       | 固定为text                                                   |
+| x          | ((textWidth: number, instance: FreePoster) => number) \| number; | 是       | 左上角x坐标，单位rpx。当为函数时参数为text宽度，可以根据文字宽度动态计算x坐标 |
+| y          | number                                                       | 是       | 左上角y坐标，单位rpx                                         |
+| width      | ((textWidth: number, instance: FreePoster) => number) \| number; | 是       | 文字宽，单位rpx，当为函数时参数为text宽度                    |
+| height     | number                                                       | 是       | 文字高，单位rpx                                              |
+| text       | string                                                       | 是       | 文字内容                                                     |
+| textAlign  | "left" \| "center" \| "right"                                | 否       | 文字对齐方式，注意这里跟css文字对齐方式不一样，请仔细[查看文档](https://developers.weixin.qq.com/miniprogram/dev/api/canvas/CanvasContext.setTextAlign.html) |
+| fontWeight | "normal" ｜ "bold"                                           | 否       |                                                              |
+| color      | string                                                       | 是       | 字体颜色                                                     |
+| fontSize   | number                                                       | 是       | 字体大小，单位rpx                                            |
+| fontStyle  | "normal" \| "italic" \| "oblique"                            | 否       |                                                              |
+| fontFamily | string                                                       | 否       |                                                              |
+| lineHeight | number                                                       | 否       | 行高，单位rpx                                                |
+| baseLine   | "top" \| "bottom" \| "middle" \| "normal"                    | 是       | baseLine                                                     |
+| opacity    | number                                                       | 否       | 字体透明度                                                   |
+| lineNum    | number                                                       | 否       | 行数，默认1行，超出自动显示...                               |
 
 shape类型
 
@@ -240,7 +240,11 @@ shape类型
 | savePosterToPhoto | (url: string) => Promise<string> | 保存到相册，返回图片路径 |
 | preview           | () => Promise<void>              | 预览图片                 |
 
+## FreePoster实例方法
 
+| 方法             | 类型                                                         | 描述                                                         |
+| ---------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| measureTextWidth | (text: string, options?: { fontSize: number; fontWeight?: string; fontStyle?: string; fontFamily?: string }) => number | 测量文字大小。如果要测量的文字字体大小与当前渲染文字大小不一致，需要传入第二个参数，指定fontSize |
 
 
 
