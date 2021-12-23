@@ -194,6 +194,7 @@ image类型
 | width           | number                                               | 是       | 图片宽，单位rpx                                              |
 | height          | number                                               | 是       | 图片高，单位rpx                                              |
 | src             | string                                               | 是       | 图片路径，支持https、wxfile协议，暂不支持base64              |
+| defaultSrc      | string                                               | 否       | 默认图片，src下载失败采用下载默认图                          |
 | backgroundColor | string                                               | 否       | 背景色                                                       |
 | radius          | number \|\`${number} ${number} ${number} ${number}\` | 否       | 圆角半径，顺序：左上 -> 右上 -> 右下 -> 左下，如果要绘制圆形，宽高一致，radius设为宽高一半 |
 | mode            | "fill" \| "cover" \| "contain"                       | 否       | 图片裁剪方式，默认fill。fill-填充模式，图片会占满绘制区域，contain-保持纵横比缩放图片，使图片的长边能完全显示出来，cover-保持纵横比缩放图片，只保证图片的短边能完全显示出来 |

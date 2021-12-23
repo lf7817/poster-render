@@ -104,13 +104,16 @@ export default class FreePoster {
     this.time('绘制图片时间');
     this.log('开始绘制图片', options);
 
-    const { x, y, width, height, radius = 2, src, backgroundColor } = options;
+    const { x, y, width, height, radius = 2, src, backgroundColor, defaultSrc } = options;
     const [r1, r2, r3, r4] =
       typeof radius === 'string'
         ? radius.split(' ').map((item) => Number(item))
         : new Array<number>(4).fill(radius);
 
-    const newSrc = await this.loadImage(src);
+    let newSrc = await this.loadImage(src);
+    if (!newSrc && defaultSrc) {
+      newSrc = await this.loadImage(defaultSrc);
+    }
 
     if (newSrc) {
       this.ctx.save();
@@ -154,7 +157,13 @@ export default class FreePoster {
    * @param options
    */
   private fitImage(options: Omit<PaintImage, 'type'>) {
-    const image = this.images.get(options.src)!;
+    const image = this.images.get(options.src) || this.images.get(options.defaultSrc!);
+
+    if (!image) {
+      this.log('处理图片失败，图片不存在');
+      return;
+    }
+
     const mode = options.mode || 'fill';
     // 图片宽高比
     const imageRatio = image.width / image.height;

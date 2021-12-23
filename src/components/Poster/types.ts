@@ -36,6 +36,8 @@ export interface PaintImage extends Common<'image'> {
   height: number;
   /** 图片路径，支持https、wxfile协议 */
   src: string;
+  /** 默认图片，src下载失败时采用 */
+  defaultSrc?: string;
   /**
    * fill-填充模式，图片会占满绘制区域
    * contain-保持纵横比缩放图片，使图片的长边能完全显示出来
