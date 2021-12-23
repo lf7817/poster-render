@@ -1,9 +1,18 @@
 import Taro from '@tarojs/taro';
-import React, { FC, useRef } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { Poster, PosterRef } from '../../components/Poster';
 
 const Index: FC = () => {
   const poster = useRef<PosterRef>(null);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    setInterval(() => {
+      setCount(Math.random());
+    }, 3000);
+  }, []);
+
+  console.log(count);
 
   return (
     <Poster
@@ -12,6 +21,7 @@ const Index: FC = () => {
       height={1104}
       ref={poster}
       debug
+      disableRerender
       quality={1}
       showMenuByLongpress
       renderType="image"

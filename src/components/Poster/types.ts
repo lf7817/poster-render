@@ -121,6 +121,8 @@ interface PosterBaseProps {
   width: number;
   height: number;
   debug?: boolean;
+  /** 禁用二次渲染 */
+  disableRerender?: boolean;
   /** 背景颜色 */
   backgroundColor?: string;
   /** 图片并行下载数, 默认10 */
