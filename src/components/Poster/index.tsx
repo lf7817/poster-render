@@ -167,6 +167,9 @@ export type { PosterRef, PosterProps, PosterItemConfig };
 export { FreePoster };
 
 export const Poster = memo(forwardRef(QMPosterCore), (prev, next) => {
+  if (next.disableRerender) {
+    return true;
+  }
   return isEqual(prev.list, next.list);
 });
 
