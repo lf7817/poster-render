@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "name": "taro-poster-render",
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "lerna": "^4.0.0"
+  }
+}

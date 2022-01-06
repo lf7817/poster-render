@@ -1,0 +1,62 @@
+{
+  "name": "taro-free-poster",
+  "version": "2.0.0",
+  "description": "taro海报组件，兼容企微、支付宝",
+  "templateInfo": {
+    "name": "default",
+    "typescript": true,
+    "css": "none"
+  },
+  "license": "MIT",
+  "browser": "dist/index.umd.js",
+  "module": "dist/index.esm.js",
+  "main": "dist/index.js",
+  "source": "src/index.ts",
+  "types": "types/index.d.ts",
+  "homepage": "https://github.com/lf7817/taro-poster-render",
+  "files": [
+    "dist",
+    "lib",
+    "types"
+  ],
+  "keywords": [
+    "taro",
+    "poster",
+    "canvas",
+    "微信",
+    "企微",
+    "支付宝"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:lf7817/taro-poster-render.git"
+  },
+  "scripts": {
+    "clean": "rm -rf dist/ types/ lib/",
+    "prepublish": "npm run clean && npm run build",
+    "dev": "rollup --config ./rollup.config.js -w",
+    "build": "yarn run build:rollup && yarn run build:lib",
+    "build:lib": "tsc --project ./tsconfig.build.json --declaration --declarationDir types",
+    "build:rollup": "rollup --config ./rollup.config.js"
+  },
+  "browserslist": [
+    "last 3 versions",
+    "Android >= 4.1",
+    "ios >= 8"
+  ],
+  "author": "lf7817 <535536456@qq.com>",
+  "dependencies": {
+    "@tarojs/taro": "3.3.14",
+    "p-limit": "^4.0.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^13.0.2",
+    "@rollup/plugin-node-resolve": "^8.4.0",
+    "prettier": "^2.5.0",
+    "rollup": "^2.60.1",
+    "rollup-plugin-typescript2": "^0.31.1",
+    "stylelint": "9.3.0",
+    "tslib": "^2.3.1",
+    "typescript": "^4.1.0"
+  }
+}

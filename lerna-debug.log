@@ -1,0 +1,21 @@
+0 silly argv {
+0 silly argv   _: [ 'clean' ],
+0 silly argv   lernaVersion: '4.0.0',
+0 silly argv   '$0': '/opt/homebrew/bin/lerna'
+0 silly argv }
+1 notice cli v4.0.0
+2 verbose rootPath /Users/fan/workspaces/taro-poster-render
+3 info versioning independent
+4 error JSONError: Unexpected token "}" (0x7D) in JSON at position 1207 while parsing near "...limit\": \"^4.0.0\",\n  },\n  \"devDependencie..." in packages/taro-free-poster/package.json
+4 error
+4 error [0m [90m 48 |[39m     [32m"@tarojs/taro"[39m[33m:[39m [32m"3.3.14"[39m[33m,[39m[0m
+4 error [0m [90m 49 |[39m     [32m"p-limit"[39m[33m:[39m [32m"^4.0.0"[39m[33m,[39m[0m
+4 error [0m[31m[1m>[22m[39m[90m 50 |[39m   }[33m,[39m[0m
+4 error [0m [90m    |[39m   [31m[1m^[22m[39m[0m
+4 error [0m [90m 51 |[39m   [32m"devDependencies"[39m[33m:[39m {[0m
+4 error [0m [90m 52 |[39m     [32m"@rollup/plugin-commonjs"[39m[33m:[39m [32m"^13.0.2"[39m[33m,[39m[0m
+4 error [0m [90m 53 |[39m     [32m"@rollup/plugin-node-resolve"[39m[33m:[39m [32m"^8.4.0"[39m[33m,[39m[0m
+4 error
+4 error     at parseJson (/Users/fan/.config/yarn/global/node_modules/parse-json/index.js:29:21)
+4 error     at parse (/Users/fan/.config/yarn/global/node_modules/load-json-file/index.js:15:9)
+4 error     at module.exports (/Users/fan/.config/yarn/global/node_modules/load-json-file/index.js:18:47)
