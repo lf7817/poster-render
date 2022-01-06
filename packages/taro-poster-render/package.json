@@ -1,6 +1,6 @@
 {
   "name": "taro-poster-render",
-  "version": "2.0.1-alpha.0",
+  "version": "2.0.2",
   "description": "taro海报组件，兼容企微、支付宝",
   "license": "MIT",
   "browser": "dist/index.umd.js",
