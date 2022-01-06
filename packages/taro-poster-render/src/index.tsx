@@ -14,6 +14,7 @@ import isEqual from "lodash.isequal";
 import FreePoster, { toPx, PosterItemConfig } from "taro-free-poster";
 import type { PosterProps, PosterRef } from "./types";
 
+// TODO: 支持text-decoration
 const QMPosterCore: ForwardRefRenderFunction<PosterRef, PosterProps> = (
   props,
   ref
