@@ -1,12 +1,12 @@
 {
-  "name": "taro-free-poster",
+  "name": "taro-poster-render",
   "version": "2.0.0",
   "description": "taro海报组件，兼容企微、支付宝",
   "license": "MIT",
   "browser": "dist/index.umd.js",
   "module": "dist/index.esm.js",
   "main": "dist/index.js",
-  "source": "src/index.ts",
+  "source": "src/index.tsx",
   "types": "types/index.d.ts",
   "homepage": "https://github.com/lf7817/taro-poster-render",
   "files": [
@@ -39,13 +39,24 @@
     "ios >= 8"
   ],
   "author": "lf7817 <535536456@qq.com>",
+  "lint-staged": {
+    "src/**/*.ts?(x)": "eslint --fix",
+    "src/**/*.{ts?(x),css,less,scss,md,json,html}": "prettier --write"
+  },
   "dependencies": {
+    "@tarojs/components": "3.3.14",
+    "@tarojs/react": "3.3.14",
     "@tarojs/taro": "3.3.14",
-    "p-limit": "^4.0.0"
+    "lodash.isequal": "^4.5.0",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
+    "taro-free-poster": "^2.0.0"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^13.0.2",
     "@rollup/plugin-node-resolve": "^8.4.0",
+    "@types/lodash.isequal": "^4.5.5",
+    "@types/react": "^17.0.2",
     "prettier": "^2.5.0",
     "rollup": "^2.60.1",
     "rollup-plugin-typescript2": "^0.31.1",

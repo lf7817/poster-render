@@ -1,6 +1,12 @@
 import Taro, { CanvasContext } from "@tarojs/taro";
 import pLimit from "p-limit";
-import { FreePosterOptions, PaintImage, PaintShape, PaintText } from "./types";
+import {
+  FreePosterOptions,
+  PaintImage,
+  PaintShape,
+  PaintText,
+  PosterItemConfig,
+} from "./types";
 
 import { isAlipay, toPx, toRpx } from "./utils";
 
@@ -621,4 +627,18 @@ export default class FreePoster {
       },
     });
   }
+
+  public exec = (options: PosterItemConfig) => {
+    const funcMap = {
+      image: "paintImage",
+      shape: "paintShape",
+      text: "paintText",
+    };
+
+    if (!funcMap[options.type]) {
+      throw new Error(`[taro-poster-render]: ${options.type}类型不存在`);
+    }
+
+    return this[funcMap[options.type]](options);
+  };
 }

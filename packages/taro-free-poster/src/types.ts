@@ -1,6 +1,6 @@
 import FreePoster from "./FreePoster";
 
-type DownloadLimit = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+export type DownloadLimit = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
 export interface FreePosterOptions {
   debug: boolean;
@@ -98,3 +98,5 @@ export interface PaintText {
   /** 文字装饰，只支持line-through */
   // textDecoration?: 'none' | 'line-through';
 }
+
+export type PosterItemConfig = PaintImage | PaintShape | PaintText;
