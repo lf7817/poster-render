@@ -10,6 +10,7 @@ const externalPackages = [
   '@tarojs/components',
   '@tarojs/taro',
   '@tarojs/react',
+  'lodash.isequal'
 ];
 const resolveFile = (path) => NodePath.resolve(__dirname, path);
 
@@ -35,6 +36,7 @@ export default {
         react: 'React',
         '@tarojs/components': 'components',
         '@tarojs/taro': 'Taro',
+        'lodash.isequal': 'isEqual'
       },
     },
   ],
