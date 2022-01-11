@@ -138,17 +138,16 @@ const QMPosterCore: ForwardRefRenderFunction<PosterRef, PosterProps> = (
         // @ts-ignore 兼容支付宝
         height={toPx(props.height)}
         style={{
+          width: Taro.pxTransform(props.width),
+          height: Taro.pxTransform(props.height),
           ...(renderType === "canvas"
-            ? {}
+            ? { ...props.style }
             : {
                 position: "absolute",
                 left: 0,
                 bottom: 0,
                 transform: "translate3d(-9999rpx, 0, 0)",
               }),
-          width: Taro.pxTransform(props.width),
-          height: Taro.pxTransform(props.height),
-          ...props.style,
         }}
       />
       {url && renderType === "image" && (
