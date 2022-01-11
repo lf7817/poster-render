@@ -49,12 +49,14 @@ const QMPosterCore: ForwardRefRenderFunction<PosterRef, PosterProps> = (
     // eslint-disable-next-line
   }, []);
 
-  async function render() {
+  async function render(
+    config?: PosterItemConfig[] | ((instance: FreePoster) => PosterItemConfig[])
+  ): Promise<string | undefined> {
     if ($freePoster.current) {
+      $freePoster.current.clearRect();
       $freePoster.current.time("渲染海报完成");
-      const list = Array.isArray(props.list)
-        ? props.list
-        : props.list($freePoster.current);
+      const tmp = config ?? props.list;
+      const list = Array.isArray(tmp) ? tmp : tmp($freePoster.current);
       // 提前加载图片
       await $freePoster.current.preloadImage(
         list.reduce((arr, item) => {
@@ -76,6 +78,7 @@ const QMPosterCore: ForwardRefRenderFunction<PosterRef, PosterProps> = (
           props?.onRender?.(temp);
           $retryCounter.current = 0;
           $freePoster.current.timeEnd("渲染海报完成");
+          return temp;
         } catch (e) {
           if (++$retryCounter.current <= 2) {
             $freePoster.current.log(`第${$retryCounter.current}次重新渲染`);
@@ -95,7 +98,6 @@ const QMPosterCore: ForwardRefRenderFunction<PosterRef, PosterProps> = (
 
   useEffect(() => {
     if (!$isFirst.current) {
-      $freePoster.current?.clearRect();
       render();
     }
     // eslint-disable-next-line
@@ -124,6 +126,7 @@ const QMPosterCore: ForwardRefRenderFunction<PosterRef, PosterProps> = (
         $freePoster.current?.log("预览图片出错", e);
       }
     },
+    render,
   }));
 
   return (

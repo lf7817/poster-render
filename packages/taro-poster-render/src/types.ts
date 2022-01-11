@@ -42,6 +42,10 @@ export interface PosterRef {
   savePosterToPhoto: () => Promise<string>;
   /** 预览图片 */
   preview: () => Promise<void>;
+  /** 渲染方法 */
+  render: (
+    config?: PosterItemConfig[] | ((instance: FreePoster) => PosterItemConfig[])
+  ) => Promise<string | undefined>;
 }
 
 export type PosterProps = PosterCanvasProps | PosterImageProps;
