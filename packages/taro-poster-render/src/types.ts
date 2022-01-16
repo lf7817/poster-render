@@ -25,13 +25,13 @@ interface PosterBaseProps {
   onRenderFail?: (err: any) => void;
 }
 
-interface PosterImageProps extends PosterBaseProps {
+export interface PosterImageProps extends PosterBaseProps {
   renderType: "image";
   onLongPress?: (url: string) => void;
   onRender?: (url: string) => void;
 }
 
-interface PosterCanvasProps extends PosterBaseProps {
+export interface PosterCanvasProps extends PosterBaseProps {
   renderType: "canvas";
   onLongPress?: () => void;
   onRender?: () => void;

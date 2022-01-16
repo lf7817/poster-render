@@ -12,7 +12,12 @@ import React, {
 } from "react";
 import isEqual from "lodash.isequal";
 import FreePoster, { toPx, PosterItemConfig } from "taro-free-poster";
-import type { PosterProps, PosterRef } from "./types";
+import type {
+  PosterProps,
+  PosterRef,
+  PosterImageProps,
+  PosterCanvasProps,
+} from "./types";
 
 // TODO: 支持text-decoration
 const QMPosterCore: ForwardRefRenderFunction<PosterRef, PosterProps> = (
@@ -170,7 +175,13 @@ const QMPosterCore: ForwardRefRenderFunction<PosterRef, PosterProps> = (
   );
 };
 
-export type { PosterRef, PosterProps, PosterItemConfig };
+export type {
+  PosterRef,
+  PosterProps,
+  PosterItemConfig,
+  PosterImageProps,
+  PosterCanvasProps,
+};
 
 export { FreePoster };
 
