@@ -1,6 +1,6 @@
 {
   "name": "taro-example-react",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "description": "demo",
   "templateInfo": {
@@ -42,7 +42,7 @@
     "@tarojs/taro": "3.3.14",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
-    "taro-poster-render": "^2.0.5"
+    "taro-poster-render": "^2.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.8.0",
