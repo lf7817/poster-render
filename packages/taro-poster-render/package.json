@@ -47,7 +47,6 @@
     "@tarojs/components": "3.3.14",
     "@tarojs/react": "3.3.14",
     "@tarojs/taro": "3.3.14",
-    "lodash.isequal": "^4.5.0",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "taro-free-poster": "^2.0.1"

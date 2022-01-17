@@ -10,7 +10,6 @@ import React, {
   useState,
   Fragment,
 } from "react";
-import isEqual from "lodash.isequal";
 import FreePoster, { toPx, PosterItemConfig } from "taro-free-poster";
 import type {
   PosterProps,
@@ -189,7 +188,28 @@ export const Poster = memo(forwardRef(QMPosterCore), (prev, next) => {
   if (next.disableRerender) {
     return true;
   }
+
+  if (typeof prev.list === "function" || typeof next.list === "function") {
+    return false;
+  }
+
   return isEqual(prev.list, next.list);
 });
+
+function isEqual(prevList: PosterItemConfig[], nextList: PosterItemConfig[]) {
+  for (let [i, item] of prevList.entries()) {
+    for (let [k, v] of Object.entries(item)) {
+      if (typeof v === "function") {
+        return false;
+      }
+
+      if (v !== nextList[i][k]) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
 
 export default Poster;

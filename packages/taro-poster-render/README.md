@@ -5,7 +5,7 @@ taro海报组件，兼容微信、企微、支付宝，后续会兼容h5
 ## 安装
 
 ```bash
-npm install taro-poster-render lodash.isequal
+npm install taro-poster-render
 ```
 
 ## 使用
