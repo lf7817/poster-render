@@ -59,23 +59,24 @@ export default class FreePoster {
 
     if (!url) {
       this.log("图像路径不能为空");
-      return undefined;
+      return Promise.resolve(undefined);
+    }
+
+    if (this.images.has(url)) {
+      return Promise.resolve(this.images.get(url)?.path);
     }
 
     // 支持微信本地临时文件
     if (url.startsWith("wxfile://")) {
       try {
         Taro.getFileSystemManager().accessSync(url);
-        return url;
+        this.images.set(url, await Taro.getImageInfo({ src: url }));
+        return Promise.resolve(url);
       } catch (e) {
         this.log(e);
         this.log(`本地临时文件不存在`, url);
         return undefined;
       }
-    }
-
-    if (this.images.has(url)) {
-      return this.images.get(url)?.path;
     }
 
     const downloadFile = async (resolve) => {

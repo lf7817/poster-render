@@ -18,7 +18,7 @@ import type {
   PosterCanvasProps,
 } from "./types";
 
-// TODO: 支持text-decoration
+// TODO: 支持text-decoration!!!
 const QMPosterCore: ForwardRefRenderFunction<PosterRef, PosterProps> = (
   props,
   ref
