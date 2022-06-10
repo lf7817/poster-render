@@ -1,3 +1,4 @@
+// @ts-ignore
 import Taro, { CanvasContext } from "@tarojs/taro";
 import pLimit from "p-limit";
 import {

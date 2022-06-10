@@ -1,5 +1,6 @@
-import { Canvas, Image } from "@tarojs/components";
+// @ts-ignore
 import Taro from "@tarojs/taro";
+import { Canvas, Image } from "@tarojs/components";
 import React, {
   forwardRef,
   ForwardRefRenderFunction,
@@ -197,6 +198,7 @@ export const Poster = memo(forwardRef(QMPosterCore), (prev, next) => {
 });
 
 function isEqual(prevList: PosterItemConfig[], nextList: PosterItemConfig[]) {
+  // @ts-ignore
   for (let [i, item] of prevList.entries()) {
     for (let [k, v] of Object.entries(item)) {
       if (typeof v === "function") {
