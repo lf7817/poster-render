@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="2aeb080f-10c5-439e-9ef6-f1da8958c64a" name="Changes" comment="chore: add .idea">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/taro-poster-render.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lerna.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/.eslintrc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/babel.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/config/dev.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/config/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/config/prod.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/global.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/project.config.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/project.tt.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/src/app.config.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/src/app.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/src/app.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/src/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/src/pages/index/index.config.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/src/pages/index/index.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/src/pages/index/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/tsconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-free-poster/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-free-poster/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-free-poster/src/FreePoster.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-free-poster/src/FreePoster.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-poster-render/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-poster-render/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-poster-render/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-poster-render/src/index.tsx" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/packages/taro-poster-render/package.json" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectId" id="2AKf6imXJnnrTICV0GtUhfh4rFu" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/Users/fan/workspaces/taro-poster-render",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "yarn",
+    "ts.external.directory.path": "/Users/fan/workspaces/taro-poster-render/packages/taro-free-poster/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/examples" />
+    </key>
+  </component>
+  <component name="RunManager" selected="npm.build (1)">
+    <configuration name="build (1)" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/packages/taro-poster-render/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="build" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/packages/taro-free-poster/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="build" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="build:freePoster" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="build:freePoster" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="build:react" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="build:react" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="build:rollup" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/packages/taro-free-poster/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="build:rollup" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.build (1)" />
+        <item itemvalue="npm.build" />
+        <item itemvalue="npm.build:react" />
+        <item itemvalue="npm.build:freePoster" />
+        <item itemvalue="npm.build:rollup" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2aeb080f-10c5-439e-9ef6-f1da8958c64a" name="Changes" comment="" />
+      <created>1654763024085</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1654763024085</updated>
+      <workItem from="1654763025327" duration="109000" />
+      <workItem from="1654763153965" duration="3666000" />
+      <workItem from="1654825912852" duration="6713000" />
+      <workItem from="1654841481819" duration="1161000" />
+      <workItem from="1654842874645" duration="3344000" />
+    </task>
+    <task id="LOCAL-00001" summary="chore: add .idea">
+      <created>1654763807312</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1654763807312</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="chore: add .idea" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore: add .idea" />
+  </component>
+</project>
