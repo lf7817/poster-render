@@ -1,38 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2aeb080f-10c5-439e-9ef6-f1da8958c64a" name="Changes" comment="chore: add .idea">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/taro-poster-render.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lerna.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/.editorconfig" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/.eslintrc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/babel.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/config/dev.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/config/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/config/prod.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/global.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/project.config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/project.tt.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/src/app.config.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/src/app.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/src/app.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/src/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/src/pages/index/index.config.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/src/pages/index/index.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/src/pages/index/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-example-react/tsconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-free-poster/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-free-poster/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-free-poster/src/FreePoster.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-free-poster/src/FreePoster.ts" afterDir="false" />
+    <list default="true" id="2aeb080f-10c5-439e-9ef6-f1da8958c64a" name="Changes" comment="chore: 切换到pnpm">
       <change beforePath="$PROJECT_DIR$/packages/taro-poster-render/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-poster-render/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-poster-render/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-poster-render/src/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +35,7 @@
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "yarn",
-    "ts.external.directory.path": "/Users/fan/workspaces/taro-poster-render/packages/taro-free-poster/node_modules/typescript/lib",
+    "ts.external.directory.path": "/Users/fan/workspaces/taro-poster-render/packages/taro-poster-render/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -147,7 +117,7 @@
       <workItem from="1654763153965" duration="3666000" />
       <workItem from="1654825912852" duration="6713000" />
       <workItem from="1654841481819" duration="1161000" />
-      <workItem from="1654842874645" duration="3344000" />
+      <workItem from="1654842874645" duration="3620000" />
     </task>
     <task id="LOCAL-00001" summary="chore: add .idea">
       <created>1654763807312</created>
@@ -156,7 +126,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654763807312</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="chore: 切换到pnpm">
+      <created>1654846367373</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1654846367373</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -175,6 +152,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="chore: add .idea" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore: add .idea" />
+    <MESSAGE value="chore: 切换到pnpm" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore: 切换到pnpm" />
   </component>
 </project>
