@@ -1,7 +1,6 @@
 {
   "private": true,
   "name": "taro-poster-render",
-  "version": "2.1.3",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "build:freePoster": "cd ./packages/taro-free-poster && npm run build",

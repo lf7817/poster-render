@@ -13,7 +13,7 @@
     "sourceMap": true,
     "strictNullChecks": true,
     "resolveJsonModule": true,
-    "target": "es5",
+    "target": "es6",
     "module": "es6",
     "downlevelIteration": true,
     "baseUrl": ".",
