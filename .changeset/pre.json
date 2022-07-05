@@ -1,0 +1,11 @@
+{
+  "mode": "exit",
+  "tag": "beta",
+  "initialVersions": {
+    "taro-free-poster": "2.1.3",
+    "taro-poster-render": "2.1.3"
+  },
+  "changesets": [
+    "tender-buckets-pretend"
+  ]
+}

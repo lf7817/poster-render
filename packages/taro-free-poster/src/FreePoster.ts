@@ -11,7 +11,7 @@ import {
 
 import { isAlipay, toPx, toRpx } from "./utils";
 
-export default class FreePoster {
+export default class reePoster {
   private ctx: CanvasContext;
   private downloadLimit: ReturnType<typeof pLimit>;
   private images: Map<string, Taro.getImageInfo.SuccessCallbackResult> =

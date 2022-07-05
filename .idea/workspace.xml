@@ -2,11 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2aeb080f-10c5-439e-9ef6-f1da8958c64a" name="Changes" comment="chore: 更新版本号">
+      <change afterPath="$PROJECT_DIR$/.changeset/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.changeset/config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.changeset/pre.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.changeset/tender-buckets-pretend.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/taro-free-poster/CHANGELOG.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/taro-poster-render/CHANGELOG.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-free-poster/tsconfig.rollup.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-free-poster/tsconfig.rollup.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-free-poster/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-free-poster/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-free-poster/src/FreePoster.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-free-poster/src/FreePoster.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/taro-poster-render/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-poster-render/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-poster-render/tsconfig.rollup.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-poster-render/tsconfig.rollup.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pnpm-workspace.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-workspace.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,6 +23,13 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/.changeset/config.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/.idea/modules.xml" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/.idea/vcs.xml" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/.idea/workspace.xml" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/.vscode/settings.json" root0="SKIP_INSPECTION" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -26,12 +41,16 @@
     <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectId" id="2AKf6imXJnnrTICV0GtUhfh4rFu" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
@@ -48,52 +67,52 @@
       <recent name="$PROJECT_DIR$/examples" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.prepublish (1)">
-    <configuration name="build (1)" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/packages/taro-poster-render/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="build" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
-    <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/packages/taro-free-poster/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="build" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
-    <configuration name="build:react" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="npm.changeset:exit">
+    <configuration name="changeset" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
-        <script value="build:react" />
+        <script value="changeset" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
       <method v="2" />
     </configuration>
-    <configuration name="prepublish (1)" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/packages/taro-poster-render/package.json" />
+    <configuration name="changeset:beta" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
-        <script value="prepublish" />
+        <script value="changeset:beta" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
       <method v="2" />
     </configuration>
-    <configuration name="prepublish" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/packages/taro-free-poster/package.json" />
+    <configuration name="changeset:exit" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
-        <script value="prepublish" />
+        <script value="changeset:exit" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="release" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="release" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="version-packages" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="version-packages" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
@@ -101,11 +120,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.prepublish (1)" />
-        <item itemvalue="npm.prepublish" />
-        <item itemvalue="npm.build (1)" />
-        <item itemvalue="npm.build" />
-        <item itemvalue="npm.build:react" />
+        <item itemvalue="npm.changeset:exit" />
+        <item itemvalue="npm.release" />
+        <item itemvalue="npm.version-packages" />
+        <item itemvalue="npm.changeset" />
+        <item itemvalue="npm.changeset:beta" />
       </list>
     </recent_temporary>
   </component>
@@ -121,7 +140,11 @@
       <workItem from="1654763153965" duration="3666000" />
       <workItem from="1654825912852" duration="6713000" />
       <workItem from="1654841481819" duration="1161000" />
-      <workItem from="1654842874645" duration="4518000" />
+      <workItem from="1654842874645" duration="5271000" />
+      <workItem from="1656318714707" duration="3160000" />
+      <workItem from="1656560233137" duration="83000" />
+      <workItem from="1656989528330" duration="2827000" />
+      <workItem from="1656999903026" duration="6643000" />
     </task>
     <task id="LOCAL-00001" summary="chore: add .idea">
       <created>1654763807312</created>
@@ -144,7 +167,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654846601305</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="chore: 更新版本号">
+      <created>1654847410297</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1654847410297</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -162,6 +192,7 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="chore: add .idea" />
     <MESSAGE value="chore: 切换到pnpm" />
     <MESSAGE value="chore: 更新版本号" />

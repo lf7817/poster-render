@@ -3,14 +3,26 @@
   "name": "taro-poster-render",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
+    "clear": "rimraf 'packages/*/{dist,lib,types,node_modules}'",
     "build:freePoster": "cd ./packages/taro-free-poster && npm run build",
-    "build:react": "cd ./packages/taro-poster-render && npm run build"
+    "build:react": "cd ./packages/taro-poster-render && npm run build",
+    "build": "pnpm -r --filter=./packages/* run build",
+    "changeset": "changeset",
+    "changeset:beta": "changeset pre enter beta",
+    "changeset:rc": "changeset pre enter rc",
+    "changeset:alpha": "changeset pre enter alpha",
+    "changeset:exit": "changeset pre exit",
+    "version-packages": "changeset version",
+    "release": "pnpm build && pnpm release:only && pnpm changeset:exit",
+    "release:only": "changeset publish --registry=https://registry.npmjs.com/"
   },
   "devDependencies": {
-    "@tarojs/components": "3.4.11",
-    "@tarojs/taro": "3.4.11",
+    "@changesets/cli": "^2.23.0",
+    "@tarojs/components": "3.4.13",
+    "@tarojs/taro": "3.4.13",
     "react": "^17.0.0",
-    "react-dom": "^17.0.0"
+    "react-dom": "^17.0.0",
+    "rimraf": "^3.0.2"
   },
   "dependencies": {
     "@types/node": "^17.0.41"
