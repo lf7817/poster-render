@@ -18,6 +18,14 @@ interface PosterBaseProps {
   fileType?: "png" | "jpg";
   /** 图片质量 0-1，只对jpg生效 */
   quality?: number;
+  /**
+   * 输出的图片的宽度
+   */
+  destWidth?: number;
+  /**
+   * 输出的图片的高度
+   */
+  destHeight?: number;
   list: PosterItemConfig[] | ((instance: FreePoster) => PosterItemConfig[]);
   showMenuByLongpress?: boolean;
   onSave?: (url: string) => void;

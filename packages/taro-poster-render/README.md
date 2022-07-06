@@ -159,26 +159,26 @@ freePoster.paintShape({...})
 
 ## props
 
-| 字段 | 类型 | 是否必填 | 描述 |
-| :-----| :---- | :---- | ------|
-| canvasId | string | 否 |  |
-| className | string | 否 |  |
-| style | CSSProperties | 否 | 默认宽为pxTransform(画布宽),高为pxTransform(画布高) |
-| width | number | 否 | 画布宽度（rpx） |
-| height | number | 否 | 画布高度（rpx） |
-| debug | boolean | 否 | 开启调试日志 |
-| fileType | 'png' \| 'jpg' | 否 | 导出图片格式，默认png |
-| quality | number | 否 | 导出图片质量0-1，默认为1，只对jpg生效 |
-| backgroundColor | string | 否 | 背景色 |
-| renderType | 'image' \| 'canvas' | 是 | 渲染方式，默认是图片方式兼容性好，canvas方式速度快，但是不支持识别二维码,也不支持同层渲染 |
-| disableRerender | boolean | 否 | 禁用re-render。只有list发生变化才会导致re-render，但是list如果传了函数就会导致优化失效，可以采用disableRerender禁用 |
-| showMenuByLongpress | boolean | 否 | 开启长按图片显示识别小程序码菜单（支持转发、下载、收藏、识别二维码），图片模式时生效 |
-| downloadLimit | number | 否 | 图片并行下载数，范围1-10，默认10 |
-| onLongPress | (url?: string) => void; | 否 | 长按事件，图片模式时接收海报url参数，canvas模式时无参数 |
-| onRender | (url?: string) => void; | 否 | 渲染完成事件，图片模式时接收海报url参数，canvas模式时无参数 |
-| onRenderFail | (err: any) => void | 否 | 渲染失败事件 |
-| onSave | (url: string) => void | 否 | 保存成功事件 |
-| onSaveFail | (err: any) => void | 否 | 保存失败事件 |
+| 字段 | 类型                                                                                                               | 是否必填 | 描述 |
+| :-----|:-----------------------------------------------------------------------------------------------------------------| :---- | ------|
+| canvasId | string                                                                                                           | 否 |  |
+| className | string                                                                                                           | 否 |  |
+| style | CSSProperties                                                                                                    | 否 | 默认宽为pxTransform(画布宽),高为pxTransform(画布高) |
+| width | number                                                                                                           | 否 | 画布宽度（rpx） |
+| height | number                                                                                                           | 否 | 画布高度（rpx） |
+| debug | boolean                                                                                                          | 否 | 开启调试日志 |
+| fileType | 'png' \ 'jpg'                                                                                                    | 否 | 导出图片格式，默认png |
+| quality | number                                                                                                           | 否 | 导出图片质量0-1，默认为1，只对jpg生效 |
+| backgroundColor | string                                                                                                           | 否 | 背景色 |
+| renderType | 'image' \                                                                                                        | 'canvas' | 是 | 渲染方式，默认是图片方式兼容性好，canvas方式速度快，但是不支持识别二维码,也不支持同层渲染 |
+| disableRerender | boolean                                                                                                          | 否 | 禁用re-render。只有list发生变化才会导致re-render，但是list如果传了函数就会导致优化失效，可以采用disableRerender禁用 |
+| showMenuByLongpress | boolean                                                                                                          | 否 | 开启长按图片显示识别小程序码菜单（支持转发、下载、收藏、识别二维码），图片模式时生效 |
+| downloadLimit | number                                                                                                           | 否 | 图片并行下载数，范围1-10，默认10 |
+| onLongPress | (url?: string) => void;                                                                                          | 否 | 长按事件，图片模式时接收海报url参数，canvas模式时无参数 |
+| onRender | (url?: string) => void;                                                                                          | 否 | 渲染完成事件，图片模式时接收海报url参数，canvas模式时无参数 |
+| onRenderFail | (err: any) => void                                                                                               | 否 | 渲染失败事件 |
+| onSave | (url: string) => void                                                                                            | 否 | 保存成功事件 |
+| onSaveFail | (err: any) => void                                                                                               | 否 | 保存失败事件 |
 | list | [PosterItemConfig](https://github.com/lf7817/taro-poster-render/blob/main/src/components/Poster/types.ts#L71)[] \| (instance: FreePoster) => PosterItemConfig[] | 是 | 图片、文字、图形配置,当为函数时接受FreePoster实例。一般传数组即可，如果要实现上面多段文字联动局中效果，可以改用函数（如果传函数的话需要自己处理re-render的问题） |
 
 list支持三种类型：``image``、``text``、``shape``

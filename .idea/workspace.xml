@@ -2,19 +2,26 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2aeb080f-10c5-439e-9ef6-f1da8958c64a" name="Changes" comment="chore: 更新版本号">
-      <change afterPath="$PROJECT_DIR$/.changeset/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.changeset/config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.changeset/pre.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.changeset/tender-buckets-pretend.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/taro-free-poster/CHANGELOG.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/taro-poster-render/CHANGELOG.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/taro-free-poster-2d/CHANGELOG.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/taro-free-poster-2d/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/taro-free-poster-2d/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/taro-free-poster-2d/rollup.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/taro-free-poster-2d/src/FreePoster.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/taro-free-poster-2d/src/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/taro-free-poster-2d/src/types.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/taro-free-poster-2d/src/utils.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/taro-free-poster-2d/tsconfig.build.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/taro-free-poster-2d/tsconfig.rollup.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-free-poster/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-free-poster/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/taro-example-react/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/examples/taro-example-react/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/taro-example-react/project.config.json" beforeDir="false" afterPath="$PROJECT_DIR$/examples/taro-example-react/project.config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/taro-example-react/src/pages/index/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/examples/taro-example-react/src/pages/index/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/taro-free-poster/src/FreePoster.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-free-poster/src/FreePoster.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-poster-render/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-poster-render/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-free-poster/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-free-poster/src/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-poster-render/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-poster-render/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-poster-render/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-poster-render/src/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-poster-render/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-poster-render/src/types.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pnpm-workspace.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-workspace.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,15 +61,19 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/Users/fan/workspaces/taro-poster-render",
+    "last_opened_file_path": "/Users/fan/workspaces/taro-poster-render/packages",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "yarn",
-    "ts.external.directory.path": "/Users/fan/workspaces/taro-poster-render/packages/taro-poster-render/node_modules/typescript/lib",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "ts.external.directory.path": "/Users/fan/workspaces/taro-poster-render/examples/taro-example-react/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/packages" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/examples" />
     </key>
@@ -144,7 +155,9 @@
       <workItem from="1656318714707" duration="3160000" />
       <workItem from="1656560233137" duration="83000" />
       <workItem from="1656989528330" duration="2827000" />
-      <workItem from="1656999903026" duration="6643000" />
+      <workItem from="1656999903026" duration="9077000" />
+      <workItem from="1657011356960" duration="3189000" />
+      <workItem from="1657076326058" duration="8401000" />
     </task>
     <task id="LOCAL-00001" summary="chore: add .idea">
       <created>1654763807312</created>

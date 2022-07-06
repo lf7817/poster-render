@@ -37,6 +37,8 @@ const QMPosterCore: ForwardRefRenderFunction<PosterRef, PosterProps> = (
         debug: props.debug,
         width: props.width,
         height: props.height,
+        destWidth: props.destWidth,
+        destHeight: props.destHeight,
         quality: props.quality,
         fileType: props.fileType,
         downloadLimit: props.downloadLimit,

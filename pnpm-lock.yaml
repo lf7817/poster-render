@@ -5,67 +5,50 @@ importers:
   .:
     specifiers:
       '@changesets/cli': ^2.23.0
+      '@rollup/plugin-commonjs': ^22.0.0
+      '@rollup/plugin-node-resolve': ^13.3.0
       '@tarojs/components': 3.4.13
       '@tarojs/taro': 3.4.13
       '@types/node': ^17.0.41
+      '@types/react': ^17.0.2
+      prettier: ^2.6.2
       react: ^17.0.0
       react-dom: ^17.0.0
       rimraf: ^3.0.2
-    dependencies:
-      '@types/node': 17.0.45
+      rollup: ^2.75.6
+      rollup-plugin-typescript2: ^0.32.1
+      stylelint: ^14.9.0
+      tslib: ^2.4.0
+      typescript: ^4.7.3
     devDependencies:
       '@changesets/cli': 2.23.0
+      '@rollup/plugin-commonjs': 22.0.1_rollup@2.75.7
+      '@rollup/plugin-node-resolve': 13.3.0_rollup@2.75.7
       '@tarojs/components': 3.4.13
       '@tarojs/taro': 3.4.13
+      '@types/node': 17.0.45
+      '@types/react': 17.0.47
+      prettier: 2.7.1
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       rimraf: 3.0.2
+      rollup: 2.75.7
+      rollup-plugin-typescript2: 0.32.1_okefoyb4o5sittgqayreuhurei
+      stylelint: 14.9.1
+      tslib: 2.4.0
+      typescript: 4.7.4
 
   packages/taro-free-poster:
     specifiers:
-      '@rollup/plugin-commonjs': ^22.0.0
-      '@rollup/plugin-node-resolve': ^13.3.0
       p-limit: ^4.0.0
-      prettier: ^2.6.2
-      rollup: ^2.75.6
-      rollup-plugin-typescript2: ^0.32.1
-      stylelint: ^14.9.0
-      tslib: ^2.4.0
-      typescript: ^4.7.3
     dependencies:
       p-limit: 4.0.0
-    devDependencies:
-      '@rollup/plugin-commonjs': 22.0.1_rollup@2.75.7
-      '@rollup/plugin-node-resolve': 13.3.0_rollup@2.75.7
-      prettier: 2.7.1
-      rollup: 2.75.7
-      rollup-plugin-typescript2: 0.32.1_okefoyb4o5sittgqayreuhurei
-      stylelint: 14.9.1
-      tslib: 2.4.0
-      typescript: 4.7.4
 
   packages/taro-poster-render:
     specifiers:
-      '@rollup/plugin-commonjs': ^22.0.0
-      '@rollup/plugin-node-resolve': ^13.3.0
-      prettier: ^2.6.2
-      rollup: ^2.75.6
-      rollup-plugin-typescript2: ^0.32.1
-      stylelint: ^14.9.0
       taro-free-poster: workspace:*
-      tslib: ^2.4.0
-      typescript: ^4.7.3
     dependencies:
       taro-free-poster: link:../taro-free-poster
-    devDependencies:
-      '@rollup/plugin-commonjs': 22.0.1_rollup@2.75.7
-      '@rollup/plugin-node-resolve': 13.3.0_rollup@2.75.7
-      prettier: 2.7.1
-      rollup: 2.75.7
-      rollup-plugin-typescript2: 0.32.1_okefoyb4o5sittgqayreuhurei
-      stylelint: 14.9.1
-      tslib: 2.4.0
-      typescript: 4.7.4
 
 packages:
 
@@ -480,10 +463,6 @@ packages:
 
   /@types/node/17.0.45:
     resolution: {integrity: sha512-w+tIMs3rq2afQdsPJlODhoUEKzFP1ayaoyl1CcnwtIlsVe7K7bA1NGm4s3PraqTLlXnbIN84zuBlxBWo1u9BLw==}
-    dev: false
-
-  /@types/node/18.0.1:
-    resolution: {integrity: sha512-CmR8+Tsy95hhwtZBKJBs0/FFq4XX7sDZHlGGf+0q+BRZfMbOTkzkj0AFAuTyXbObDIoanaBBW0+KEW+m3N16Wg==}
     dev: true
 
   /@types/normalize-package-data/2.4.1:
@@ -494,10 +473,26 @@ packages:
     resolution: {integrity: sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==}
     dev: true
 
+  /@types/prop-types/15.7.5:
+    resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
+    dev: true
+
+  /@types/react/17.0.47:
+    resolution: {integrity: sha512-mk0BL8zBinf2ozNr3qPnlu1oyVTYq+4V7WA76RgxUAtf0Em/Wbid38KN6n4abEkvO4xMTBWmnP1FtQzgkEiJoA==}
+    dependencies:
+      '@types/prop-types': 15.7.5
+      '@types/scheduler': 0.16.2
+      csstype: 3.1.0
+    dev: true
+
   /@types/resolve/1.17.1:
     resolution: {integrity: sha512-yy7HuzQhj0dhGpD8RLXSZWEkLsV9ibvxvi6EiJ3bkqLAO1RGo0WbkWQiwpRlSFymTJRz0d3k5LM3kkx8ArDbLw==}
     dependencies:
-      '@types/node': 18.0.1
+      '@types/node': 17.0.45
+    dev: true
+
+  /@types/scheduler/0.16.2:
+    resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
     dev: true
 
   /@types/semver/6.2.3:
@@ -775,6 +770,10 @@ packages:
     resolution: {integrity: sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==}
     engines: {node: '>=4'}
     hasBin: true
+    dev: true
+
+  /csstype/3.1.0:
+    resolution: {integrity: sha512-uX1KG+x9h5hIJsaKR9xHUeUraxf8IODOwq9JLNPq6BwB04a/xgpq3rcx47l5BZu5zBPlgD342tdke3Hom/nJRA==}
     dev: true
 
   /csv-generate/3.4.3:

@@ -11,7 +11,7 @@ import {
 
 import { isAlipay, toPx, toRpx } from "./utils";
 
-export default class reePoster {
+export default class FreePoster {
   private ctx: CanvasContext;
   private downloadLimit: ReturnType<typeof pLimit>;
   private images: Map<string, Taro.getImageInfo.SuccessCallbackResult> =
@@ -490,6 +490,13 @@ export default class reePoster {
         this.log("开始截取canvas图片");
         this.time("截取canvas图片时间");
 
+        const rest: Taro.canvasToTempFilePath.Option = {};
+
+        if (this.options.destWidth && this.options.destHeight) {
+          rest.destWidth = toPx(this.options.destWidth);
+          rest.destHeight = toPx(this.options.destHeight);
+        }
+
         Taro.canvasToTempFilePath(
           {
             x: 0,
@@ -510,6 +517,7 @@ export default class reePoster {
               this.log("截取canvas目前的图像失败", err);
               reject(err);
             },
+            ...rest,
           },
           this
         );
