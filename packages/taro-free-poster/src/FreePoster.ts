@@ -1,5 +1,5 @@
 // @ts-ignore
-import Taro, { CanvasContext } from "@tarojs/taro";
+import * as Taro from "@tarojs/taro";
 import pLimit from "p-limit";
 import {
   FreePosterOptions,
@@ -12,7 +12,7 @@ import {
 import { isAlipay, toPx, toRpx } from "./utils";
 
 export default class FreePoster {
-  private ctx: CanvasContext;
+  private ctx: Taro.CanvasContext;
   private downloadLimit: ReturnType<typeof pLimit>;
   private images: Map<string, Taro.getImageInfo.SuccessCallbackResult> =
     new Map();

@@ -1,5 +1,17 @@
 # taro-free-poster
 
+## 2.1.5-beta.1
+
+### Patch Changes
+
+- 压缩打包代码
+
+## 2.1.5-beta.0
+
+### Patch Changes
+
+- test
+
 ## 2.1.4
 
 ### Patch Changes

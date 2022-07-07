@@ -1,4 +1,4 @@
-import Taro from "@tarojs/taro";
+import * as Taro from "@tarojs/taro";
 
 export const delay = (time: number) =>
   new Promise((resolve) => setTimeout(resolve, time));

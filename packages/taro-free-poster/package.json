@@ -1,6 +1,6 @@
 {
   "name": "taro-free-poster",
-  "version": "2.1.4",
+  "version": "2.1.5-beta.1",
   "description": "taro海报组件，兼容企微、支付宝",
   "license": "MIT",
   "browser": "dist/index.umd.js",

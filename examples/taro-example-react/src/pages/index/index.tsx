@@ -1,6 +1,7 @@
 import Taro from "@tarojs/taro";
 import { FC, useEffect, useRef, useState } from "react";
 import { Poster, PosterRef } from "taro-poster-render";
+import {View} from "@tarojs/components";
 
 const Index: FC = () => {
   const poster = useRef<PosterRef>(null);
@@ -13,6 +14,8 @@ const Index: FC = () => {
   }, []);
 
   console.log(count);
+
+  // return <View>111</View>
 
   return (
     <Poster

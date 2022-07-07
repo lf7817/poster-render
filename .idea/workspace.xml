@@ -2,16 +2,26 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2aeb080f-10c5-439e-9ef6-f1da8958c64a" name="Changes" comment="chore: 更新版本号">
-      <change beforePath="$PROJECT_DIR$/.changeset/pre.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.changeset/strange-students-do.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.changeset/tender-buckets-pretend.md" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/.changeset/pre.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.changeset/spotty-jeans-fix.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.changeset/thin-spoons-punch.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/taro-example-react/pnpm-lock.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/taro-example-react/src/pages/h5/index.config.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/taro-example-react/src/pages/h5/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/taro-example-react/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/examples/taro-example-react/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/taro-example-react/src/app.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/examples/taro-example-react/src/app.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/taro-example-react/src/pages/index/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/examples/taro-example-react/src/pages/index/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/taro-free-poster/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-free-poster/CHANGELOG.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/taro-free-poster/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-free-poster/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-free-poster/rollup.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-free-poster/rollup.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-free-poster/src/FreePoster.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-free-poster/src/FreePoster.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-free-poster/src/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-free-poster/src/utils.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/taro-poster-render/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-poster-render/CHANGELOG.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-poster-render/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-poster-render/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/taro-poster-render/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-poster-render/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-poster-render/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-poster-render/src/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-poster-render/rollup.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-poster-render/rollup.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,7 +79,17 @@
       <recent name="$PROJECT_DIR$/examples" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.version-packages">
+  <component name="RunManager" selected="npm.release">
+    <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/packages/taro-poster-render/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="build" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <configuration name="changeset" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -85,16 +105,6 @@
       <command value="run" />
       <scripts>
         <script value="changeset:beta" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
-    <configuration name="changeset:exit" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="changeset:exit" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
@@ -122,11 +132,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.version-packages" />
         <item itemvalue="npm.release" />
+        <item itemvalue="npm.version-packages" />
         <item itemvalue="npm.changeset" />
         <item itemvalue="npm.changeset:beta" />
-        <item itemvalue="npm.changeset:exit" />
+        <item itemvalue="npm.build" />
       </list>
     </recent_temporary>
   </component>
@@ -151,7 +161,8 @@
       <workItem from="1657076326058" duration="9212000" />
       <workItem from="1657096997282" duration="4097000" />
       <workItem from="1657101759233" duration="170000" />
-      <workItem from="1657157706161" duration="2346000" />
+      <workItem from="1657157706161" duration="7077000" />
+      <workItem from="1657173859697" duration="6460000" />
     </task>
     <task id="LOCAL-00001" summary="chore: add .idea">
       <created>1654763807312</created>

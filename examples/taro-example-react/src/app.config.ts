@@ -1,6 +1,8 @@
-export default {
+export default defineAppConfig({
+  // entryPagePath: 'pages/h5/index',
   pages: [
-    'pages/index/index'
+    'pages/index/index',
+    'pages/h5/index'
   ],
   window: {
     backgroundTextStyle: 'light',
@@ -8,4 +10,4 @@ export default {
     navigationBarTitleText: 'WeChat',
     navigationBarTextStyle: 'black'
   }
-}
+})

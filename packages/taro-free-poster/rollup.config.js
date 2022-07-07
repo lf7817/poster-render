@@ -3,6 +3,8 @@ import RollupNodeResolve from '@rollup/plugin-node-resolve';
 import RollupCommonjs from '@rollup/plugin-commonjs';
 import RollupTypescript from 'rollup-plugin-typescript2';
 import Package from './package.json';
+import cleanup from "rollup-plugin-cleanup";
+import {terser} from "rollup-plugin-terser";
 
 const externalPackages = [
   '@tarojs/taro',
@@ -45,5 +47,7 @@ export default {
     RollupTypescript({
       tsconfig: resolveFile('tsconfig.rollup.json'),
     }),
+    cleanup(),
+    terser(),
   ],
 };

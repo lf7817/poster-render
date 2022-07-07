@@ -1,0 +1,12 @@
+{
+  "mode": "exit",
+  "tag": "beta",
+  "initialVersions": {
+    "taro-free-poster": "2.1.5-beta.0",
+    "taro-poster-render": "2.1.5-beta.0"
+  },
+  "changesets": [
+    "spotty-jeans-fix",
+    "thin-spoons-punch"
+  ]
+}

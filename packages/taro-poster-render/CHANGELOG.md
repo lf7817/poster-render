@@ -1,5 +1,21 @@
 # taro-poster-render
 
+## 2.1.5-beta.1
+
+### Patch Changes
+
+- 压缩打包代码
+- Updated dependencies
+  - taro-free-poster@2.1.5-beta.1
+
+## 2.1.5-beta.0
+
+### Patch Changes
+
+- test
+- Updated dependencies
+  - taro-free-poster@2.1.5-beta.0
+
 ## 2.1.4
 
 ### Patch Changes
