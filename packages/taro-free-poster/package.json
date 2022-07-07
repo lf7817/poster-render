@@ -1,6 +1,6 @@
 {
   "name": "taro-free-poster",
-  "version": "2.1.4-beta.0",
+  "version": "2.1.4",
   "description": "taro海报组件，兼容企微、支付宝",
   "license": "MIT",
   "browser": "dist/index.umd.js",
@@ -29,7 +29,7 @@
   "scripts": {
     "clean": "rm -rf dist/ types/ lib/",
     "prepublish": "npm run clean && npm run build",
-    "build": "yarn run build:rollup && yarn run build:lib",
+    "build": "npm run build:rollup && npm run build:lib",
     "build:lib": "tsc --project ./tsconfig.build.json --declaration --declarationDir types",
     "build:rollup": "rollup --config ./rollup.config.js"
   },

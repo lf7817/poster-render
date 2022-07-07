@@ -2,26 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2aeb080f-10c5-439e-9ef6-f1da8958c64a" name="Changes" comment="chore: 更新版本号">
-      <change afterPath="$PROJECT_DIR$/packages/taro-free-poster-2d/CHANGELOG.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/taro-free-poster-2d/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/taro-free-poster-2d/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/taro-free-poster-2d/rollup.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/taro-free-poster-2d/src/FreePoster.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/taro-free-poster-2d/src/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/taro-free-poster-2d/src/types.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/taro-free-poster-2d/src/utils.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/taro-free-poster-2d/tsconfig.build.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/taro-free-poster-2d/tsconfig.rollup.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.changeset/pre.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.changeset/strange-students-do.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.changeset/tender-buckets-pretend.md" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/taro-example-react/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/examples/taro-example-react/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/taro-example-react/project.config.json" beforeDir="false" afterPath="$PROJECT_DIR$/examples/taro-example-react/project.config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/taro-example-react/src/pages/index/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/examples/taro-example-react/src/pages/index/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-free-poster/src/FreePoster.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-free-poster/src/FreePoster.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-free-poster/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-free-poster/src/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-free-poster/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-free-poster/CHANGELOG.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-free-poster/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-free-poster/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-poster-render/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-poster-render/CHANGELOG.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/taro-poster-render/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-poster-render/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro-poster-render/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-poster-render/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/taro-poster-render/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-poster-render/src/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-poster-render/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-poster-render/src/types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,6 +32,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/examples/taro-example-react/package.json" />
     <dismissed value="$PROJECT_DIR$/packages/taro-poster-render/package.json" />
   </component>
   <component name="ProblemsViewState">
@@ -55,21 +46,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/Users/fan/workspaces/taro-poster-render/packages",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "nodejs_package_manager_path": "yarn",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "ts.external.directory.path": "/Users/fan/workspaces/taro-poster-render/examples/taro-example-react/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/fan/workspaces/taro-poster-render/packages&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/fan/workspaces/taro-poster-render/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/packages" />
@@ -78,7 +69,7 @@
       <recent name="$PROJECT_DIR$/examples" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.changeset:exit">
+  <component name="RunManager" selected="npm.version-packages">
     <configuration name="changeset" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -131,11 +122,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.changeset:exit" />
-        <item itemvalue="npm.release" />
         <item itemvalue="npm.version-packages" />
+        <item itemvalue="npm.release" />
         <item itemvalue="npm.changeset" />
         <item itemvalue="npm.changeset:beta" />
+        <item itemvalue="npm.changeset:exit" />
       </list>
     </recent_temporary>
   </component>
@@ -157,7 +148,10 @@
       <workItem from="1656989528330" duration="2827000" />
       <workItem from="1656999903026" duration="9077000" />
       <workItem from="1657011356960" duration="3189000" />
-      <workItem from="1657076326058" duration="8401000" />
+      <workItem from="1657076326058" duration="9212000" />
+      <workItem from="1657096997282" duration="4097000" />
+      <workItem from="1657101759233" duration="170000" />
+      <workItem from="1657157706161" duration="2346000" />
     </task>
     <task id="LOCAL-00001" summary="chore: add .idea">
       <created>1654763807312</created>

@@ -1,6 +1,7 @@
 // @ts-ignore
 import Taro from "@tarojs/taro";
 import { Canvas, Image } from "@tarojs/components";
+// @ts-ignore
 import React, {
   forwardRef,
   ForwardRefRenderFunction,
