@@ -1,4 +1,4 @@
-import FreePoster from "./FreePoster";
+export { default as FreePoster } from "./FreePoster";
 
 export type {
   FreePosterOptions,
@@ -10,5 +10,3 @@ export type {
 } from "./types";
 
 export { toPx, toRpx } from "./utils";
-
-export default FreePoster;

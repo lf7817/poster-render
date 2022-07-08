@@ -12,7 +12,7 @@ import React, {
   useState,
   Fragment,
 } from "react";
-import FreePoster, { toPx, PosterItemConfig } from "taro-free-poster";
+import { FreePoster, toPx, PosterItemConfig } from "taro-free-poster";
 import type {
   PosterProps,
   PosterRef,

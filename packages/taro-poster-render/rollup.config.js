@@ -20,17 +20,20 @@ export default {
       file: resolveFile(Package.main),
       format: 'cjs',
       sourcemap: true,
+      exports: 'named',
     },
     {
       file: resolveFile(Package.module),
       format: 'es',
       sourcemap: true,
+      exports: 'named',
     },
     {
       file: resolveFile(Package.browser),
       format: 'umd',
       name: 'taro-poster-render',
       sourcemap: true,
+      exports: 'named',
       globals: {
         react: 'React',
         '@tarojs/components': 'components',
@@ -41,9 +44,7 @@ export default {
   external: externalPackages,
   plugins: [
     RollupNodeResolve({
-      customResolveOptions: {
-        moduleDirectory: 'node_modules',
-      },
+      moduleDirectories: ['node_modules']
     }),
     RollupCommonjs({
       include: /\/node_modules\//,

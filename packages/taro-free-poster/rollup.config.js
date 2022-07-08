@@ -17,11 +17,13 @@ export default {
     {
       file: resolveFile(Package.main),
       format: 'cjs',
+      exports: 'named',
       sourcemap: true,
     },
     {
       file: resolveFile(Package.module),
       format: 'es',
+      exports: 'named',
       sourcemap: true,
     },
     {
@@ -29,6 +31,7 @@ export default {
       format: 'umd',
       name: 'taro-free-poster',
       sourcemap: true,
+      exports: 'named',
       globals: {
         '@tarojs/taro': 'Taro',
       },
@@ -37,9 +40,7 @@ export default {
   external: externalPackages,
   plugins: [
     RollupNodeResolve({
-      customResolveOptions: {
-        moduleDirectory: 'node_modules',
-      },
+      moduleDirectories: ['node_modules']
     }),
     RollupCommonjs({
       include: /\/node_modules\//,

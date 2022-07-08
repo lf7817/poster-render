@@ -1,5 +1,5 @@
 import { CSSProperties } from "react";
-import FreePoster, { DownloadLimit, PosterItemConfig } from "taro-free-poster";
+import { FreePoster, DownloadLimit, PosterItemConfig } from "taro-free-poster";
 
 interface PosterBaseProps {
   canvasId?: string;
