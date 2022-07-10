@@ -1,7 +1,0 @@
-lockfileVersion: 5.4
-
-specifiers:
-  taro-poster-render: 2.1.5-beta.0
-
-dependencies:
-  taro-poster-render: link:../../packages/taro-poster-render

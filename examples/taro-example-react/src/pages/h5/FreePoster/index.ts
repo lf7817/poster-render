@@ -1,0 +1,1 @@
+export { FreePoster } from "./FreePoster";
