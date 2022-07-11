@@ -1,5 +1,5 @@
 import Taro from "@tarojs/taro";
-import { FreePosterOptions, PaintImage, Radius } from "./types";
+import { FreePosterOptions, PaintImage, PaintRect, Radius } from "./types";
 import {
   getCanvasElementById,
   isAlipay,
@@ -450,6 +450,69 @@ export class FreePoster {
         options.height
       );
     }
+  }
+
+  /**
+   * 绘制矩形
+   * @param options
+   */
+  public paintRect(options: Omit<PaintRect, "type">) {
+    this.time("绘制图形时间");
+    this.log("开始绘制图形", options);
+    const radius = this.normalizeRadius(options.radius);
+    const { x, y, width, height, borderWidth, borderColor, backgroundColor } =
+      options;
+
+    this.ctx.save();
+    this.ctx.beginPath();
+    this.ctx.moveTo(x + radius.topLeft, y);
+    // 绘制上边
+    this.ctx.lineTo(x + width - radius.topRight, y);
+    // 绘制右上角圆弧
+    this.ctx.arcTo(
+      x + width,
+      y,
+      x + width,
+      y + radius.topRight,
+      radius.topRight
+    );
+    // 绘制右边
+    this.ctx.lineTo(x + width, y + height - radius.bottomRight);
+    // 绘制右下角圆弧
+    this.ctx.arcTo(
+      x + width,
+      y + height,
+      x + width - radius.bottomRight,
+      y + height,
+      radius.bottomRight
+    );
+    // 绘制下边
+    this.ctx.lineTo(x + radius.bottomLeft, y + height);
+    // 绘制左下角圆弧
+    this.ctx.arcTo(
+      x,
+      y + height,
+      x,
+      y + height - radius.bottomLeft,
+      radius.bottomLeft
+    );
+    // 绘制左边
+    this.ctx.lineTo(x, y + radius.topLeft);
+    // 绘制左上角圆弧
+    this.ctx.arcTo(x, y, x + radius.topLeft, y, radius.topLeft);
+    this.ctx.closePath();
+    if (backgroundColor) {
+      this.ctx.fillStyle = backgroundColor;
+      this.ctx.fill();
+    }
+
+    if (borderColor && borderWidth) {
+      this.ctx.strokeStyle = borderColor;
+      this.ctx.lineWidth = borderWidth;
+      this.ctx.stroke();
+    }
+
+    this.ctx.restore();
   }
 
   public canvasToTempFilePath = async (): Promise<string | undefined> => {

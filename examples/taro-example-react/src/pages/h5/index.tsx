@@ -67,6 +67,17 @@ const h5: FC = () => {
         src: "https://img.1000.com/shumou/interaction/img2.png",
       });
 
+      freePoster.paintRect({
+        x: 22,
+        y: 760,
+        width: 600,
+        height: 320,
+        backgroundColor: "#fff",
+        radius: 20,
+        borderColor: "#000",
+        borderWidth: 20,
+      });
+
       // console.log(111, await freePoster.savePosterToPhoto());
     });
   }, []);

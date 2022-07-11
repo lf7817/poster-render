@@ -1,7 +1,7 @@
 import Taro from "@tarojs/taro";
 import { FC, useEffect, useRef, useState } from "react";
 import { Poster, PosterRef } from "taro-poster-render";
-import {View} from "@tarojs/components";
+import { View } from "@tarojs/components";
 
 const Index: FC = () => {
   const poster = useRef<PosterRef>(null);
@@ -19,7 +19,11 @@ const Index: FC = () => {
 
   return (
     <Poster
-      style={{ marginLeft: Taro.pxTransform(55), width: Taro.pxTransform(644), height: Taro.pxTransform(1104) }}
+      style={{
+        marginLeft: Taro.pxTransform(55),
+        width: Taro.pxTransform(644),
+        height: Taro.pxTransform(1104),
+      }}
       width={644 * 2}
       height={1104 * 2}
       ref={poster}
@@ -27,7 +31,7 @@ const Index: FC = () => {
       disableRerender
       quality={1}
       // showMenuByLongpress
-      renderType='image'
+      renderType="image"
       downloadLimit={10}
       // fileType="jpg"
       onLongPress={() => poster.current?.savePosterToPhoto()}
@@ -69,7 +73,8 @@ const Index: FC = () => {
         {
           type: "text",
           x: (textWidth, instance) =>
-            (644 * 2 - textWidth - instance.measureTextWidth("中二猪猪猪")) / 2 +
+            (644 * 2 - textWidth - instance.measureTextWidth("中二猪猪猪")) /
+              2 +
             instance.measureTextWidth("中二猪猪猪") +
             10 * 2,
           y: 180 * 2,
@@ -95,9 +100,9 @@ const Index: FC = () => {
           width: 600 * 2,
           height: 320 * 2,
           fillStyle: "#fff",
-          radius: 20,
+          radius: 20 * 2,
           strokeStyle: "#000",
-          lineWidth: 10 * 2,
+          lineWidth: 20 * 2,
         },
         {
           type: "shape",

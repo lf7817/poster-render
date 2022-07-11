@@ -82,3 +82,18 @@ export interface PaintImage extends Common<"image"> {
    */
   radius?: Radius;
 }
+
+export interface PaintRect extends Common<"rect"> {
+  /** 矩形宽 */
+  width: number;
+  /** 矩形高 */
+  height: number;
+  /** 圆角度数，如果要绘制圆形，宽高一致，radius设为宽一半 */
+  radius?: Radius;
+  /** 线颜色 */
+  borderColor?: string;
+  /** 线宽 */
+  borderWidth?: number;
+  /** 背景色 */
+  backgroundColor?: string;
+}
