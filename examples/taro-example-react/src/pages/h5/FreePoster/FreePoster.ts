@@ -1,5 +1,11 @@
 import Taro from "@tarojs/taro";
-import { FreePosterOptions, PaintImage, PaintRect, Radius } from "./types";
+import {
+  FreePosterOptions,
+  PaintImage,
+  PaintRect,
+  PaintText,
+  Radius,
+} from "./types";
 import {
   getCanvasElementById,
   isAlipay,
@@ -501,6 +507,7 @@ export class FreePoster {
     // 绘制左上角圆弧
     this.ctx.arcTo(x, y, x + radius.topLeft, y, radius.topLeft);
     this.ctx.closePath();
+
     if (backgroundColor) {
       this.ctx.fillStyle = backgroundColor;
       this.ctx.fill();
@@ -513,6 +520,127 @@ export class FreePoster {
     }
 
     this.ctx.restore();
+  }
+
+  /**
+   * 绘制文字
+   * @param options
+   */
+  public async paintText(options: Omit<PaintText, "type">) {
+    this.time("绘制文字时间");
+    this.log("开始绘制文字", options);
+    const {
+      textAlign = "left",
+      opacity = 1,
+      lineNum = 1,
+      lineHeight = 0,
+      baseLine = "top",
+      fontWeight = "normal",
+      fontStyle = "normal",
+      fontFamily = "sans-serif",
+    } = options;
+
+    this.ctx.save();
+    this.ctx.font = `${fontStyle} ${fontWeight} ${options.fontSize}px ${fontFamily}`;
+    this.ctx.globalAlpha = opacity;
+    this.ctx.fillStyle = options.color;
+    this.ctx.textAlign = textAlign;
+    this.ctx.textBaseline = baseLine;
+
+    let textWidth: number = this.measureTextWidth(options.text, {
+      fontSize: options.fontSize,
+      fontFamily,
+      fontStyle,
+      fontWeight,
+    });
+    const width =
+      typeof options.width === "number"
+        ? options.width
+        : options.width(textWidth, this);
+    const x =
+      typeof options.x === "number" ? options.x : options.x(textWidth, this);
+
+    const textArr: string[] = [];
+    if (textWidth > width) {
+      // 文本宽度 大于 渲染宽度
+      let fillText = "";
+      let line = 1;
+      for (let i = 0; i <= options.text.length - 1; i++) {
+        // 将文字转为数组，一行文字一个元素
+        fillText = fillText + options.text[i];
+        if (
+          this.measureTextWidth(fillText, {
+            fontSize: options.fontSize,
+            fontFamily,
+            fontStyle,
+            fontWeight,
+          }) >= width
+        ) {
+          if (line === lineNum) {
+            if (i !== options.text.length - 1) {
+              fillText = fillText.substring(0, fillText.length - 1) + "...";
+            }
+          }
+          if (line <= lineNum) {
+            textArr.push(fillText);
+          }
+          fillText = "";
+          line++;
+        } else {
+          if (line <= lineNum) {
+            if (i === options.text.length - 1) {
+              textArr.push(fillText);
+            }
+          }
+        }
+      }
+      textWidth = width;
+    } else {
+      textArr.push(options.text);
+    }
+
+    textArr.forEach((item, index) => {
+      this.ctx.fillText(
+        item,
+        x,
+        options.y + (lineHeight || options.fontSize) * index
+      );
+    });
+
+    this.ctx.restore();
+    this.timeEnd("绘制文字时间");
+    return textWidth;
+  }
+
+  /**
+   * 计算文本宽度
+   * @param text
+   */
+  public measureTextWidth(
+    text: string,
+    options?: {
+      fontSize: number;
+      fontWeight?: string;
+      fontStyle?: string;
+      fontFamily?: string;
+    }
+  ) {
+    this.ctx.save();
+
+    if (options) {
+      const {
+        fontStyle = "normal",
+        fontFamily = "normal",
+        fontWeight = "normal",
+        fontSize,
+      } = options;
+      this.ctx.font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`;
+    }
+    // measureText返回的是px
+    const textWidth = this.ctx.measureText(text).width;
+    this.ctx.restore();
+
+    return textWidth;
   }
 
   public canvasToTempFilePath = async (): Promise<string | undefined> => {
@@ -538,7 +666,7 @@ export class FreePoster {
               height: this.canvas.height,
               destWidth: this.options.destWidth ?? this.canvas.width,
               destHeight: this.options.destHeight ?? this.canvas.height,
-              canvas: this.canvas,
+              canvas: this.canvas as any,
               fileType: this.options.fileType,
               quality: this.options.quality,
               success: (res) => {

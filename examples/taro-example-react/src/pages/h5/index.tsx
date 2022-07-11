@@ -75,7 +75,57 @@ const h5: FC = () => {
         backgroundColor: "#fff",
         radius: 20,
         borderColor: "#000",
-        borderWidth: 20,
+        borderWidth: 10,
+      });
+
+      freePoster.paintRect({
+        x: 100,
+        y: 800,
+        width: 100,
+        height: 100,
+        backgroundColor: "red",
+        radius: 50,
+        borderColor: "yellow",
+        borderWidth: 10,
+      });
+
+      freePoster.paintText({
+        x: 50,
+        y: 50,
+        text: "中二猪猪猪123中二猪猪猪12312312311231231231231231123123123",
+        lineNum: 4,
+        width: 150,
+        height: 300,
+        fontSize: 30,
+        opacity: 0.5,
+        color: "#fff",
+      });
+
+      freePoster.paintText({
+        x: (textWidth, instance) =>
+          (644 - textWidth - instance.measureTextWidth("的助力邀请")) / 2,
+        y: 180,
+        width: (textWidth) => textWidth,
+        height: 30,
+        text: "中二猪猪猪",
+        color: "#fff",
+        fontSize: 28,
+        textAlign: "left",
+        baseLine: "top",
+      });
+
+      freePoster.paintText({
+        x: (textWidth, instance) =>
+          (644 - textWidth - instance.measureTextWidth("中二猪猪猪")) / 2 +
+          instance.measureTextWidth("中二猪猪猪") +
+          10,
+        y: 180,
+        width: 200,
+        height: 30,
+        text: "的助力邀请",
+        color: "#FEEE93",
+        fontSize: 28,
+        baseLine: "top",
       });
 
       // console.log(111, await freePoster.savePosterToPhoto());

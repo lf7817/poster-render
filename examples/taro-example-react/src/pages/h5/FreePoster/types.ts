@@ -1,3 +1,5 @@
+import { FreePoster } from "./FreePoster";
+
 export interface FreePosterOptions {
   id: string;
   /**
@@ -96,4 +98,29 @@ export interface PaintRect extends Common<"rect"> {
   borderWidth?: number;
   /** 背景色 */
   backgroundColor?: string;
+}
+
+export interface PaintText {
+  type: "text";
+  x: ((textWidth: number, instance: FreePoster) => number) | number;
+  y: number;
+  width: ((textWidth: number, instance: FreePoster) => number) | number;
+  height: number;
+  text: string;
+  /** 文字对齐方式 */
+  textAlign?: "left" | "center" | "right";
+  fontWeight?: "normal" | "bold";
+  color: string;
+  fontSize: number;
+  lineHeight?: number;
+  /**
+   * 文本基线的属性
+   */
+  baseLine?: CanvasTextBaseline;
+  opacity?: number;
+  lineNum?: number;
+  fontStyle?: "normal" | "italic" | "oblique";
+  fontFamily?: string;
+  /** 文字装饰，只支持line-through */
+  textDecoration?: "none" | "line-through";
 }
