@@ -1,5 +1,16 @@
 # taro-free-poster
 
+## 2.2.0
+
+### Minor Changes
+
+- 修复 shape 边框问题
+
+### Patch Changes
+
+- e462574: test
+- e462574: 压缩打包代码
+
 ## 2.1.5-beta.1
 
 ### Patch Changes
