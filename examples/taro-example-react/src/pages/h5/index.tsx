@@ -103,12 +103,12 @@ const h5: FC = () => {
         opacity: 1,
         color: "#fff",
         baseLine: "bottom",
-        textDecoration: "underline",
+        textDecoration: "line-through",
       });
 
       freePoster.paintText({
         x: (textWidth, instance) =>
-          (644 - textWidth - instance.measureTextWidth("的助力邀请")) / 2,
+          (644 - textWidth - instance.measureText("的助力邀请").width) / 2,
         y: 180,
         width: (textWidth) => textWidth,
         height: 30,
@@ -122,8 +122,8 @@ const h5: FC = () => {
 
       freePoster.paintText({
         x: (textWidth, instance) =>
-          (644 - textWidth - instance.measureTextWidth("中二猪猪猪")) / 2 +
-          instance.measureTextWidth("中二猪猪猪") +
+          (644 - textWidth - instance.measureText("中二猪猪猪").width) / 2 +
+          instance.measureText("中二猪猪猪").width +
           10,
         y: 180,
         width: 200,

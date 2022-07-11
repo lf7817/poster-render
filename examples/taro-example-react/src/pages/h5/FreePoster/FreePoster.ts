@@ -549,12 +549,13 @@ export class FreePoster {
     this.ctx.textAlign = textAlign;
     this.ctx.textBaseline = baseLine;
 
-    let textWidth: number = this.measureTextWidth(options.text, {
+    let textWidth: number = this.measureText(options.text, {
       fontSize: options.fontSize,
       fontFamily,
       fontStyle,
       fontWeight,
-    });
+      baseLine,
+    }).width;
     const width =
       typeof options.width === "number"
         ? options.width
@@ -571,12 +572,13 @@ export class FreePoster {
         // 将文字转为数组，一行文字一个元素
         fillText = fillText + options.text[i];
         if (
-          this.measureTextWidth(fillText, {
+          this.measureText(fillText, {
             fontSize: options.fontSize,
             fontFamily,
             fontStyle,
             fontWeight,
-          }) >= width
+            baseLine,
+          }).width >= width
         ) {
           if (line === lineNum) {
             if (i !== options.text.length - 1) {
@@ -604,17 +606,24 @@ export class FreePoster {
     textArr.forEach((item, index) => {
       const y = options.y + (lineHeight || options.fontSize) * index;
       this.ctx.fillText(item, x, y);
-      const tWidth = this.measureTextWidth(item, {
+      const {
+        width,
+        actualBoundingBoxAscent = 0,
+        actualBoundingBoxDescent = 0,
+      } = this.measureText(item, {
         fontSize: options.fontSize,
         fontFamily,
         fontStyle,
         fontWeight,
+        baseLine,
       });
 
+      const actualHeight = actualBoundingBoxAscent + actualBoundingBoxDescent;
+
       if (textDecoration) {
-        const deltaY = this.calcTextDecorationPosition(options);
+        const deltaY = this.calcTextDecorationPosition(actualHeight, options);
         this.ctx.moveTo(x, y + deltaY);
-        this.ctx.lineTo(x + tWidth, y + deltaY);
+        this.ctx.lineTo(x + width, y + deltaY);
         this.ctx.lineWidth = options.textDecorationWidth ?? 2;
         this.ctx.strokeStyle = options.color;
         this.ctx.stroke();
@@ -630,31 +639,35 @@ export class FreePoster {
    * 计算TextDecoration位置
    * @param options
    */
-  private calcTextDecorationPosition(options: Omit<PaintText, "type">): number {
+  private calcTextDecorationPosition(
+    actualHeight: number,
+    options: Omit<PaintText, "type">
+  ): number {
     const { fontSize, textDecoration, baseLine = "top" } = options;
+    const height = actualHeight || fontSize;
     let deltaY = 0;
 
     if (baseLine === "top") {
       if (textDecoration === "overline") {
         deltaY = 0;
       } else if (textDecoration === "underline") {
-        deltaY = fontSize;
+        deltaY = height;
       } else {
-        deltaY = fontSize / 2;
+        deltaY = height / 2;
       }
     } else if (baseLine === "bottom") {
       if (textDecoration === "overline") {
-        deltaY = -fontSize;
+        deltaY = -height;
       } else if (textDecoration === "underline") {
         deltaY = 0;
       } else {
-        deltaY = -fontSize / 2;
+        deltaY = -height / 2;
       }
     } else {
       if (textDecoration === "overline") {
-        deltaY = -fontSize / 2;
+        deltaY = -height / 2;
       } else if (textDecoration === "underline") {
-        deltaY = fontSize / 2;
+        deltaY = height / 2;
       } else {
         deltaY = 0;
       }
@@ -667,15 +680,16 @@ export class FreePoster {
    * 计算文本宽度
    * @param text
    */
-  public measureTextWidth(
+  public measureText(
     text: string,
     options?: {
+      baseLine?: "top" | "bottom" | "middle";
       fontSize: number;
       fontWeight?: string;
       fontStyle?: string;
       fontFamily?: string;
     }
-  ) {
+  ): TextMetrics {
     this.ctx.save();
 
     if (options) {
@@ -684,14 +698,16 @@ export class FreePoster {
         fontFamily = "normal",
         fontWeight = "normal",
         fontSize,
+        baseLine = "top",
       } = options;
+      this.ctx.textBaseline = baseLine;
       this.ctx.font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`;
     }
-    // measureText返回的是px
-    const textWidth = this.ctx.measureText(text).width;
+
+    const textMetrics = this.ctx.measureText(text);
     this.ctx.restore();
 
-    return textWidth;
+    return textMetrics;
   }
 
   public canvasToTempFilePath = async (): Promise<string | undefined> => {
