@@ -662,7 +662,7 @@ export class FreePoster {
     options: Omit<PaintText, "type">
   ): number {
     const { fontSize, textDecoration, baseLine = "top" } = options;
-    const height = fontSize;
+    const height = actualHeight || fontSize;
     let deltaY = 0;
 
     if (baseLine === "top") {
