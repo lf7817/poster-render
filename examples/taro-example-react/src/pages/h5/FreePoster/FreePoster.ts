@@ -1,7 +1,9 @@
 import Taro from "@tarojs/taro";
 import {
+  BaseLine,
   FreePosterOptions,
   PaintImage,
+  PaintLine,
   PaintRect,
   PaintText,
   Radius,
@@ -636,6 +638,22 @@ export class FreePoster {
   }
 
   /**
+   * 绘制线
+   * @param options
+   */
+  public async paintLine(options: Omit<PaintLine, "type">) {
+    this.ctx.save();
+    this.ctx.beginPath();
+    this.ctx.moveTo(options.x, options.y);
+    this.ctx.lineTo(options.destX, options.destY);
+    this.ctx.closePath();
+    this.ctx.lineWidth = options.lineWidth;
+    this.ctx.strokeStyle = options.color;
+    this.ctx.stroke();
+    this.ctx.restore();
+  }
+
+  /**
    * 计算TextDecoration位置
    * @param options
    */
@@ -644,7 +662,7 @@ export class FreePoster {
     options: Omit<PaintText, "type">
   ): number {
     const { fontSize, textDecoration, baseLine = "top" } = options;
-    const height = actualHeight || fontSize;
+    const height = fontSize;
     let deltaY = 0;
 
     if (baseLine === "top") {
@@ -683,7 +701,7 @@ export class FreePoster {
   public measureText(
     text: string,
     options?: {
-      baseLine?: "top" | "bottom" | "middle";
+      baseLine?: BaseLine;
       fontSize: number;
       fontWeight?: string;
       fontStyle?: string;

@@ -41,6 +41,7 @@ export interface FreePosterOptions {
 }
 
 export type Radius = number | [number, number, number, number];
+export type BaseLine = "top" | "middle" | "bottom";
 
 interface Common<T> {
   type: T;
@@ -116,7 +117,7 @@ export interface PaintText {
   /**
    * 文本基线的属性, 默认top
    */
-  baseLine?: "top" | "middle" | "bottom";
+  baseLine?: BaseLine;
   opacity?: number;
   lineNum?: number;
   fontStyle?: "normal" | "italic" | "oblique";
@@ -125,4 +126,19 @@ export interface PaintText {
   textDecoration?: "line-through" | "underline" | "overline";
   /** 文字装饰线宽 */
   textDecorationWidth?: number;
+}
+
+export interface PaintLine extends Common<"line"> {
+  /** 起始点x */
+  x: number;
+  /** 起始点y */
+  y: number;
+  /** 目标点x */
+  destX: number;
+  /** 目标点y */
+  destY: number;
+  /** 线颜色 */
+  color: string;
+  /** 线宽 */
+  lineWidth: number;
 }
