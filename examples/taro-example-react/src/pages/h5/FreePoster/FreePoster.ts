@@ -15,6 +15,10 @@ export class FreePoster {
    */
   private canvas: Taro.Canvas;
   /**
+   * dpr
+   */
+  private dpr: number = 1;
+  /**
    * Canvas 绘图上下文
    */
   private ctx: CanvasRenderingContext2D;
@@ -30,14 +34,16 @@ export class FreePoster {
     height: 150,
     fileType: "png",
     quality: 1,
-    disableHD: false,
   };
 
   constructor(options: Partial<FreePosterOptions>) {
     this.options = { ...this.options, ...options };
+
     if (this.options.height >= 4096) {
       throw new Error("[taro-poster-render]: height must be less than 4096");
     }
+
+    this.dpr = this.calculateDpr();
   }
 
   /**
@@ -52,25 +58,16 @@ export class FreePoster {
       );
       return;
     }
-    // 是否开启高清模式
-    const disableHD =
-      this.options.disableHD ||
-      // 安卓企微暂不支持高清模式，dpr大于3导出图片会报错
-      (isQiwei && isAndroid) ||
-      // 支付宝不支持高清模式
-      isAlipay ||
-      // 画布高度超过4096导出图片会报错
-      this.options.height * pixelRatio >= 4096;
 
     this.canvas = canvas;
-    this.canvas.width = this.options.width * (disableHD ? 1 : pixelRatio);
-    this.canvas.height = this.options.height * (disableHD ? 1 : pixelRatio);
+    this.canvas.width = this.options.width * this.dpr;
+    this.canvas.height = this.options.height * this.dpr;
     this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
     // 强烈建议在scale前加上这句（如果在onShow上生成海报必须要）
     this.ctx.resetTransform?.();
     // this.ctx.setTransform(1, 0, 0, 1, 0, 0)
-    if (!disableHD) {
-      this.ctx.scale(pixelRatio, pixelRatio);
+    if (this.dpr !== 1) {
+      this.ctx.scale(this.dpr, this.dpr);
     }
     // 绘制前清空画布
     this.clearCanvas();
@@ -79,6 +76,18 @@ export class FreePoster {
       this.canvas.width,
       this.canvas.height
     );
+  }
+
+  /**
+   * 计算dpr，确保不报错
+   */
+  private calculateDpr() {
+    // 支付宝不支持高清模式， 安卓企微暂不支持高清模式，dpr大于3导出图片会报错
+    const notSupport = isAlipay || (isQiwei && isAndroid);
+    const dpr = this.options.dpr ?? pixelRatio;
+    // 画布高度超过4096导出图片会报错
+    const overLimit = this.options.height * dpr >= 4096;
+    return overLimit || notSupport ? 1 : dpr;
   }
 
   /**

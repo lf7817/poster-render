@@ -22,10 +22,6 @@ export interface FreePosterOptions {
    */
   quality: number;
   /**
-   * 禁用高清模,默认画布宽高会乘以dpr（前提不超画布高度不超过4096）
-   */
-  disableHD?: boolean;
-  /**
    * 输出的图片的宽度
    */
   destWidth?: number;
@@ -33,6 +29,13 @@ export interface FreePosterOptions {
    * 输出的图片的高度
    */
   destHeight?: number;
+  /**
+   * 指定dpr
+   * @desc 画布最终会被放大dpr倍，默认为系统dpr
+   * 支付宝小程序不支持，固定为1，安卓下企微dpr为3时生成图片会报错，固定为1
+   * 如果画布高度乘以dpr超过4096,则会取消放大
+   */
+  dpr?: number;
 }
 
 export type Radius = number | [number, number, number, number];

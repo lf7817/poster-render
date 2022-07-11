@@ -14,7 +14,7 @@ const h5: FC = () => {
         width: 644,
         height: 1104,
         debug: true,
-        // disableHD: true,
+        // dpr: 3,
       });
 
       await freePoster.init();
@@ -67,7 +67,7 @@ const h5: FC = () => {
         src: "https://img.1000.com/shumou/interaction/img2.png",
       });
 
-      console.log(111, await freePoster.savePosterToPhoto());
+      // console.log(111, await freePoster.savePosterToPhoto());
     });
   }, []);
 
