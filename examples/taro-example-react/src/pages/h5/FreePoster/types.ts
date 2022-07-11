@@ -114,13 +114,15 @@ export interface PaintText {
   fontSize: number;
   lineHeight?: number;
   /**
-   * 文本基线的属性
+   * 文本基线的属性, 默认top
    */
-  baseLine?: CanvasTextBaseline;
+  baseLine?: "top" | "middle" | "bottom";
   opacity?: number;
   lineNum?: number;
   fontStyle?: "normal" | "italic" | "oblique";
   fontFamily?: string;
-  /** 文字装饰，只支持line-through */
-  textDecoration?: "none" | "line-through";
+  /** 文字装饰线,下划线、上划线、删除线 */
+  textDecoration?: "line-through" | "underline" | "overline";
+  /** 文字装饰线宽 */
+  textDecorationWidth?: number;
 }

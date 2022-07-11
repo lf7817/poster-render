@@ -92,13 +92,18 @@ const h5: FC = () => {
       freePoster.paintText({
         x: 50,
         y: 50,
-        text: "中二猪猪猪123中二猪猪猪12312312311231231231231231123123123",
-        lineNum: 4,
+        text: "中二猪猪猪猪猪",
+        lineNum: 2,
+        lineHeight: 40,
         width: 150,
-        height: 300,
+        height: 400,
+        fontStyle: "italic",
+        fontWeight: "bold",
         fontSize: 30,
-        opacity: 0.5,
+        opacity: 1,
         color: "#fff",
+        baseLine: "bottom",
+        textDecoration: "underline",
       });
 
       freePoster.paintText({
@@ -112,6 +117,7 @@ const h5: FC = () => {
         fontSize: 28,
         textAlign: "left",
         baseLine: "top",
+        textDecoration: "line-through",
       });
 
       freePoster.paintText({

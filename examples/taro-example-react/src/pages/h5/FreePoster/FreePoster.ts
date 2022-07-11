@@ -538,9 +538,11 @@ export class FreePoster {
       fontWeight = "normal",
       fontStyle = "normal",
       fontFamily = "sans-serif",
+      textDecoration,
     } = options;
 
     this.ctx.save();
+    this.ctx.beginPath();
     this.ctx.font = `${fontStyle} ${fontWeight} ${options.fontSize}px ${fontFamily}`;
     this.ctx.globalAlpha = opacity;
     this.ctx.fillStyle = options.color;
@@ -600,16 +602,65 @@ export class FreePoster {
     }
 
     textArr.forEach((item, index) => {
-      this.ctx.fillText(
-        item,
-        x,
-        options.y + (lineHeight || options.fontSize) * index
-      );
-    });
+      const y = options.y + (lineHeight || options.fontSize) * index;
+      this.ctx.fillText(item, x, y);
+      const tWidth = this.measureTextWidth(item, {
+        fontSize: options.fontSize,
+        fontFamily,
+        fontStyle,
+        fontWeight,
+      });
 
+      if (textDecoration) {
+        const deltaY = this.calcTextDecorationPosition(options);
+        this.ctx.moveTo(x, y + deltaY);
+        this.ctx.lineTo(x + tWidth, y + deltaY);
+        this.ctx.lineWidth = options.textDecorationWidth ?? 2;
+        this.ctx.strokeStyle = options.color;
+        this.ctx.stroke();
+      }
+    });
+    this.ctx.closePath();
     this.ctx.restore();
     this.timeEnd("绘制文字时间");
     return textWidth;
+  }
+
+  /**
+   * 计算TextDecoration位置
+   * @param options
+   */
+  private calcTextDecorationPosition(options: Omit<PaintText, "type">): number {
+    const { fontSize, textDecoration, baseLine = "top" } = options;
+    let deltaY = 0;
+
+    if (baseLine === "top") {
+      if (textDecoration === "overline") {
+        deltaY = 0;
+      } else if (textDecoration === "underline") {
+        deltaY = fontSize;
+      } else {
+        deltaY = fontSize / 2;
+      }
+    } else if (baseLine === "bottom") {
+      if (textDecoration === "overline") {
+        deltaY = -fontSize;
+      } else if (textDecoration === "underline") {
+        deltaY = 0;
+      } else {
+        deltaY = -fontSize / 2;
+      }
+    } else {
+      if (textDecoration === "overline") {
+        deltaY = -fontSize / 2;
+      } else if (textDecoration === "underline") {
+        deltaY = fontSize / 2;
+      } else {
+        deltaY = 0;
+      }
+    }
+
+    return deltaY;
   }
 
   /**
