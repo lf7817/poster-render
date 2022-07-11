@@ -7,6 +7,7 @@ import {
   PaintRect,
   PaintText,
   Radius,
+  PosterItemConfig,
 } from "./types";
 import {
   getCanvasElementById,
@@ -464,7 +465,7 @@ export class FreePoster {
    * 绘制矩形
    * @param options
    */
-  public paintRect(options: Omit<PaintRect, "type">) {
+  public async paintRect(options: Omit<PaintRect, "type">) {
     this.time("绘制图形时间");
     this.log("开始绘制图形", options);
     const radius = this.normalizeRadius(options.radius);
@@ -790,5 +791,21 @@ export class FreePoster {
     );
     this.timeEnd("提前下载图片用时");
     return !loadedImages.includes(undefined);
+  }
+
+  public async render(list: PosterItemConfig[]) {
+    const funcMap = {
+      text: "paintText",
+      line: "paintLine",
+      image: "paintImage",
+      rect: "paintRect",
+    };
+
+    for await (const item of list) {
+      if (!funcMap[item.type]) {
+        throw new Error(`[taro-poster-render]: ${item.type}类型不存在`);
+      }
+      await this[funcMap[item.type]]?.(item);
+    }
   }
 }

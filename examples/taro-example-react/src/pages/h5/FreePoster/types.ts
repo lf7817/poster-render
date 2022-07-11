@@ -142,3 +142,5 @@ export interface PaintLine extends Common<"line"> {
   /** 线宽 */
   lineWidth: number;
 }
+
+export type PosterItemConfig = PaintImage | PaintText | PaintRect | PaintLine;
