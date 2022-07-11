@@ -1,5 +1,16 @@
 import Taro from "@tarojs/taro";
 
+export const { screenWidth, pixelRatio, environment, platform } =
+  Taro.getSystemInfoSync();
+
+/**
+ * 是否是企微
+ */
+export const isQiwei = environment === "wxwork";
+export const isAndroid = platform?.toLocaleLowerCase()?.includes("android");
+export const isAlipay = Taro.getEnv() === "ALIPAY";
+export const isWeb = Taro.getEnv() === "WEB";
+
 /**
  * 获取canvas元素
  * @param id
@@ -8,19 +19,12 @@ import Taro from "@tarojs/taro";
 export function getCanvasElementById(
   id: string
 ): Promise<Taro.Canvas | undefined> {
-  if (Taro.getEnv() === "WEB") {
-    return Promise.resolve(document.getElementById(id) as any);
-  }
-
   return new Promise((resolve) => {
-    Taro.createSelectorQuery()
-      .select(`#${id}`)
-      .fields({ node: true, size: true })
-      .exec((rect) => resolve(rect?.[0]?.node));
+    isWeb
+      ? resolve(document.getElementById(id) as any)
+      : Taro.createSelectorQuery()
+          .select(`#${id}`)
+          .fields({ node: true, size: true })
+          .exec((rect) => resolve(rect?.[0]?.node));
   });
 }
-
-export const { screenWidth, pixelRatio } = Taro.getSystemInfoSync();
-export const isAlipay = Taro.getEnv() === "ALIPAY";
-export const isWeb = Taro.getEnv() === "WEB";
-export const factor = screenWidth / 750;

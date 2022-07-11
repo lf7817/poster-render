@@ -1,6 +1,13 @@
 import Taro from "@tarojs/taro";
 import { FreePosterOptions, PaintImage, Radius } from "./types";
-import { getCanvasElementById, isAlipay, isWeb, pixelRatio } from "./utils";
+import {
+  getCanvasElementById,
+  isAlipay,
+  isAndroid,
+  isQiwei,
+  isWeb,
+  pixelRatio,
+} from "./utils";
 
 export class FreePoster {
   /**
@@ -47,19 +54,22 @@ export class FreePoster {
     }
     // 是否开启高清模式
     const disableHD =
-      this.options.disableHD || this.options.height * pixelRatio >= 4096;
+      this.options.disableHD ||
+      // 安卓企微暂不支持高清模式，dpr大于3导出图片会报错
+      (isQiwei && isAndroid) ||
+      // 支付宝不支持高清模式
+      isAlipay ||
+      // 画布高度超过4096导出图片会报错
+      this.options.height * pixelRatio >= 4096;
 
     this.canvas = canvas;
-    this.canvas.width =
-      this.options.width * (disableHD || isAlipay ? 1 : pixelRatio);
-    this.canvas.height =
-      this.options.height * (disableHD || isAlipay ? 1 : pixelRatio);
-
+    this.canvas.width = this.options.width * (disableHD ? 1 : pixelRatio);
+    this.canvas.height = this.options.height * (disableHD ? 1 : pixelRatio);
     this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
     // 强烈建议在scale前加上这句（如果在onShow上生成海报必须要）
     this.ctx.resetTransform?.();
     // this.ctx.setTransform(1, 0, 0, 1, 0, 0)
-    if (!isAlipay && !disableHD) {
+    if (!disableHD) {
       this.ctx.scale(pixelRatio, pixelRatio);
     }
     // 绘制前清空画布
@@ -76,6 +86,87 @@ export class FreePoster {
    */
   public clearCanvas() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
+  /**
+   * 获取授权
+   */
+  private getAuth() {
+    Taro.hideLoading();
+    // 这边微信做过调整，必须要在按钮中触发，因此需要在弹框回调中进行调用
+    Taro.showModal({
+      content: "需要您授权保存相册",
+      confirmColor: "#E23A4E",
+      showCancel: false,
+      success: ({ confirm }) => {
+        confirm &&
+          Taro.openSetting({
+            success(settingdata) {
+              if (settingdata.authSetting["scope.writePhotosAlbum"]) {
+                Taro.showToast({
+                  title: "获取权限成功,再操作一次",
+                  icon: "none",
+                  duration: 3000,
+                });
+              } else {
+                Taro.showToast({
+                  title: "获取权限失败，将无法保存到相册",
+                  icon: "none",
+                  duration: 3000,
+                });
+              }
+            },
+            fail(failData) {
+              this.log("[taro-poster-render]: openSetting fail", failData);
+            },
+          });
+      },
+    });
+  }
+
+  /**
+   * 保存到相册
+   */
+  public async savePosterToPhoto(): Promise<string> {
+    this.log("开始保存到相册");
+    return new Promise(async (resolve, reject) => {
+      const tmp = await this.canvasToTempFilePath();
+      if (tmp) {
+        if (isWeb) {
+          const link = document.createElement("a");
+          //把a标签的href属性赋值到生成好了的url
+          link.href = tmp;
+          //通过a标签的download属性修改下载图片的名字
+          link.download = `${new Date().getTime()}.${this.options.fileType}`;
+          //让a标签的click函数，直接下载图片
+          link.click();
+        } else {
+          Taro.saveImageToPhotosAlbum({
+            filePath: tmp,
+            success: () => {
+              this.log("保存到相册成功");
+              // this.options?.onSave?.(tmp);
+              Taro.showToast({
+                icon: "none",
+                title: "已保存到相册，快去分享哟～",
+              });
+              resolve(tmp);
+            },
+            fail: (err) => {
+              if (err.errMsg !== "saveImageToPhotosAlbum:fail cancel") {
+                this.getAuth();
+              }
+              this.log("保存到相册失败");
+              reject(err);
+              // this.options?.onSaveFail?.(err);
+            },
+          });
+        }
+      } else {
+        // this.options?.onSaveFail?.(e);
+        this.log("保存到相册失败");
+      }
+    });
   }
 
   /**
@@ -399,83 +490,20 @@ export class FreePoster {
   };
 
   /**
-   * 获取授权
+   * 提前下载图片
+   * @param images
+   * @returns boolean 有一张图下载失败都会返回false,但不会阻塞后续图片下载
    */
-  private getAuth() {
-    Taro.hideLoading();
-    // 这边微信做过调整，必须要在按钮中触发，因此需要在弹框回调中进行调用
-    Taro.showModal({
-      content: "需要您授权保存相册",
-      confirmColor: "#E23A4E",
-      showCancel: false,
-      success: ({ confirm }) => {
-        confirm &&
-          Taro.openSetting({
-            success(settingdata) {
-              if (settingdata.authSetting["scope.writePhotosAlbum"]) {
-                Taro.showToast({
-                  title: "获取权限成功,再操作一次",
-                  icon: "none",
-                  duration: 3000,
-                });
-              } else {
-                Taro.showToast({
-                  title: "获取权限失败，将无法保存到相册",
-                  icon: "none",
-                  duration: 3000,
-                });
-              }
-            },
-            fail(failData) {
-              this.log("[taro-poster-render]: openSetting fail", failData);
-            },
-          });
-      },
-    });
-  }
-
-  /**
-   * 保存到相册
-   */
-  public async savePosterToPhoto(): Promise<string> {
-    this.log("开始保存到相册");
-    return new Promise(async (resolve, reject) => {
-      const tmp = await this.canvasToTempFilePath();
-      if (tmp) {
-        if (isWeb) {
-          const link = document.createElement("a");
-          //把a标签的href属性赋值到生成好了的url
-          link.href = tmp;
-          //通过a标签的download属性修改下载图片的名字
-          link.download = `${new Date().getTime()}.${this.options.fileType}`;
-          //让a标签的click函数，直接下载图片
-          link.click();
-        } else {
-          Taro.saveImageToPhotosAlbum({
-            filePath: tmp,
-            success: () => {
-              this.log("保存到相册成功");
-              // this.options?.onSave?.(tmp);
-              Taro.showToast({
-                icon: "none",
-                title: "已保存到相册，快去分享哟～",
-              });
-              resolve(tmp);
-            },
-            fail: (err) => {
-              if (err.errMsg !== "saveImageToPhotosAlbum:fail cancel") {
-                this.getAuth();
-              }
-              this.log("保存到相册失败");
-              reject(err);
-              // this.options?.onSaveFail?.(err);
-            },
-          });
-        }
-      } else {
-        // this.options?.onSaveFail?.(e);
-        this.log("保存到相册失败");
-      }
-    });
+  public async preloadImage(images: string[]): Promise<boolean> {
+    this.log("开始提前下载图片");
+    this.time("提前下载图片用时");
+    const needLoadImages = Array.from(
+      new Set(images.filter((item) => !this.images.has(item)))
+    );
+    const loadedImages = await Promise.all(
+      needLoadImages.map((item) => this.loadImage(item))
+    );
+    this.timeEnd("提前下载图片用时");
+    return !loadedImages.includes(undefined);
   }
 }
