@@ -17,6 +17,7 @@ import {
   isWeb,
   pixelRatio,
 } from "./utils";
+import Logger from "./utils/logger";
 
 export class FreePoster {
   /**
@@ -31,8 +32,14 @@ export class FreePoster {
    * Canvas 绘图上下文
    */
   private ctx: CanvasRenderingContext2D;
-
+  /**
+   * 图片缓存
+   */
   private images = new Map<string, HTMLImageElement | Taro.Image>();
+  /**
+   * log
+   */
+  private logger: Logger;
   /**
    * 构造函数默认参数
    */
@@ -53,6 +60,7 @@ export class FreePoster {
     }
 
     this.dpr = this.calculateDpr();
+    this.logger = new Logger(!!this.options.debug);
   }
 
   /**
@@ -75,12 +83,10 @@ export class FreePoster {
     // 强烈建议在scale前加上这句（如果在onShow上生成海报必须要）
     this.ctx.resetTransform?.();
     // this.ctx.setTransform(1, 0, 0, 1, 0, 0)
-    if (this.dpr !== 1) {
-      this.ctx.scale(this.dpr, this.dpr);
-    }
+    this.ctx.scale(this.dpr, this.dpr);
     // 绘制前清空画布
     this.clearCanvas();
-    this.log(
+    this.logger.info(
       "[taro-poster-render]: 画布尺寸：",
       this.canvas.width,
       this.canvas.height
@@ -135,7 +141,10 @@ export class FreePoster {
               }
             },
             fail(failData) {
-              this.log("[taro-poster-render]: openSetting fail", failData);
+              this.logger.info(
+                "[taro-poster-render]: openSetting fail",
+                failData
+              );
             },
           });
       },
@@ -146,7 +155,7 @@ export class FreePoster {
    * 保存到相册
    */
   public async savePosterToPhoto(): Promise<string> {
-    this.log("开始保存到相册");
+    this.logger.info("开始保存到相册");
     return new Promise(async (resolve, reject) => {
       const tmp = await this.canvasToTempFilePath();
       if (tmp) {
@@ -162,7 +171,7 @@ export class FreePoster {
           Taro.saveImageToPhotosAlbum({
             filePath: tmp,
             success: () => {
-              this.log("保存到相册成功");
+              this.logger.info("保存到相册成功");
               // this.options?.onSave?.(tmp);
               Taro.showToast({
                 icon: "none",
@@ -174,7 +183,7 @@ export class FreePoster {
               if (err.errMsg !== "saveImageToPhotosAlbum:fail cancel") {
                 this.getAuth();
               }
-              this.log("保存到相册失败");
+              this.logger.info("保存到相册失败");
               reject(err);
               // this.options?.onSaveFail?.(err);
             },
@@ -182,7 +191,7 @@ export class FreePoster {
         }
       } else {
         // this.options?.onSaveFail?.(e);
-        this.log("保存到相册失败");
+        this.logger.info("保存到相册失败");
       }
     });
   }
@@ -192,15 +201,15 @@ export class FreePoster {
    */
   public async setCanvasBackground(canvasBackground: string) {
     if (canvasBackground) {
-      this.time("渲染背景色");
+      this.logger.time("渲染背景色");
       const color = canvasBackground;
       const { width, height } = this.options;
-      this.log("设置canvas的背景色：", color);
+      this.logger.info("设置canvas的背景色：", color);
       this.ctx.save();
       this.ctx.fillStyle = color;
       this.ctx.fillRect(0, 0, width, height);
       this.ctx.restore();
-      this.timeEnd("渲染背景色");
+      this.logger.timeEnd("渲染背景色");
     }
   }
 
@@ -235,31 +244,13 @@ export class FreePoster {
     };
   }
 
-  public log = (message?: any, ...optionalParams: any[]) => {
-    if (this.options.debug) {
-      console.log(message, ...optionalParams);
-    }
-  };
-
-  public time = (message: string) => {
-    if (this.options.debug) {
-      console.time(message);
-    }
-  };
-
-  public timeEnd = (message: string) => {
-    if (this.options.debug) {
-      console.timeEnd(message);
-    }
-  };
-
   private loadImage = async (
     url: string
   ): Promise<Taro.Image | HTMLImageElement | undefined> => {
     let retryCounter = 0;
 
     if (!url) {
-      this.log("图像路径不能为空");
+      this.logger.info("图像路径不能为空");
       return Promise.resolve(undefined);
     }
 
@@ -276,29 +267,29 @@ export class FreePoster {
       //     this.images.set(url, data);
       //     return Promise.resolve(data);
       //   } catch (e) {
-      //     this.log(e);
-      //     this.log(`本地临时文件不存在`, url);
+      //     this.logger.info(e);
+      //     this.logger.info(`本地临时文件不存在`, url);
       //     return undefined;
       //   }
     }
 
     const downloadFile = async (resolve) => {
-      this.time(`下载图片${url}用时`);
+      this.logger.time(`下载图片${url}用时`);
       const image = isWeb ? new Image() : this.canvas.createImage();
 
       image.onload = () => {
-        this.timeEnd(`下载图片${url}用时`);
+        this.logger.timeEnd(`下载图片${url}用时`);
         retryCounter = 0;
         this.images.set(url, image);
         resolve(image);
       };
       image.onerror = async (e: any) => {
         if (++retryCounter <= 2) {
-          this.log(`图片下载失败, 开始第${retryCounter}次重试`, url);
+          this.logger.info(`图片下载失败, 开始第${retryCounter}次重试`, url);
           await downloadFile(resolve);
         } else {
-          this.timeEnd(`下载图片${url}用时`);
-          this.log("三次尝试图片仍下载失败,放弃治疗", url, e);
+          this.logger.timeEnd(`下载图片${url}用时`);
+          this.logger.info("三次尝试图片仍下载失败,放弃治疗", url, e);
           resolve(undefined);
         }
       };
@@ -322,8 +313,8 @@ export class FreePoster {
    * @param options
    */
   public async paintImage(options: Omit<PaintImage, "type">) {
-    this.time("绘制图片时间");
-    this.log("开始绘制图片", options);
+    this.logger.time("绘制图片时间");
+    this.logger.info("开始绘制图片", options);
     const { x, y, src, defaultSrc, width, height, backgroundColor } = options;
     const radius = this.normalizeRadius(options.radius);
     let image = await this.loadImage(src);
@@ -334,7 +325,7 @@ export class FreePoster {
     }
 
     if (!image) {
-      this.log(`图片${options.src}下载失败，跳过渲染`);
+      this.logger.info(`图片${options.src}下载失败，跳过渲染`);
       return;
     }
 
@@ -383,7 +374,7 @@ export class FreePoster {
     }
     this.fitImage(options);
     this.ctx.restore();
-    this.timeEnd("绘制图片时间");
+    this.logger.timeEnd("绘制图片时间");
   }
 
   /**
@@ -396,7 +387,7 @@ export class FreePoster {
       this.images.get(options.src) || this.images.get(options.defaultSrc!);
 
     if (!image) {
-      this.log("处理图片失败，图片不存在");
+      this.logger.info("处理图片失败，图片不存在");
       return;
     }
 
@@ -466,8 +457,8 @@ export class FreePoster {
    * @param options
    */
   public async paintRect(options: Omit<PaintRect, "type">) {
-    this.time("绘制图形时间");
-    this.log("开始绘制图形", options);
+    this.logger.time("绘制图形时间");
+    this.logger.info("开始绘制图形", options);
     const radius = this.normalizeRadius(options.radius);
     const { x, y, width, height, borderWidth, borderColor, backgroundColor } =
       options;
@@ -523,6 +514,7 @@ export class FreePoster {
     }
 
     this.ctx.restore();
+    this.logger.timeEnd("绘制图形时间");
   }
 
   /**
@@ -530,8 +522,8 @@ export class FreePoster {
    * @param options
    */
   public async paintText(options: Omit<PaintText, "type">) {
-    this.time("绘制文字时间");
-    this.log("开始绘制文字", options);
+    this.logger.time("绘制文字时间");
+    this.logger.info("开始绘制文字", options);
     const {
       textAlign = "left",
       opacity = 1,
@@ -634,7 +626,7 @@ export class FreePoster {
     });
     this.ctx.closePath();
     this.ctx.restore();
-    this.timeEnd("绘制文字时间");
+    this.logger.timeEnd("绘制文字时间");
     return textWidth;
   }
 
@@ -732,8 +724,8 @@ export class FreePoster {
   public canvasToTempFilePath = async (): Promise<string | undefined> => {
     return new Promise((resolve) => {
       setTimeout(async () => {
-        this.log("开始截取canvas图片");
-        this.time("截取canvas图片时间");
+        this.logger.info("开始截取canvas图片");
+        this.logger.time("截取canvas图片时间");
         if (isWeb) {
           resolve(
             this.canvas.toDataURL(
@@ -759,12 +751,12 @@ export class FreePoster {
                 const localUrl = isAlipay
                   ? (res as any).apFilePath
                   : res.tempFilePath;
-                this.log("截取canvas图片成功", localUrl);
-                this.timeEnd("截取canvas图片时间");
+                this.logger.info("截取canvas图片成功", localUrl);
+                this.logger.timeEnd("截取canvas图片时间");
                 resolve(localUrl);
               },
               fail: (err) => {
-                this.log("截取canvas目前的图像失败", err);
+                this.logger.info("截取canvas目前的图像失败", err);
                 resolve(undefined);
               },
             },
@@ -781,15 +773,15 @@ export class FreePoster {
    * @returns boolean 有一张图下载失败都会返回false,但不会阻塞后续图片下载
    */
   public async preloadImage(images: string[]): Promise<boolean> {
-    this.log("开始提前下载图片");
-    this.time("提前下载图片用时");
+    this.logger.info("开始提前下载图片");
+    this.logger.time("提前下载图片用时");
     const needLoadImages = Array.from(
       new Set(images.filter((item) => !this.images.has(item)))
     );
     const loadedImages = await Promise.all(
       needLoadImages.map((item) => this.loadImage(item))
     );
-    this.timeEnd("提前下载图片用时");
+    this.logger.timeEnd("提前下载图片用时");
     return !loadedImages.includes(undefined);
   }
 

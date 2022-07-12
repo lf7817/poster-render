@@ -13,7 +13,7 @@ const h5: FC = () => {
         id: "m",
         width: 644,
         height: 1104,
-        debug: true,
+        debug: false,
         // dpr: 3,
       });
 

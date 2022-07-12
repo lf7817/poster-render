@@ -38,6 +38,22 @@ export interface FreePosterOptions {
    * 如果画布高度乘以dpr超过4096,则会取消放大
    */
   dpr?: number;
+  /**
+   * 保存到相册成功回调
+   */
+  onSave?: (url: string) => void;
+  /**
+   * 保存到相册失败回调
+   */
+  onSaveFail?: (err: any) => void;
+  /**
+   * 渲染成功回调
+   */
+  onRender?: () => void;
+  /**
+   * 渲染失败回调
+   */
+  onRenderFail?: (err: any) => void;
 }
 
 export type Radius = number | [number, number, number, number];
