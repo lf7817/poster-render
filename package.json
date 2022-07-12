@@ -13,7 +13,7 @@
     "changeset:alpha": "changeset pre enter alpha",
     "changeset:exit": "changeset pre exit",
     "version-packages": "changeset version",
-    "release": "pnpm build && pnpm release:only && pnpm changeset:exit",
+    "release": "pnpm build && pnpm release:only",
     "release:only": "changeset publish --registry=https://registry.npmjs.com/"
   },
   "devDependencies": {

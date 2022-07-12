@@ -312,7 +312,6 @@ export default class FreePoster {
       toPx(Math.max(r1, 2))
     );
     this.ctx.closePath();
-    this.ctx.clip();
 
     if (fillStyle) {
       this.ctx.setFillStyle(fillStyle);
