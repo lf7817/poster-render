@@ -157,8 +157,8 @@ export class FreePoster {
   public async savePosterToPhoto(): Promise<string> {
     this.logger.info("开始保存到相册");
     return new Promise(async (resolve, reject) => {
-      const tmp = await this.canvasToTempFilePath();
-      if (tmp) {
+      try {
+        const tmp = await this.canvasToTempFilePath();
         if (isWeb) {
           const link = document.createElement("a");
           //把a标签的href属性赋值到生成好了的url
@@ -185,12 +185,12 @@ export class FreePoster {
               }
               this.logger.info("保存到相册失败");
               reject(err);
-              // this.options?.onSaveFail?.(err);
+              this.options?.onSaveFail?.(err);
             },
           });
         }
-      } else {
-        // this.options?.onSaveFail?.(e);
+      } catch (err) {
+        this.options?.onSaveFail?.(err);
         this.logger.info("保存到相册失败");
       }
     });
@@ -721,20 +721,26 @@ export class FreePoster {
     return textMetrics;
   }
 
-  public canvasToTempFilePath = async (): Promise<string | undefined> => {
-    return new Promise((resolve) => {
+  public canvasToTempFilePath = async (): Promise<string> => {
+    return new Promise((resolve, reject) => {
       setTimeout(async () => {
         this.logger.info("开始截取canvas图片");
         this.logger.time("截取canvas图片时间");
         if (isWeb) {
-          resolve(
-            this.canvas.toDataURL(
+          try {
+            const data = this.canvas.toDataURL(
               `image/${
                 this.options.fileType === "jpg" ? "jpeg" : this.options.fileType
               }`,
               this.options.quality
-            )
-          );
+            );
+            resolve(data);
+            this.logger.info("截取canvas图片成功", data);
+            this.logger.timeEnd("截取canvas图片时间");
+          } catch (e) {
+            this.logger.info("截取canvas目前的图像失败", e);
+            reject(e);
+          }
         } else {
           Taro.canvasToTempFilePath(
             {
@@ -757,7 +763,7 @@ export class FreePoster {
               },
               fail: (err) => {
                 this.logger.info("截取canvas目前的图像失败", err);
-                resolve(undefined);
+                reject(err);
               },
             },
             this
@@ -795,9 +801,11 @@ export class FreePoster {
 
     for await (const item of list) {
       if (!funcMap[item.type]) {
+        this.options?.onRenderFail?.();
         throw new Error(`[taro-poster-render]: ${item.type}类型不存在`);
       }
       await this[funcMap[item.type]]?.(item);
     }
+    this.options?.onRender?.();
   }
 }

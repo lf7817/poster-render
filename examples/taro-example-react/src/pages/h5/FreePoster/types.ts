@@ -53,7 +53,7 @@ export interface FreePosterOptions {
   /**
    * 渲染失败回调
    */
-  onRenderFail?: (err: any) => void;
+  onRenderFail?: (err?: any) => void;
 }
 
 export type Radius = number | [number, number, number, number];

@@ -13,8 +13,20 @@ const h5: FC = () => {
         id: "m",
         width: 644,
         height: 1104,
-        debug: false,
+        debug: true,
         // dpr: 3,
+        onSaveFail(err) {
+          console.error(1111, err);
+        },
+        onSave(url) {
+          console.log("成功");
+        },
+        onRender() {
+          console.log("render");
+        },
+        onRenderFail(err?) {
+          console.error(2222, err);
+        },
       });
 
       await freePoster.init();
@@ -130,7 +142,7 @@ const h5: FC = () => {
         },
       ]);
 
-      // console.log(111, await freePoster.savePosterToPhoto());
+      console.log(111, await freePoster.savePosterToPhoto());
     });
   }, []);
 
