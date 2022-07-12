@@ -1,20 +1,28 @@
-import FreePoster from "./FreePoster";
-
-export type DownloadLimit = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+import { FreePoster } from "./FreePoster";
 
 export interface FreePosterOptions {
-  debug: boolean;
-  canvasId: string;
+  id: string;
+  /**
+   * 画布宽度
+   */
   width: number;
+  /**
+   * 画布高度
+   * canvas2d高度不能超过4096，超过会报错
+   */
   height: number;
-  /** 背景颜色 */
-  backgroundColor?: string;
-  /** 图片并行下载数, 默认10 */
-  downloadLimit?: DownloadLimit;
-  /** 导出图片格式 */
+  /**
+   * 是否开启调试模式
+   */
+  debug?: boolean;
+  /**
+   * 导出图片格式
+   */
   fileType?: "png" | "jpg";
-  /** 图片质量 0-1，只对jpg生效 */
-  quality?: number;
+  /**
+   * 图片质量 0-1，只对jpg生效
+   */
+  quality: number;
   /**
    * 输出的图片的宽度
    */
@@ -23,9 +31,33 @@ export interface FreePosterOptions {
    * 输出的图片的高度
    */
   destHeight?: number;
+  /**
+   * 指定dpr
+   * @desc 画布最终会被放大dpr倍，默认为系统dpr
+   * 支付宝小程序不支持，固定为1，安卓下企微dpr为3时生成图片会报错，固定为1
+   * 如果画布高度乘以dpr超过4096,则会取消放大
+   */
+  dpr?: number;
+  /**
+   * 保存到相册成功回调
+   */
   onSave?: (url: string) => void;
+  /**
+   * 保存到相册失败回调
+   */
   onSaveFail?: (err: any) => void;
+  /**
+   * 渲染成功回调
+   */
+  onRender?: () => void;
+  /**
+   * 渲染失败回调
+   */
+  onRenderFail?: (err?: any) => void;
 }
+
+export type Radius = number | [number, number, number, number];
+export type BaseLine = "top" | "middle" | "bottom";
 
 interface Common<T> {
   type: T;
@@ -64,25 +96,25 @@ export interface PaintImage extends Common<"image"> {
   /** 背景色 */
   backgroundColor?: string;
   /**
-   * 圆角所处圆的半径尺寸，如果要绘制圆形，宽高一致，radius设为宽一半
+   * 圆角所处圆的半径尺寸
    * 顺序：左上 -> 右上 -> 右下 -> 左下
    */
-  radius?: number | `${number} ${number} ${number} ${number}`;
+  radius?: Radius;
 }
 
-export interface PaintShape extends Common<"shape"> {
+export interface PaintRect extends Common<"rect"> {
   /** 矩形宽 */
   width: number;
   /** 矩形高 */
   height: number;
   /** 圆角度数，如果要绘制圆形，宽高一致，radius设为宽一半 */
-  radius?: number | `${number} ${number} ${number} ${number}`;
+  radius?: Radius;
   /** 线颜色 */
-  strokeStyle?: string;
+  borderColor?: string;
   /** 线宽 */
-  lineWidth?: number;
+  borderWidth?: number;
   /** 背景色 */
-  fillStyle?: string;
+  backgroundColor?: string;
 }
 
 export interface PaintText {
@@ -98,13 +130,33 @@ export interface PaintText {
   color: string;
   fontSize: number;
   lineHeight?: number;
-  baseLine: "top" | "bottom" | "middle" | "normal";
+  /**
+   * 文本基线的属性, 默认top
+   */
+  baseLine?: BaseLine;
   opacity?: number;
   lineNum?: number;
   fontStyle?: "normal" | "italic" | "oblique";
   fontFamily?: string;
-  /** 文字装饰，只支持line-through */
-  // textDecoration?: 'none' | 'line-through';
+  /** 文字装饰线,下划线、上划线、删除线 */
+  textDecoration?: "line-through" | "underline" | "overline";
+  /** 文字装饰线宽 */
+  textDecorationWidth?: number;
 }
 
-export type PosterItemConfig = PaintImage | PaintShape | PaintText;
+export interface PaintLine extends Common<"line"> {
+  /** 起始点x */
+  x: number;
+  /** 起始点y */
+  y: number;
+  /** 目标点x */
+  destX: number;
+  /** 目标点y */
+  destY: number;
+  /** 线颜色 */
+  color: string;
+  /** 线宽 */
+  lineWidth: number;
+}
+
+export type PosterItemConfig = PaintImage | PaintText | PaintRect | PaintLine;

@@ -1,103 +1,306 @@
-// @ts-ignore
-import * as Taro from "@tarojs/taro";
-import pLimit from "p-limit";
+import Taro from "@tarojs/taro";
 import {
+  BaseLine,
   FreePosterOptions,
   PaintImage,
-  PaintShape,
+  PaintLine,
+  PaintRect,
   PaintText,
+  Radius,
   PosterItemConfig,
 } from "./types";
+import {
+  getCanvasElementById,
+  isAlipay,
+  isAndroid,
+  isQiwei,
+  isWeb,
+  pixelRatio,
+} from "./utils";
+import Logger from "./utils/logger";
 
-import { isAlipay, toPx, toRpx } from "./utils";
-
-export default class FreePoster {
-  private ctx: Taro.CanvasContext;
-  private downloadLimit: ReturnType<typeof pLimit>;
-  private images: Map<string, Taro.getImageInfo.SuccessCallbackResult> =
-    new Map();
+export class FreePoster {
+  /**
+   * Canvas 实例
+   */
+  private canvas: Taro.Canvas;
+  /**
+   * dpr
+   */
+  private dpr: number = 1;
+  /**
+   * Canvas 绘图上下文
+   */
+  private ctx: CanvasRenderingContext2D;
+  /**
+   * 图片缓存
+   */
+  private images = new Map<string, HTMLImageElement | Taro.Image>();
+  /**
+   * log
+   */
+  private logger: Logger;
+  /**
+   * 构造函数默认参数
+   */
   private options: FreePosterOptions = {
-    canvasId: "posterCanvasId",
-    debug: true,
-    width: 750,
-    height: 1334,
+    id: "taro-poster-render",
+    debug: false,
+    width: 300,
+    height: 150,
     fileType: "png",
     quality: 1,
-    downloadLimit: 10,
   };
 
   constructor(options: Partial<FreePosterOptions>) {
-    this.options = Object.assign(this.options, options);
-    this.downloadLimit = pLimit(this.options.downloadLimit || 10);
-    this.ctx = Taro.createCanvasContext(this.options.canvasId, this);
+    this.options = { ...this.options, ...options };
+
+    if (this.options.height >= 4096) {
+      throw new Error("[taro-poster-render]: height must be less than 4096");
+    }
+
+    this.dpr = this.calculateDpr();
+    this.logger = new Logger(!!this.options.debug);
+  }
+
+  /**
+   * 画布初始化
+   */
+  public async init() {
+    const canvas = await getCanvasElementById(this.options.id);
+
+    if (!canvas) {
+      console.error(
+        `[taro-poster-render]: canvas id "${this.options.id}" not found`
+      );
+      return;
+    }
+
+    this.canvas = canvas;
+    this.canvas.width = this.options.width * this.dpr;
+    this.canvas.height = this.options.height * this.dpr;
+    this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
+    // 强烈建议在scale前加上这句（如果在onShow上生成海报必须要）
+    this.ctx.resetTransform?.();
+    // this.ctx.setTransform(1, 0, 0, 1, 0, 0)
+    this.ctx.scale(this.dpr, this.dpr);
+    // 绘制前清空画布
+    this.clearCanvas();
+    this.logger.info(
+      "[taro-poster-render]: 画布尺寸：",
+      this.canvas.width,
+      this.canvas.height
+    );
+  }
+
+  /**
+   * 计算dpr，确保不报错
+   */
+  private calculateDpr() {
+    // 支付宝不支持高清模式， 安卓企微暂不支持高清模式，dpr大于3导出图片会报错
+    const notSupport = isAlipay || (isQiwei && isAndroid);
+    const dpr = this.options.dpr ?? pixelRatio;
+    // 画布高度超过4096导出图片会报错
+    const overLimit = this.options.height * dpr >= 4096;
+    return overLimit || notSupport ? 1 : dpr;
+  }
+
+  /**
+   * 清空画布
+   */
+  public clearCanvas() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
+  /**
+   * 获取授权
+   */
+  private getAuth() {
+    Taro.hideLoading();
+    // 这边微信做过调整，必须要在按钮中触发，因此需要在弹框回调中进行调用
+    Taro.showModal({
+      content: "需要您授权保存相册",
+      confirmColor: "#E23A4E",
+      showCancel: false,
+      success: ({ confirm }) => {
+        confirm &&
+          Taro.openSetting({
+            success(settingdata) {
+              if (settingdata.authSetting["scope.writePhotosAlbum"]) {
+                Taro.showToast({
+                  title: "获取权限成功,再操作一次",
+                  icon: "none",
+                  duration: 3000,
+                });
+              } else {
+                Taro.showToast({
+                  title: "获取权限失败，将无法保存到相册",
+                  icon: "none",
+                  duration: 3000,
+                });
+              }
+            },
+            fail(failData) {
+              this.logger.info(
+                "[taro-poster-render]: openSetting fail",
+                failData
+              );
+            },
+          });
+      },
+    });
+  }
+
+  /**
+   * 保存到相册
+   */
+  public async savePosterToPhoto(): Promise<string> {
+    this.logger.info("开始保存到相册");
+    return new Promise(async (resolve, reject) => {
+      try {
+        const tmp = await this.canvasToTempFilePath();
+        if (isWeb) {
+          const link = document.createElement("a");
+          //把a标签的href属性赋值到生成好了的url
+          link.href = tmp;
+          //通过a标签的download属性修改下载图片的名字
+          link.download = `${new Date().getTime()}.${this.options.fileType}`;
+          //让a标签的click函数，直接下载图片
+          link.click();
+        } else {
+          Taro.saveImageToPhotosAlbum({
+            filePath: tmp,
+            success: () => {
+              this.logger.info("保存到相册成功");
+              // this.options?.onSave?.(tmp);
+              Taro.showToast({
+                icon: "none",
+                title: "已保存到相册，快去分享哟～",
+              });
+              resolve(tmp);
+            },
+            fail: (err) => {
+              if (err.errMsg !== "saveImageToPhotosAlbum:fail cancel") {
+                this.getAuth();
+              }
+              this.logger.info("保存到相册失败");
+              reject(err);
+              this.options?.onSaveFail?.(err);
+            },
+          });
+        }
+      } catch (err) {
+        this.options?.onSaveFail?.(err);
+        this.logger.info("保存到相册失败");
+      }
+    });
   }
 
   /**
    * canvas绘制背景色
    */
-  public async setCanvasBackground(canvasBackground) {
+  public async setCanvasBackground(canvasBackground: string) {
     if (canvasBackground) {
-      this.time("渲染背景色");
+      this.logger.time("渲染背景色");
       const color = canvasBackground;
       const { width, height } = this.options;
-      this.log("设置canvas的背景色：", color);
+      this.logger.info("设置canvas的背景色：", color);
       this.ctx.save();
-      this.ctx.setFillStyle(color);
+      this.ctx.fillStyle = color;
       this.ctx.fillRect(0, 0, width, height);
-      await this.draw(true);
       this.ctx.restore();
-      this.timeEnd("渲染背景色");
+      this.logger.timeEnd("渲染背景色");
     }
   }
 
   /**
-   * 下载图片
-   * @param src
-   * @private
+   * 解析圆角半径
+   * @param radius
+   * @desc 老版本canvas圆角半径小于2的话安卓会出问题，新版本待测
    */
-  private loadImage = async (url: string): Promise<string | undefined> => {
+  private normalizeRadius(radius: Radius = 2) {
+    if (typeof radius === "number") {
+      return {
+        topLeft: radius,
+        topRight: radius,
+        bottomLeft: radius,
+        bottomRight: radius,
+      };
+    }
+    if (Array.isArray(radius)) {
+      // TODO: 验证安卓新版canvas圆角半径小于2的问题
+      return {
+        topLeft: Math.max(radius[0], 2),
+        topRight: Math.max(radius[1], 2),
+        bottomRight: Math.max(radius[2], 2),
+        bottomLeft: Math.max(radius[3], 2),
+      };
+    }
+    return {
+      topLeft: 2,
+      topRight: 2,
+      bottomLeft: 2,
+      bottomRight: 2,
+    };
+  }
+
+  private loadImage = async (
+    url: string
+  ): Promise<Taro.Image | HTMLImageElement | undefined> => {
     let retryCounter = 0;
 
     if (!url) {
-      this.log("图像路径不能为空");
+      this.logger.info("图像路径不能为空");
       return Promise.resolve(undefined);
     }
 
     if (this.images.has(url)) {
-      return Promise.resolve(this.images.get(url)?.path);
+      return Promise.resolve(this.images.get(url));
     }
 
-    // 支持微信本地临时文件
+    // TODO 验证微信本地临时文件
     if (url.startsWith("wxfile://")) {
-      try {
-        Taro.getFileSystemManager().accessSync(url);
-        this.images.set(url, await Taro.getImageInfo({ src: url }));
-        return Promise.resolve(url);
-      } catch (e) {
-        this.log(e);
-        this.log(`本地临时文件不存在`, url);
-        return undefined;
-      }
+      //   try {
+      //     Taro.getFileSystemManager().accessSync(url);
+      //     const { width, height } = await Taro.getImageInfo({ src: url });
+      //     const data = { width: width, height: height, url };
+      //     this.images.set(url, data);
+      //     return Promise.resolve(data);
+      //   } catch (e) {
+      //     this.logger.info(e);
+      //     this.logger.info(`本地临时文件不存在`, url);
+      //     return undefined;
+      //   }
     }
 
     const downloadFile = async (resolve) => {
-      try {
-        this.time(`下载图片${url}用时`);
-        const res = await Taro.getImageInfo({ src: url });
+      this.logger.time(`下载图片${url}用时`);
+      const image = isWeb ? new Image() : this.canvas.createImage();
+
+      image.onload = () => {
+        this.logger.timeEnd(`下载图片${url}用时`);
         retryCounter = 0;
-        resolve(res.path);
-        this.images.set(url, res);
-        this.timeEnd(`下载图片${url}用时`);
-      } catch (e) {
+        this.images.set(url, image);
+        resolve(image);
+      };
+      image.onerror = async (e: any) => {
         if (++retryCounter <= 2) {
-          this.log(`图片下载失败, 开始第${retryCounter}次重试`, url);
+          this.logger.info(`图片下载失败, 开始第${retryCounter}次重试`, url);
           await downloadFile(resolve);
         } else {
-          this.log("三次尝试图片仍下载失败,放弃治疗", url, e);
+          this.logger.timeEnd(`下载图片${url}用时`);
+          this.logger.info("三次尝试图片仍下载失败,放弃治疗", url, e);
           resolve(undefined);
-          this.images.delete(url);
         }
+      };
+
+      if (isWeb) {
+        // 解决h5跨域问题
+        (image as HTMLImageElement).setAttribute("crossOrigin", "Anonymous");
       }
+
+      // 支持base64、http(s)
+      image.src = url;
     };
 
     return new Promise(async (resolve) => {
@@ -110,75 +313,68 @@ export default class FreePoster {
    * @param options
    */
   public async paintImage(options: Omit<PaintImage, "type">) {
-    this.time("绘制图片时间");
-    this.log("开始绘制图片", options);
+    this.logger.time("绘制图片时间");
+    this.logger.info("开始绘制图片", options);
+    const { x, y, src, defaultSrc, width, height, backgroundColor } = options;
+    const radius = this.normalizeRadius(options.radius);
+    let image = await this.loadImage(src);
 
-    const {
-      x,
+    if (!image && defaultSrc) {
+      // 加载默认图片
+      image = await this.loadImage(defaultSrc);
+    }
+
+    if (!image) {
+      this.logger.info(`图片${options.src}下载失败，跳过渲染`);
+      return;
+    }
+
+    this.ctx.save();
+    this.ctx.beginPath();
+    this.ctx.moveTo(x + radius.topLeft, y);
+    // 绘制上边
+    this.ctx.lineTo(x + width - radius.topRight, y);
+    // 绘制右上角圆弧
+    this.ctx.arcTo(
+      x + width,
       y,
-      width,
-      height,
-      radius = 2,
-      src,
-      backgroundColor,
-      defaultSrc,
-    } = options;
-    const [r1, r2, r3, r4] =
-      typeof radius === "string"
-        ? radius.split(" ").map((item) => Number(item))
-        : new Array<number>(4).fill(radius);
-
-    let newSrc = await this.loadImage(src);
-    if (!newSrc && defaultSrc) {
-      newSrc = await this.loadImage(defaultSrc);
+      x + width,
+      y + radius.topRight,
+      radius.topRight
+    );
+    // 绘制右边
+    this.ctx.lineTo(x + width, y + height - radius.bottomRight);
+    // 绘制右下角圆弧
+    this.ctx.arcTo(
+      x + width,
+      y + height,
+      x + width - radius.bottomRight,
+      y + height,
+      radius.bottomRight
+    );
+    // 绘制下边
+    this.ctx.lineTo(x + radius.bottomLeft, y + height);
+    // 绘制左下角圆弧
+    this.ctx.arcTo(
+      x,
+      y + height,
+      x,
+      y + height - radius.bottomLeft,
+      radius.bottomLeft
+    );
+    // 绘制左边
+    this.ctx.lineTo(x, y + radius.topLeft);
+    // 绘制左上角圆弧
+    this.ctx.arcTo(x, y, x + radius.topLeft, y, radius.topLeft);
+    this.ctx.closePath();
+    this.ctx.clip();
+    if (backgroundColor) {
+      this.ctx.fillStyle = backgroundColor;
+      this.ctx.fill();
     }
-
-    if (newSrc) {
-      this.ctx.save();
-      this.ctx.beginPath();
-      this.ctx.moveTo(toPx(x + r1), toPx(y));
-      this.ctx.arcTo(
-        toPx(x + width),
-        toPx(y),
-        toPx(x + width),
-        toPx(y + height),
-        // 圆角小于2的话安卓会出问题
-        toPx(Math.max(r2, 2))
-      );
-      this.ctx.arcTo(
-        toPx(x + width),
-        toPx(y + height),
-        toPx(x),
-        toPx(y + height),
-        toPx(Math.max(r3, 2))
-      );
-      this.ctx.arcTo(
-        toPx(x),
-        toPx(y + height),
-        toPx(x),
-        toPx(y),
-        toPx(Math.max(r4, 2))
-      );
-      this.ctx.arcTo(
-        toPx(x),
-        toPx(y),
-        toPx(x + width),
-        toPx(y),
-        toPx(Math.max(r1, 2))
-      );
-      this.ctx.closePath();
-      this.ctx.clip();
-      if (backgroundColor) {
-        this.ctx.setFillStyle(backgroundColor);
-        this.ctx.fill();
-      }
-      this.fitImage(options);
-      await this.draw(true);
-      this.ctx.restore();
-      this.timeEnd("绘制图片时间");
-    } else {
-      console.error(`图片${options.src}下载失败，跳过渲染`);
-    }
+    this.fitImage(options);
+    this.ctx.restore();
+    this.logger.timeEnd("绘制图片时间");
   }
 
   /**
@@ -191,7 +387,7 @@ export default class FreePoster {
       this.images.get(options.src) || this.images.get(options.defaultSrc!);
 
     if (!image) {
-      this.log("处理图片失败，图片不存在");
+      this.logger.info("处理图片失败，图片不存在");
       return;
     }
 
@@ -221,7 +417,7 @@ export default class FreePoster {
         dx = options.x;
         dy = options.y + (options.height - dh) / 2;
       }
-      this.ctx.drawImage(image.path, toPx(dx), toPx(dy), toPx(dw), toPx(dh));
+      this.ctx.drawImage(image as CanvasImageSource, dx, dy, dw, dh);
     } else if (mode === "cover") {
       if (imageRatio <= rectRatio) {
         sw = image.width;
@@ -235,98 +431,90 @@ export default class FreePoster {
         sy = 0;
       }
       this.ctx.drawImage(
-        image.path,
+        image as CanvasImageSource,
         options.sx ?? sx,
         options.sy ?? sy,
         sw,
         sh,
-        toPx(options.x),
-        toPx(options.y),
-        toPx(options.width),
-        toPx(options.height)
+        options.x,
+        options.y,
+        options.width,
+        options.height
       );
     } else {
       this.ctx.drawImage(
-        image.path,
-        toPx(options.x),
-        toPx(options.y),
-        toPx(options.width),
-        toPx(options.height)
+        image as CanvasImageSource,
+        options.x,
+        options.y,
+        options.width,
+        options.height
       );
     }
   }
 
   /**
-   * 绘制shape
+   * 绘制矩形
    * @param options
    */
-  public async paintShape(options: Omit<PaintShape, "type">) {
-    this.time("绘制图形时间");
-    this.log("开始绘制图形", options);
-    const {
-      x,
-      y,
-      width,
-      height,
-      radius = 2,
-      fillStyle,
-      lineWidth,
-      strokeStyle,
-    } = options;
-    const [r1, r2, r3, r4] =
-      typeof radius === "string"
-        ? radius.split(" ").map((item) => Number(item))
-        : new Array<number>(4).fill(radius);
+  public async paintRect(options: Omit<PaintRect, "type">) {
+    this.logger.time("绘制图形时间");
+    this.logger.info("开始绘制图形", options);
+    const radius = this.normalizeRadius(options.radius);
+    const { x, y, width, height, borderWidth, borderColor, backgroundColor } =
+      options;
 
     this.ctx.save();
     this.ctx.beginPath();
-    this.ctx.moveTo(toPx(x + r1), toPx(y));
-
+    this.ctx.moveTo(x + radius.topLeft, y);
+    // 绘制上边
+    this.ctx.lineTo(x + width - radius.topRight, y);
+    // 绘制右上角圆弧
     this.ctx.arcTo(
-      toPx(x + width),
-      toPx(y),
-      toPx(x + width),
-      toPx(y + height),
-      toPx(Math.max(r2, 2))
+      x + width,
+      y,
+      x + width,
+      y + radius.topRight,
+      radius.topRight
     );
-
+    // 绘制右边
+    this.ctx.lineTo(x + width, y + height - radius.bottomRight);
+    // 绘制右下角圆弧
     this.ctx.arcTo(
-      toPx(x + width),
-      toPx(y + height),
-      toPx(x),
-      toPx(y + height),
-      toPx(Math.max(r3, 2))
+      x + width,
+      y + height,
+      x + width - radius.bottomRight,
+      y + height,
+      radius.bottomRight
     );
+    // 绘制下边
+    this.ctx.lineTo(x + radius.bottomLeft, y + height);
+    // 绘制左下角圆弧
     this.ctx.arcTo(
-      toPx(x),
-      toPx(y + height),
-      toPx(x),
-      toPx(y),
-      toPx(Math.max(r4, 2))
+      x,
+      y + height,
+      x,
+      y + height - radius.bottomLeft,
+      radius.bottomLeft
     );
-    this.ctx.arcTo(
-      toPx(x),
-      toPx(y),
-      toPx(x + width),
-      toPx(y),
-      toPx(Math.max(r1, 2))
-    );
+    // 绘制左边
+    this.ctx.lineTo(x, y + radius.topLeft);
+    // 绘制左上角圆弧
+    this.ctx.arcTo(x, y, x + radius.topLeft, y, radius.topLeft);
     this.ctx.closePath();
 
-    if (fillStyle) {
-      this.ctx.setFillStyle(fillStyle);
+    if (backgroundColor) {
+      this.ctx.fillStyle = backgroundColor;
       this.ctx.fill();
     }
 
-    if (lineWidth && strokeStyle) {
-      this.ctx.setStrokeStyle(strokeStyle);
-      this.ctx.lineWidth = toPx(lineWidth);
+    if (borderColor && borderWidth) {
+      this.ctx.strokeStyle = borderColor;
+      this.ctx.lineWidth = borderWidth;
       this.ctx.stroke();
     }
 
-    await this.draw(true);
     this.ctx.restore();
-    this.timeEnd("绘制图形时间");
+    this.logger.timeEnd("绘制图形时间");
   }
 
   /**
@@ -334,37 +522,35 @@ export default class FreePoster {
    * @param options
    */
   public async paintText(options: Omit<PaintText, "type">) {
-    this.time("绘制文字时间");
-    this.log("开始绘制文字", options);
+    this.logger.time("绘制文字时间");
+    this.logger.info("开始绘制文字", options);
     const {
       textAlign = "left",
       opacity = 1,
       lineNum = 1,
       lineHeight = 0,
+      baseLine = "top",
       fontWeight = "normal",
       fontStyle = "normal",
       fontFamily = "sans-serif",
+      textDecoration,
     } = options;
-    this.ctx.save();
-    this.ctx.font =
-      fontStyle +
-      " " +
-      fontWeight +
-      " " +
-      toPx(options.fontSize) +
-      "px " +
-      fontFamily;
-    this.ctx.setGlobalAlpha(opacity);
-    this.ctx.setFillStyle(options.color);
-    this.ctx.setTextBaseline(options.baseLine);
-    this.ctx.setTextAlign(textAlign);
 
-    let textWidth: number = this.measureTextWidth(options.text, {
+    this.ctx.save();
+    this.ctx.beginPath();
+    this.ctx.font = `${fontStyle} ${fontWeight} ${options.fontSize}px ${fontFamily}`;
+    this.ctx.globalAlpha = opacity;
+    this.ctx.fillStyle = options.color;
+    this.ctx.textAlign = textAlign;
+    this.ctx.textBaseline = baseLine;
+
+    let textWidth: number = this.measureText(options.text, {
       fontSize: options.fontSize,
       fontFamily,
       fontStyle,
       fontWeight,
-    });
+      baseLine,
+    }).width;
     const width =
       typeof options.width === "number"
         ? options.width
@@ -381,12 +567,13 @@ export default class FreePoster {
         // 将文字转为数组，一行文字一个元素
         fillText = fillText + options.text[i];
         if (
-          this.measureTextWidth(fillText, {
+          this.measureText(fillText, {
             fontSize: options.fontSize,
             fontFamily,
             fontStyle,
             fontWeight,
-          }) >= width
+            baseLine,
+          }).width >= width
         ) {
           if (line === lineNum) {
             if (i !== options.text.length - 1) {
@@ -412,45 +599,108 @@ export default class FreePoster {
     }
 
     textArr.forEach((item, index) => {
-      this.ctx.fillText(
-        item,
-        toPx(x),
-        toPx(options.y + (lineHeight || options.fontSize) * index)
-      );
-    });
+      const y = options.y + (lineHeight || options.fontSize) * index;
+      this.ctx.fillText(item, x, y);
+      const {
+        width,
+        actualBoundingBoxAscent = 0,
+        actualBoundingBoxDescent = 0,
+      } = this.measureText(item, {
+        fontSize: options.fontSize,
+        fontFamily,
+        fontStyle,
+        fontWeight,
+        baseLine,
+      });
 
-    await this.draw(true);
+      const actualHeight = actualBoundingBoxAscent + actualBoundingBoxDescent;
+
+      if (textDecoration) {
+        const deltaY = this.calcTextDecorationPosition(actualHeight, options);
+        this.ctx.moveTo(x, y + deltaY);
+        this.ctx.lineTo(x + width, y + deltaY);
+        this.ctx.lineWidth = options.textDecorationWidth ?? 2;
+        this.ctx.strokeStyle = options.color;
+        this.ctx.stroke();
+      }
+    });
+    this.ctx.closePath();
     this.ctx.restore();
-    this.timeEnd("绘制文字时间");
+    this.logger.timeEnd("绘制文字时间");
     return textWidth;
   }
 
   /**
-   * 清楚画布
+   * 绘制线
+   * @param options
    */
-  public async clearRect() {
-    this.ctx.clearRect(
-      0,
-      0,
-      toPx(this.options.width),
-      toPx(this.options.height)
-    );
-    await this.draw();
+  public async paintLine(options: Omit<PaintLine, "type">) {
+    this.ctx.save();
+    this.ctx.beginPath();
+    this.ctx.moveTo(options.x, options.y);
+    this.ctx.lineTo(options.destX, options.destY);
+    this.ctx.closePath();
+    this.ctx.lineWidth = options.lineWidth;
+    this.ctx.strokeStyle = options.color;
+    this.ctx.stroke();
+    this.ctx.restore();
+  }
+
+  /**
+   * 计算TextDecoration位置
+   * @param options
+   */
+  private calcTextDecorationPosition(
+    actualHeight: number,
+    options: Omit<PaintText, "type">
+  ): number {
+    const { fontSize, textDecoration, baseLine = "top" } = options;
+    const height = actualHeight || fontSize;
+    let deltaY = 0;
+
+    if (baseLine === "top") {
+      if (textDecoration === "overline") {
+        deltaY = 0;
+      } else if (textDecoration === "underline") {
+        deltaY = height;
+      } else {
+        deltaY = height / 2;
+      }
+    } else if (baseLine === "bottom") {
+      if (textDecoration === "overline") {
+        deltaY = -height;
+      } else if (textDecoration === "underline") {
+        deltaY = 0;
+      } else {
+        deltaY = -height / 2;
+      }
+    } else {
+      if (textDecoration === "overline") {
+        deltaY = -height / 2;
+      } else if (textDecoration === "underline") {
+        deltaY = height / 2;
+      } else {
+        deltaY = 0;
+      }
+    }
+
+    return deltaY;
   }
 
   /**
    * 计算文本宽度
    * @param text
    */
-  public measureTextWidth(
+  public measureText(
     text: string,
     options?: {
+      baseLine?: BaseLine;
       fontSize: number;
       fontWeight?: string;
       fontStyle?: string;
       fontFamily?: string;
     }
-  ) {
+  ): TextMetrics {
     this.ctx.save();
 
     if (options) {
@@ -459,70 +709,69 @@ export default class FreePoster {
         fontFamily = "normal",
         fontWeight = "normal",
         fontSize,
+        baseLine = "top",
       } = options;
-      this.ctx.font =
-        fontStyle +
-        " " +
-        fontWeight +
-        " " +
-        toPx(fontSize) +
-        "px " +
-        fontFamily;
+      this.ctx.textBaseline = baseLine;
+      this.ctx.font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`;
     }
-    // measureText返回的是px
-    const textWidth = toRpx(this.ctx.measureText(text).width);
+
+    const textMetrics = this.ctx.measureText(text);
     this.ctx.restore();
-    return textWidth;
+
+    return textMetrics;
   }
 
-  private async draw(reserve?: boolean) {
-    return new Promise((resolve) => {
-      this.ctx.draw(reserve, (res) => resolve(res));
-    });
-  }
-  /**
-   * 生成临时文件
-   */
-  public canvasToTempFilePath(): Promise<string> {
+  public canvasToTempFilePath = async (): Promise<string> => {
     return new Promise((resolve, reject) => {
       setTimeout(async () => {
-        this.log("开始截取canvas图片");
-        this.time("截取canvas图片时间");
-
-        const rest: Taro.canvasToTempFilePath.Option = {};
-
-        if (this.options.destWidth && this.options.destHeight) {
-          rest.destWidth = toPx(this.options.destWidth);
-          rest.destHeight = toPx(this.options.destHeight);
+        this.logger.info("开始截取canvas图片");
+        this.logger.time("截取canvas图片时间");
+        if (isWeb) {
+          try {
+            const data = this.canvas.toDataURL(
+              `image/${
+                this.options.fileType === "jpg" ? "jpeg" : this.options.fileType
+              }`,
+              this.options.quality
+            );
+            resolve(data);
+            this.logger.info("截取canvas图片成功", data);
+            this.logger.timeEnd("截取canvas图片时间");
+          } catch (e) {
+            this.logger.info("截取canvas目前的图像失败", e);
+            reject(e);
+          }
+        } else {
+          Taro.canvasToTempFilePath(
+            {
+              x: 0,
+              y: 0,
+              width: this.canvas.width,
+              height: this.canvas.height,
+              destWidth: this.options.destWidth ?? this.canvas.width,
+              destHeight: this.options.destHeight ?? this.canvas.height,
+              canvas: this.canvas as any,
+              fileType: this.options.fileType,
+              quality: this.options.quality,
+              success: (res) => {
+                const localUrl = isAlipay
+                  ? (res as any).apFilePath
+                  : res.tempFilePath;
+                this.logger.info("截取canvas图片成功", localUrl);
+                this.logger.timeEnd("截取canvas图片时间");
+                resolve(localUrl);
+              },
+              fail: (err) => {
+                this.logger.info("截取canvas目前的图像失败", err);
+                reject(err);
+              },
+            },
+            this
+          );
         }
-
-        Taro.canvasToTempFilePath(
-          {
-            x: 0,
-            y: 0,
-            quality: this.options.quality,
-            fileType: this.options.fileType,
-            canvasId: this.options.canvasId,
-            success: (res) => {
-              const localUrl = isAlipay
-                ? (res as any).apFilePath
-                : res.tempFilePath;
-              this.log("截取canvas图片成功", localUrl);
-              this.timeEnd("截取canvas图片时间");
-
-              resolve(localUrl);
-            },
-            fail: (err) => {
-              this.log("截取canvas目前的图像失败", err);
-              reject(err);
-            },
-            ...rest,
-          },
-          this
-        );
       }, 50);
     });
-  }
+  };
 
   /**
    * 提前下载图片
@@ -530,124 +779,33 @@ export default class FreePoster {
    * @returns boolean 有一张图下载失败都会返回false,但不会阻塞后续图片下载
    */
   public async preloadImage(images: string[]): Promise<boolean> {
-    this.log("开始提前下载图片");
-    this.time("提前下载图片用时");
+    this.logger.info("开始提前下载图片");
+    this.logger.time("提前下载图片用时");
     const needLoadImages = Array.from(
       new Set(images.filter((item) => !this.images.has(item)))
     );
     const loadedImages = await Promise.all(
-      needLoadImages.map((item) =>
-        this.downloadLimit(() => this.loadImage(item))
-      )
+      needLoadImages.map((item) => this.loadImage(item))
     );
-    this.timeEnd("提前下载图片用时");
+    this.logger.timeEnd("提前下载图片用时");
     return !loadedImages.includes(undefined);
   }
 
-  /**
-   * 保存到相册
-   */
-  public async savePosterToPhoto(): Promise<string> {
-    this.log("开始保存到相册");
-    return new Promise(async (resolve, reject) => {
-      try {
-        const tmp = await this.canvasToTempFilePath();
-        Taro.saveImageToPhotosAlbum({
-          filePath: tmp,
-          success: () => {
-            this.log("保存到相册成功");
-            this.options?.onSave?.(tmp);
-            Taro.showToast({
-              icon: "none",
-              title: "已保存到相册，快去分享哟～",
-            });
-            resolve(tmp);
-          },
-          fail: (err) => {
-            if (err.errMsg !== "saveImageToPhotosAlbum:fail cancel") {
-              this.getAuth();
-            }
-            this.log("保存到相册失败");
-            reject(err);
-            this.options?.onSaveFail?.(err);
-          },
-        });
-      } catch (e) {
-        this.options?.onSaveFail?.(e);
-        this.log("保存到相册失败");
-      }
-    });
-  }
-
-  public log = (message?: any, ...optionalParams: any[]) => {
-    if (this.options.debug) {
-      console.log(message, ...optionalParams);
-    }
-  };
-
-  public time = (message: string) => {
-    if (this.options.debug) {
-      console.time(message);
-    }
-  };
-
-  public timeEnd = (message: string) => {
-    if (this.options.debug) {
-      console.timeEnd(message);
-    }
-  };
-
-  /**
-   * 获取授权
-   */
-  private getAuth() {
-    Taro.hideLoading();
-    // 这边微信做过调整，必须要在按钮中触发，因此需要在弹框回调中进行调用
-    Taro.showModal({
-      content: "需要您授权保存相册",
-      confirmColor: "#E23A4E",
-      showCancel: false,
-      success: ({ confirm }) => {
-        confirm &&
-          Taro.openSetting({
-            success(settingdata) {
-              console.log("settingdata", settingdata);
-              if (settingdata.authSetting["scope.writePhotosAlbum"]) {
-                Taro.showToast({
-                  title: "获取权限成功,再操作一次",
-                  icon: "none",
-                  duration: 3000,
-                });
-              } else {
-                Taro.showToast({
-                  title: "获取权限失败，将无法保存到相册",
-                  icon: "none",
-                  duration: 3000,
-                });
-              }
-            },
-            fail(failData) {
-              console.log("failData", failData);
-            },
-            complete(finishData) {
-              console.log("finishData", finishData);
-            },
-          });
-      },
-    });
-  }
-
-  public exec = (options: PosterItemConfig) => {
+  public async render(list: PosterItemConfig[]) {
     const funcMap = {
-      image: "paintImage",
-      shape: "paintShape",
       text: "paintText",
+      line: "paintLine",
+      image: "paintImage",
+      rect: "paintRect",
     };
 
-    if (!funcMap[options.type]) {
-      throw new Error(`[taro-poster-render]: ${options.type}类型不存在`);
+    for await (const item of list) {
+      if (!funcMap[item.type]) {
+        this.options?.onRenderFail?.();
+        throw new Error(`[taro-poster-render]: ${item.type}类型不存在`);
+      }
+      await this[funcMap[item.type]]?.(item);
     }
-
-    return this[funcMap[options.type]](options);
-  };
+    this.options?.onRender?.();
+  }
 }
