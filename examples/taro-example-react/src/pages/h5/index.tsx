@@ -1,170 +1,152 @@
-import Reac, { FC, useEffect } from "react";
-import { View, Canvas } from "@tarojs/components";
-import Taro, { getEnv, useDidShow } from "@tarojs/taro";
-import { FreePoster } from "./FreePoster/index";
+import Reac, { FC, useEffect, useRef, useState } from "react";
+import Taro, { getEnv, pxTransform, useDidShow } from "@tarojs/taro";
+import { PosterRender } from "./TaroPosterRender";
+import { PosterItemConfig } from "./FreePoster";
+import { PosterRenderRef } from "./TaroPosterRender/types";
+
+const configs: PosterItemConfig[] = [
+  {
+    type: "rect",
+    x: 0,
+    y: 0,
+    width: 644,
+    height: 1104,
+    radius: 0,
+    backgroundColor: "black",
+  },
+  {
+    type: "image",
+    x: 0,
+    y: 0,
+    width: 644,
+    height: 1104,
+    mode: "cover",
+    src: "https://img.1000.com/shumou/interaction/bg3.png",
+    radius: 16,
+  },
+  {
+    type: "image",
+    x: 294,
+    y: 30,
+    width: 96,
+    height: 96,
+    radius: 48,
+    src: "https://img.1000.com/shumou/interaction/avatar.png",
+  },
+  {
+    type: "text",
+    x: (textWidth, instance) =>
+      (644 - textWidth - instance.measureText("的助力邀请").width) / 2,
+    y: 180,
+    width: (textWidth) => textWidth,
+    height: 30,
+    text: "中二猪猪猪",
+    color: "#fff",
+    fontSize: 28,
+    textAlign: "left",
+    baseLine: "top",
+    textDecoration: "line-through",
+  },
+  {
+    type: "text",
+    x: (textWidth, instance) =>
+      (644 - textWidth - instance.measureText("中二猪猪猪").width) / 2 +
+      instance.measureText("中二猪猪猪").width +
+      10,
+    y: 180,
+    width: 200,
+    height: 30,
+    text: "的助力邀请",
+    color: "#FEEE93",
+    fontSize: 28,
+    baseLine: "top",
+    textDecoration: "underline",
+  },
+  {
+    type: "image",
+    x: 70,
+    y: 240,
+    width: 508,
+    height: 68,
+    src: "https://img.1000.com/shumou/interaction/text.png",
+  },
+  {
+    type: "rect",
+    x: 22,
+    y: 760,
+    width: 600,
+    height: 320,
+    backgroundColor: "#fff",
+    radius: 20,
+    borderColor: "#000",
+    borderWidth: 10,
+  },
+  {
+    type: "rect",
+    x: 100,
+    y: 800,
+    width: 100,
+    height: 100,
+    backgroundColor: "red",
+    radius: 50,
+    borderColor: "yellow",
+    borderWidth: 10,
+  },
+  {
+    type: "image",
+    x: 60,
+    y: 380,
+    sx: 0,
+    sy: 0,
+    width: 400,
+    height: 300,
+    backgroundColor: "red",
+    mode: "cover",
+    src: "https://img.1000.com/shumou/interaction/img2.png",
+  },
+  {
+    type: "line",
+    x: 50,
+    y: 50,
+    destX: 200,
+    destY: 50,
+    color: "#fff",
+    lineWidth: 4,
+  },
+];
 
 const h5: FC = () => {
-  console.log(Taro.getSystemInfoSync());
+  const posterRender = useRef<PosterRenderRef>(undefined);
+  const [count, setCount] = useState(0);
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
-    Taro.nextTick(async () => {
-      const freePoster = new FreePoster({
-        id: "m",
-        width: 644,
-        height: 1104,
-        debug: true,
-        // dpr: 3,
-        onSaveFail(err) {
-          console.error(1111, err);
-        },
-        onSave(url) {
-          console.log("成功");
-        },
-        onRender() {
-          console.log("render");
-        },
-        onRenderFail(err?) {
-          console.error(2222, err);
-        },
-      });
-
-      await freePoster.init();
-
-      freePoster.setCanvasBackground("red");
-
-      await freePoster.preloadImage([
-        "https://img.1000.com/shumou/interaction/bg3.png",
-        "https://img.1000.com/shumou/interaction/avatar.png",
-        "https://img.1000.com/shumou/interaction/text.png",
-        "https://img.1000.com/shumou/interaction/img2.png",
-      ]);
-
-      freePoster.render([
-        {
-          type: "image",
-          x: 0,
-          y: 0,
-          width: 644,
-          height: 1104,
-          mode: "cover",
-          src: "https://img.1000.com/shumou/interaction/bg3.png",
-          radius: 16,
-        },
-        {
-          type: "image",
-          x: 294,
-          y: 30,
-          width: 96,
-          height: 96,
-          radius: 48,
-          src: "https://img.1000.com/shumou/interaction/avatar.png",
-        },
-        {
-          type: "text",
-          x: (textWidth, instance) =>
-            (644 - textWidth - instance.measureText("的助力邀请").width) / 2,
-          y: 180,
-          width: (textWidth) => textWidth,
-          height: 30,
-          text: "中二猪猪猪",
-          color: "#fff",
-          fontSize: 28,
-          textAlign: "left",
-          baseLine: "top",
-          textDecoration: "line-through",
-        },
-        {
-          type: "text",
-          x: (textWidth, instance) =>
-            (644 - textWidth - instance.measureText("中二猪猪猪").width) / 2 +
-            instance.measureText("中二猪猪猪").width +
-            10,
-          y: 180,
-          width: 200,
-          height: 30,
-          text: "的助力邀请",
-          color: "#FEEE93",
-          fontSize: 28,
-          baseLine: "top",
-          textDecoration: "underline",
-        },
-        {
-          type: "image",
-          x: 70,
-          y: 240,
-          width: 508,
-          height: 68,
-          src: "https://img.1000.com/shumou/interaction/text.png",
-        },
-        {
-          type: "rect",
-          x: 22,
-          y: 760,
-          width: 600,
-          height: 320,
-          backgroundColor: "#fff",
-          radius: 20,
-          borderColor: "#000",
-          borderWidth: 10,
-        },
-        {
-          type: "rect",
-          x: 100,
-          y: 800,
-          width: 100,
-          height: 100,
-          backgroundColor: "red",
-          radius: 50,
-          borderColor: "yellow",
-          borderWidth: 10,
-        },
-        {
-          type: "image",
-          x: 60,
-          y: 380,
-          sx: 0,
-          sy: 0,
-          width: 400,
-          height: 300,
-          backgroundColor: "red",
-          mode: "cover",
-          src: "https://img.1000.com/shumou/interaction/img2.png",
-        },
-        {
-          type: "line",
-          x: 50,
-          y: 50,
-          destX: 200,
-          destY: 50,
-          color: "#fff",
-          lineWidth: 4,
-        },
-      ]);
-
-      console.log(111, await freePoster.savePosterToPhoto());
-    });
+    setInterval(() => {
+      setCount(Math.random());
+    }, 3000);
   }, []);
 
-  return getEnv() === "WEB" ? (
-    <canvas
-      id="m"
+  console.log(count);
+
+  return (
+    <PosterRender
+      ref={posterRender}
+      canvasId="taro-poster-render"
+      renderType={"image"}
+      canvasWidth={644}
+      canvasHeight={1104}
+      list={() => configs}
+      debug
+      // showMenuByLongpress
       style={{
-        width: Taro.pxTransform(644),
-        height: Taro.pxTransform(1104),
+        width: pxTransform(644),
+        height: pxTransform(1104),
       }}
-    />
-  ) : (
-    <Canvas
-      type="2d"
-      id="m"
-      // @ts-ignore
-      width="644"
-      height="1104"
-      style={{
-        width: Taro.pxTransform(644),
-        height: Taro.pxTransform(1104),
-      }}
+      disableRerender
+      onRender={(url) => console.log("onRender", url)}
+      onLongPress={(url) => posterRender?.current?.savePosterToPhoto()}
+      onRenderFail={(err) => console.error("onRenderFail", err?.message)}
+      onSave={(url) => console.log("onSave", url)}
+      onSaveFail={(err) => console.error("onSaveFail", err?.message)}
     />
   );
 };

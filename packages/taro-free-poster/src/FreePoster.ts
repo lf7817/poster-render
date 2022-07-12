@@ -1,5 +1,5 @@
 import Taro from "@tarojs/taro";
-import {
+import type {
   BaseLine,
   FreePosterOptions,
   PaintImage,
@@ -172,7 +172,7 @@ export class FreePoster {
             filePath: tmp,
             success: () => {
               this.logger.info("保存到相册成功");
-              // this.options?.onSave?.(tmp);
+              this.options?.onSave?.(tmp);
               Taro.showToast({
                 icon: "none",
                 title: "已保存到相册，快去分享哟～",
@@ -194,23 +194,6 @@ export class FreePoster {
         this.logger.info("保存到相册失败");
       }
     });
-  }
-
-  /**
-   * canvas绘制背景色
-   */
-  public async setCanvasBackground(canvasBackground: string) {
-    if (canvasBackground) {
-      this.logger.time("渲染背景色");
-      const color = canvasBackground;
-      const { width, height } = this.options;
-      this.logger.info("设置canvas的背景色：", color);
-      this.ctx.save();
-      this.ctx.fillStyle = color;
-      this.ctx.fillRect(0, 0, width, height);
-      this.ctx.restore();
-      this.logger.timeEnd("渲染背景色");
-    }
   }
 
   /**
@@ -778,9 +761,20 @@ export class FreePoster {
    * @param images
    * @returns boolean 有一张图下载失败都会返回false,但不会阻塞后续图片下载
    */
-  public async preloadImage(images: string[]): Promise<boolean> {
+  public async preloadImage(
+    list: PosterItemConfig[] | ((instance: FreePoster) => PosterItemConfig[])
+  ): Promise<boolean> {
     this.logger.info("开始提前下载图片");
     this.logger.time("提前下载图片用时");
+
+    const configs = Array.isArray(list) ? list : list(this);
+    const images = configs.reduce((arr, item) => {
+      if (item.type === "image") {
+        arr.push(item.src);
+      }
+      return arr;
+    }, [] as string[]);
+
     const needLoadImages = Array.from(
       new Set(images.filter((item) => !this.images.has(item)))
     );
@@ -791,7 +785,10 @@ export class FreePoster {
     return !loadedImages.includes(undefined);
   }
 
-  public async render(list: PosterItemConfig[]) {
+  public async render(
+    list: PosterItemConfig[] | ((instance: FreePoster) => PosterItemConfig[]),
+    type: "canvas" | "image" = "canvas"
+  ) {
     const funcMap = {
       text: "paintText",
       line: "paintLine",
@@ -799,13 +796,31 @@ export class FreePoster {
       rect: "paintRect",
     };
 
-    for await (const item of list) {
+    this.logger.time("渲染海报完成");
+    const configs = Array.isArray(list) ? list : list(this);
+
+    this.clearCanvas();
+
+    for await (const item of configs) {
       if (!funcMap[item.type]) {
-        this.options?.onRenderFail?.();
-        throw new Error(`[taro-poster-render]: ${item.type}类型不存在`);
+        const error = new Error(`[taro-poster-render]: ${item.type}类型不存在`);
+        this.options?.onRenderFail?.(error);
+        throw error;
       }
+
       await this[funcMap[item.type]]?.(item);
     }
-    this.options?.onRender?.();
+
+    if (type === "image") {
+      try {
+        const tmp = await this.canvasToTempFilePath();
+        this.options?.onRender?.(tmp);
+      } catch (e) {
+        this.options?.onRenderFail?.(e);
+      }
+    } else {
+      this.options?.onRender?.();
+    }
+    this.logger.timeEnd("渲染海报完成");
   }
 }

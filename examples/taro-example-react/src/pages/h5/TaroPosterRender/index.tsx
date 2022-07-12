@@ -1,4 +1,5 @@
 import React, {
+  FC,
   forwardRef,
   ForwardRefRenderFunction,
   useEffect,
@@ -8,7 +9,7 @@ import React, {
   memo,
 } from "react";
 import Taro from "@tarojs/taro";
-import { FreePoster, PosterItemConfig } from "taro-free-poster";
+import { FreePoster, PosterItemConfig } from "../FreePoster";
 import type { PosterRenderProps, PosterRenderRef } from "./types";
 import { PosterRenerCanvas } from "./canvas";
 import { Image, View } from "@tarojs/components";
@@ -137,7 +138,6 @@ function isEqual(prevList: PosterItemConfig[], nextList: PosterItemConfig[]) {
   return true;
 }
 
-// @ts-ignore
 export const PosterRender = memo(forwardRef(PosterRenderCore), (prev, next) => {
   if (next.disableRerender) {
     return true;

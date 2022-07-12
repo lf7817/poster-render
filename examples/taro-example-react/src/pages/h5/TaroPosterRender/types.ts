@@ -1,5 +1,5 @@
 import { CSSProperties } from "react";
-import { type PosterItemConfig, FreePoster } from "taro-free-poster";
+import { type PosterItemConfig, FreePoster } from "../FreePoster";
 
 export interface PosterRenderBaseProps {
   /** canvasId，当有多个canvas时，需要指定canvasId，否则默认为第一个canvas */
