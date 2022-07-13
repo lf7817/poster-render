@@ -53,7 +53,7 @@ export interface PosterRenderImageProps extends PosterRenderBaseProps {
   /**
    * 长按事件回调
    */
-  onLongPress?: (url: string) => void;
+  onLongTap?: (url: string) => void;
   /** 渲染成功回调 */
   onRender?: (url: string) => void;
 }
@@ -68,7 +68,7 @@ export interface PosterRenderCanvasProps extends PosterRenderBaseProps {
   /**
    * 长按事件回调
    */
-  onLongPress?: () => void;
+  onLongTap?: () => void;
   /** 渲染成功回调 */
   onRender?: () => void;
 }

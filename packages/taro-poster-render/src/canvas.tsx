@@ -1,5 +1,5 @@
 import { Canvas } from "@tarojs/components";
-import Taro from "@tarojs/taro";
+import { getEnv } from "@tarojs/taro";
 import React, { FC } from "react";
 
 interface Props {
@@ -12,11 +12,11 @@ interface Props {
    * 长按事件，暂不支持h5
    * @desc 微信H5不支持下载文件，不支持长按下载场景
    */
-  onLongPress?: () => void;
+  onLongTap?: () => void;
 }
 
 export const PosterRenerCanvas: FC<Props> = (props) => {
-  return Taro.getEnv() === "WEB" ? (
+  return getEnv() === "WEB" ? (
     <canvas id={props.id} className={props.className} style={props.style} />
   ) : (
     <Canvas
@@ -27,7 +27,7 @@ export const PosterRenerCanvas: FC<Props> = (props) => {
       height={props.height}
       className={props.className}
       style={props.style}
-      onLongPress={props.onLongPress}
+      onLongTap={props.onLongTap}
     />
   );
 };

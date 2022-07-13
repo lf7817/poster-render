@@ -7,7 +7,7 @@ import React, {
   useState,
   memo,
 } from "react";
-import Taro from "@tarojs/taro";
+import { nextTick, previewImage } from "@tarojs/taro";
 import { FreePoster, PosterItemConfig } from "taro-free-poster";
 import type { PosterRenderProps, PosterRenderRef } from "./types";
 import { PosterRenerCanvas } from "./canvas";
@@ -21,7 +21,7 @@ const PosterRenderCore: ForwardRefRenderFunction<
   const [url, setUrl] = useState<string>();
 
   useEffect(() => {
-    Taro.nextTick(async () => {
+    nextTick(async () => {
       const poster = new FreePoster({
         id: props.canvasId || "taro-poster-render",
         width: props.canvasWidth,
@@ -60,7 +60,7 @@ const PosterRenderCore: ForwardRefRenderFunction<
       try {
         if (freePoster.current) {
           const res = await freePoster.current?.canvasToTempFilePath();
-          await Taro.previewImage({ urls: [res], current: res });
+          await previewImage({ urls: [res], current: res });
         }
       } catch (e) {}
     },
@@ -80,7 +80,7 @@ const PosterRenderCore: ForwardRefRenderFunction<
         id={props.canvasId}
         width={props.canvasWidth}
         height={props.canvasHeight}
-        onLongPress={props.onLongPress}
+        onLongTap={props.onLongTap}
       />
     );
   }
@@ -112,7 +112,7 @@ const PosterRenderCore: ForwardRefRenderFunction<
             position: "relative",
             zIndex: 2,
           }}
-          onLongPress={() => props?.onLongPress?.(url)}
+          onLongPress={() => props?.onLongTap?.(url)}
           showMenuByLongpress={props.showMenuByLongpress}
         />
       )}

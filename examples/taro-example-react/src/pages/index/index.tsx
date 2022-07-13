@@ -1,10 +1,124 @@
-import Taro from "@tarojs/taro";
 import { FC, useEffect, useRef, useState } from "react";
-import { Poster, PosterRef } from "taro-poster-render";
-import { View } from "@tarojs/components";
+import { pxTransform } from "@tarojs/taro";
+import {
+  PosterRender,
+  PosterRenderRef,
+  PosterItemConfig,
+} from "taro-poster-render";
 
-const Index: FC = () => {
-  const poster = useRef<PosterRef>(null);
+const configs: PosterItemConfig[] = [
+  {
+    type: "rect",
+    x: 0,
+    y: 0,
+    width: 644,
+    height: 1104,
+    radius: 0,
+    backgroundColor: "black",
+  },
+  {
+    type: "image",
+    x: 0,
+    y: 0,
+    width: 644,
+    height: 1104,
+    mode: "cover",
+    src: "https://img.1000.com/shumou/interaction/bg3.png",
+    radius: 16,
+  },
+  {
+    type: "image",
+    x: 294,
+    y: 30,
+    width: 96,
+    height: 96,
+    radius: 48,
+    src: "https://img.1000.com/shumou/interaction/avatar.png",
+  },
+  {
+    type: "text",
+    x: (textWidth, instance) =>
+      (644 - textWidth - instance.measureText("的助力邀请").width) / 2,
+    y: 180,
+    width: (textWidth) => textWidth,
+    height: 30,
+    text: "中二猪猪猪",
+    color: "#fff",
+    fontSize: 28,
+    textAlign: "left",
+    baseLine: "top",
+    textDecoration: "line-through",
+  },
+  {
+    type: "text",
+    x: (textWidth, instance) =>
+      (644 - textWidth - instance.measureText("中二猪猪猪").width) / 2 +
+      instance.measureText("中二猪猪猪").width +
+      10,
+    y: 180,
+    width: 200,
+    height: 30,
+    text: "的助力邀请",
+    color: "#FEEE93",
+    fontSize: 28,
+    baseLine: "top",
+    textDecoration: "underline",
+  },
+  {
+    type: "image",
+    x: 70,
+    y: 240,
+    width: 508,
+    height: 68,
+    src: "https://img.1000.com/shumou/interaction/text.png",
+  },
+  {
+    type: "rect",
+    x: 22,
+    y: 760,
+    width: 600,
+    height: 320,
+    backgroundColor: "#fff",
+    radius: 20,
+    borderColor: "#000",
+    borderWidth: 10,
+  },
+  {
+    type: "rect",
+    x: 100,
+    y: 800,
+    width: 100,
+    height: 100,
+    backgroundColor: "red",
+    radius: 50,
+    borderColor: "yellow",
+    borderWidth: 10,
+  },
+  {
+    type: "image",
+    x: 60,
+    y: 380,
+    sx: 0,
+    sy: 0,
+    width: 400,
+    height: 300,
+    backgroundColor: "red",
+    mode: "cover",
+    src: "https://img.1000.com/shumou/interaction/img2.png",
+  },
+  {
+    type: "line",
+    x: 50,
+    y: 50,
+    destX: 200,
+    destY: 50,
+    color: "#fff",
+    lineWidth: 4,
+  },
+];
+
+const h5: FC = () => {
+  const posterRender = useRef<PosterRenderRef>(null);
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -15,121 +129,28 @@ const Index: FC = () => {
 
   console.log(count);
 
-  // return <View>111</View>
-
   return (
-    <Poster
-      style={{
-        marginLeft: Taro.pxTransform(55),
-        width: Taro.pxTransform(644),
-        height: Taro.pxTransform(1104),
-      }}
-      width={644 * 2}
-      height={1104 * 2}
-      ref={poster}
+    <PosterRender
+      ref={posterRender}
+      canvasId="taro-poster-render"
+      renderType={"canvas"}
+      canvasWidth={644}
+      canvasHeight={1104}
+      list={() => configs}
       debug
-      disableRerender
-      quality={1}
       // showMenuByLongpress
-      renderType="image"
-      downloadLimit={10}
-      // fileType="jpg"
-      onLongPress={() => poster.current?.savePosterToPhoto()}
-      onRender={(url) => console.log("onRender", url)}
+      style={{
+        width: pxTransform(644),
+        height: pxTransform(1104),
+      }}
+      disableRerender
+      onRender={() => console.log("onRender")}
+      onLongTap={() => posterRender.current?.savePosterToPhoto()}
+      onRenderFail={(err) => console.error("onRenderFail", err?.message)}
       onSave={(url) => console.log("onSave", url)}
-      list={[
-        {
-          type: "image",
-          x: 0,
-          y: 0,
-          width: 644 * 2,
-          height: 1104 * 2,
-          mode: "cover",
-          src: "https://img.1000.com/shumou/interaction/bg3.png",
-          radius: 16,
-        },
-        {
-          type: "image",
-          x: 294 * 2,
-          y: 30 * 2,
-          width: 96 * 2,
-          height: 96 * 2,
-          radius: 48,
-          src: "https://img.1000.com/shumou/interaction/avatar.png",
-        },
-        {
-          type: "text",
-          x: (textWidth, instance) =>
-            (644 * 2 - textWidth - instance.measureTextWidth("的助力邀请")) / 2,
-          y: 180 * 2,
-          width: (textWidth) => textWidth,
-          height: 30 * 2,
-          text: "中二猪猪猪",
-          color: "#fff",
-          fontSize: 28 * 2,
-          textAlign: "left",
-          baseLine: "normal",
-        },
-        {
-          type: "text",
-          x: (textWidth, instance) =>
-            (644 * 2 - textWidth - instance.measureTextWidth("中二猪猪猪")) /
-              2 +
-            instance.measureTextWidth("中二猪猪猪") +
-            10 * 2,
-          y: 180 * 2,
-          width: 200 * 2,
-          height: 30 * 2,
-          text: "的助力邀请",
-          color: "#FEEE93",
-          fontSize: 28 * 2,
-          baseLine: "normal",
-        },
-        {
-          type: "image",
-          x: 70 * 2,
-          y: 240 * 2,
-          width: 508 * 2,
-          height: 68 * 2,
-          src: "https://img.1000.com/shumou/interaction/text.png",
-        },
-        {
-          type: "shape",
-          x: 22 * 2,
-          y: 760 * 2,
-          width: 600 * 2,
-          height: 320 * 2,
-          fillStyle: "#fff",
-          radius: 20 * 2,
-          strokeStyle: "#000",
-          lineWidth: 20 * 2,
-        },
-        {
-          type: "shape",
-          x: 100 * 2,
-          y: 800 * 2,
-          width: 100 * 2,
-          height: 100 * 2,
-          fillStyle: "red",
-          radius: 50,
-          strokeStyle: "yellow",
-          lineWidth: 10 * 2,
-        },
-        {
-          type: "image",
-          x: 60 * 2,
-          y: 380 * 2,
-          sx: 0,
-          sy: 0,
-          width: 400 * 2,
-          height: 300 * 2,
-          backgroundColor: "red",
-          mode: "cover",
-          src: "https://img.1000.com/shumou/interaction/img2.png",
-        },
-      ]}
+      onSaveFail={(err) => console.error("onSaveFail", err?.message)}
     />
   );
 };
 
-export default Index;
+export default h5;

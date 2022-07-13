@@ -1,5 +1,21 @@
 # taro-poster-render
 
+## 3.0.0-beta.3
+
+### Patch Changes
+
+- 修复支付宝长按事件
+- Updated dependencies
+  - taro-free-poster@3.0.0-beta.3
+
+## 3.0.0-beta.2
+
+### Patch Changes
+
+- 修复支付宝 taro 引入问题
+- Updated dependencies
+  - taro-free-poster@3.0.0-beta.2
+
 ## 3.0.0-beta.1
 
 ### Patch Changes

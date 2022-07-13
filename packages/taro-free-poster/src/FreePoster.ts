@@ -1,4 +1,13 @@
-import * as Taro from "@tarojs/taro";
+import {
+  hideLoading,
+  showModal,
+  openSetting,
+  showToast,
+  saveImageToPhotosAlbum,
+  canvasToTempFilePath,
+  type Canvas,
+  type Image,
+} from "@tarojs/taro";
 import type {
   BaseLine,
   FreePosterOptions,
@@ -23,7 +32,7 @@ export class FreePoster {
   /**
    * Canvas 实例
    */
-  private canvas: Taro.Canvas;
+  private canvas: Canvas;
   /**
    * dpr
    */
@@ -35,7 +44,7 @@ export class FreePoster {
   /**
    * 图片缓存
    */
-  private images = new Map<string, HTMLImageElement | Taro.Image>();
+  private images = new Map<string, HTMLImageElement | Image>();
   /**
    * log
    */
@@ -116,24 +125,24 @@ export class FreePoster {
    * 获取授权
    */
   private getAuth() {
-    Taro.hideLoading();
+    hideLoading();
     // 这边微信做过调整，必须要在按钮中触发，因此需要在弹框回调中进行调用
-    Taro.showModal({
+    showModal({
       content: "需要您授权保存相册",
       confirmColor: "#E23A4E",
       showCancel: false,
       success: ({ confirm }) => {
         confirm &&
-          Taro.openSetting({
+          openSetting({
             success(settingdata) {
               if (settingdata.authSetting["scope.writePhotosAlbum"]) {
-                Taro.showToast({
+                showToast({
                   title: "获取权限成功,再操作一次",
                   icon: "none",
                   duration: 3000,
                 });
               } else {
-                Taro.showToast({
+                showToast({
                   title: "获取权限失败，将无法保存到相册",
                   icon: "none",
                   duration: 3000,
@@ -168,12 +177,12 @@ export class FreePoster {
           //让a标签的click函数，直接下载图片
           link.click();
         } else {
-          Taro.saveImageToPhotosAlbum({
+          saveImageToPhotosAlbum({
             filePath: tmp,
             success: () => {
               this.logger.info("保存到相册成功");
               this.options?.onSave?.(tmp);
-              Taro.showToast({
+              showToast({
                 icon: "none",
                 title: "已保存到相册，快去分享哟～",
               });
@@ -229,7 +238,7 @@ export class FreePoster {
 
   private loadImage = async (
     url: string
-  ): Promise<Taro.Image | HTMLImageElement | undefined> => {
+  ): Promise<Image | HTMLImageElement | undefined> => {
     let retryCounter = 0;
 
     if (!url) {
@@ -244,8 +253,8 @@ export class FreePoster {
     // TODO 验证微信本地临时文件
     if (url.startsWith("wxfile://")) {
       //   try {
-      //     Taro.getFileSystemManager().accessSync(url);
-      //     const { width, height } = await Taro.getImageInfo({ src: url });
+      //     getFileSystemManager().accessSync(url);
+      //     const { width, height } = await getImageInfo({ src: url });
       //     const data = { width: width, height: height, url };
       //     this.images.set(url, data);
       //     return Promise.resolve(data);
@@ -725,7 +734,7 @@ export class FreePoster {
             reject(e);
           }
         } else {
-          Taro.canvasToTempFilePath(
+          canvasToTempFilePath(
             {
               x: 0,
               y: 0,
