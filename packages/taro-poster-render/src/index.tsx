@@ -149,3 +149,5 @@ export const PosterRender = memo(forwardRef(PosterRenderCore), (prev, next) => {
 
   return isEqual(prev.list, next.list);
 });
+
+export type { PosterRenderProps, PosterRenderRef, PosterItemConfig };

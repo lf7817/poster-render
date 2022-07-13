@@ -1,5 +1,17 @@
 # taro-free-poster
 
+## 3.0.0-beta.1
+
+### Patch Changes
+
+- 修复 h5 taro 引入问题
+
+## 3.0.0-beta.0
+
+### Major Changes
+
+- 采用 canvas 2d api 重构，支持 h5、微信、支付宝
+
 ## 2.2.0
 
 ### Minor Changes

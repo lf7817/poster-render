@@ -1,8 +1,10 @@
 import Reac, { FC, useEffect, useRef, useState } from "react";
 import Taro, { getEnv, pxTransform, useDidShow } from "@tarojs/taro";
-import { PosterRender } from "./TaroPosterRender";
-import { PosterItemConfig } from "./FreePoster";
-import { PosterRenderRef } from "./TaroPosterRender/types";
+import {
+  PosterRender,
+  PosterRenderRef,
+  PosterItemConfig,
+} from "taro-poster-render";
 
 const configs: PosterItemConfig[] = [
   {
@@ -116,7 +118,7 @@ const configs: PosterItemConfig[] = [
 ];
 
 const h5: FC = () => {
-  const posterRender = useRef<PosterRenderRef>(undefined);
+  const posterRender = useRef<PosterRenderRef>(null);
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -136,7 +138,7 @@ const h5: FC = () => {
       canvasHeight={1104}
       list={() => configs}
       debug
-      // showMenuByLongpress
+      showMenuByLongpress
       style={{
         width: pxTransform(644),
         height: pxTransform(1104),

@@ -1,4 +1,4 @@
-import Taro from "@tarojs/taro";
+import * as Taro from "@tarojs/taro";
 
 export const { screenWidth, pixelRatio, environment, platform } =
   Taro.getSystemInfoSync();

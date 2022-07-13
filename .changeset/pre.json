@@ -1,0 +1,12 @@
+{
+  "mode": "pre",
+  "tag": "beta",
+  "initialVersions": {
+    "taro-free-poster": "3.0.0-beta.0",
+    "taro-poster-render": "3.0.0-beta.0"
+  },
+  "changesets": [
+    "unlucky-emus-invite",
+    "witty-squids-buy"
+  ]
+}
