@@ -22,7 +22,7 @@ const h5: FC = () => {
       renderType={"canvas"}
       canvasWidth={644}
       canvasHeight={1104}
-      list={data3}
+      list={data2}
       debug
       // showMenuByLongpress
       style={{

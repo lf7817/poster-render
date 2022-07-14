@@ -24,6 +24,7 @@ import {
   isAlipay,
   isAndroid,
   isQiwei,
+  isWeapp,
   isWeb,
   pixelRatio,
 } from "./utils";
@@ -260,7 +261,7 @@ export class FreePoster {
       return Promise.resolve(this.images.get(url));
     }
 
-    if (url.startsWith("wxfile://")) {
+    if (url.startsWith("wxfile://") && isWeapp) {
       try {
         getFileSystemManager().accessSync(url);
       } catch (e) {

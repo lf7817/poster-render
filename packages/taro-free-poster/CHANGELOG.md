@@ -1,5 +1,11 @@
 # taro-free-poster
 
+## 3.0.1
+
+### Patch Changes
+
+- fix: h5 getFileSystemManager 报错问题
+
 ## 3.0.0
 
 ### Major Changes
