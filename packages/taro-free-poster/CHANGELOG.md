@@ -1,5 +1,18 @@
 # taro-free-poster
 
+## 3.0.0
+
+### Major Changes
+
+- 3.0 正式发布
+- bca3760: 采用 canvas 2d api 重构，支持 h5、微信、支付宝
+
+### Patch Changes
+
+- fb8a58b: 修复支付宝 taro 引入问题
+- fb8a58b: 修复支付宝长按事件
+- bca3760: 修复 h5 taro 引入问题
+
 ## 3.0.0-beta.3
 
 ### Patch Changes
