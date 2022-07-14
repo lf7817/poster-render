@@ -1,3 +1,4 @@
+import { getFileSystemManager } from "@tarojs/taro";
 import {
   hideLoading,
   showModal,
@@ -259,19 +260,13 @@ export class FreePoster {
       return Promise.resolve(this.images.get(url));
     }
 
-    // TODO 验证微信本地临时文件
     if (url.startsWith("wxfile://")) {
-      //   try {
-      //     getFileSystemManager().accessSync(url);
-      //     const { width, height } = await getImageInfo({ src: url });
-      //     const data = { width: width, height: height, url };
-      //     this.images.set(url, data);
-      //     return Promise.resolve(data);
-      //   } catch (e) {
-      //     this.logger.info(e);
-      //     this.logger.info(`本地临时文件不存在`, url);
-      //     return undefined;
-      //   }
+      try {
+        getFileSystemManager().accessSync(url);
+      } catch (e) {
+        this.logger.info(`[taro-free-poster]: wxfile文件不存在`);
+        return Promise.resolve(undefined);
+      }
     }
 
     const downloadFile = async (resolve) => {

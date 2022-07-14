@@ -124,11 +124,7 @@ function isEqual(prevList: PosterItemConfig[], nextList: PosterItemConfig[]) {
   // @ts-ignore
   for (let [i, item] of prevList.entries()) {
     for (let [k, v] of Object.entries(item)) {
-      if (typeof v === "function") {
-        return false;
-      }
-
-      if (v !== nextList[i][k]) {
+      if (typeof v === "function" || v !== nextList[i][k]) {
         return false;
       }
     }
