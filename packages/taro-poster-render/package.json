@@ -39,10 +39,6 @@
     "ios >= 8"
   ],
   "author": "lf7817 <535536456@qq.com>",
-  "lint-staged": {
-    "src/**/*.ts?(x)": "eslint --fix",
-    "src/**/*.{ts?(x),css,less,scss,md,json,html}": "prettier --write"
-  },
   "dependencies": {
     "taro-free-poster": "workspace:*"
   },

@@ -9,7 +9,7 @@ interface Props {
   width: number;
   height: number;
   /**
-   * 长按事件，暂不支持h5
+   * 长按事件，暂不支持h5, 支付宝renderType="image"时也不生效
    * @desc 微信H5不支持下载文件，不支持长按下载场景
    */
   onLongTap?: () => void;
