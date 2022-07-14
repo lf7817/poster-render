@@ -22,7 +22,7 @@ export interface FreePosterOptions {
   /**
    * 图片质量 0-1，只对jpg生效
    */
-  quality: number;
+  quality?: number;
   /**
    * 输出的图片的宽度
    */

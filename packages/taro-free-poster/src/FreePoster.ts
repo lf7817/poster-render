@@ -53,7 +53,7 @@ export class FreePoster {
    * 构造函数默认参数
    */
   private options: FreePosterOptions = {
-    id: "taro-poster-render",
+    id: "",
     debug: false,
     width: 300,
     height: 150,
@@ -61,11 +61,15 @@ export class FreePoster {
     quality: 1,
   };
 
-  constructor(options: Partial<FreePosterOptions>) {
+  constructor(options: FreePosterOptions) {
     this.options = { ...this.options, ...options };
 
+    if (!this.options.id) {
+      throw new Error("[taro-free-poster]: canvas id must be specified");
+    }
+
     if (this.options.height >= 4096) {
-      throw new Error("[taro-poster-render]: height must be less than 4096");
+      throw new Error("[taro-free-poster]: height must be less than 4096");
     }
 
     this.dpr = this.calculateDpr();
@@ -80,7 +84,7 @@ export class FreePoster {
 
     if (!canvas) {
       console.error(
-        `[taro-poster-render]: canvas id "${this.options.id}" not found`
+        `[taro-free-poster]: canvas id "${this.options.id}" not found`
       );
       return;
     }
@@ -96,7 +100,7 @@ export class FreePoster {
     // 绘制前清空画布
     this.clearCanvas();
     this.logger.info(
-      "[taro-poster-render]: 画布尺寸：",
+      "[taro-free-poster]: 画布尺寸：",
       this.canvas.width,
       this.canvas.height
     );
@@ -151,7 +155,7 @@ export class FreePoster {
             },
             fail(failData) {
               this.logger.info(
-                "[taro-poster-render]: openSetting fail",
+                "[taro-free-poster]: openSetting fail",
                 failData
               );
             },
@@ -164,7 +168,7 @@ export class FreePoster {
    * 保存到相册
    */
   public async savePosterToPhoto(): Promise<string> {
-    this.logger.info("开始保存到相册");
+    this.logger.group("[taro-free-poster]: 保存到相册");
     return new Promise(async (resolve, reject) => {
       try {
         const tmp = await this.canvasToTempFilePath();
@@ -176,6 +180,7 @@ export class FreePoster {
           link.download = `${new Date().getTime()}.${this.options.fileType}`;
           //让a标签的click函数，直接下载图片
           link.click();
+          this.logger.groupEnd();
         } else {
           saveImageToPhotosAlbum({
             filePath: tmp,
@@ -196,11 +201,15 @@ export class FreePoster {
               reject(err);
               this.options?.onSaveFail?.(err);
             },
+            complete: () => {
+              this.logger.groupEnd();
+            },
           });
         }
       } catch (err) {
         this.options?.onSaveFail?.(err);
         this.logger.info("保存到相册失败");
+        this.logger.groupEnd();
       }
     });
   }
@@ -724,7 +733,7 @@ export class FreePoster {
               `image/${
                 this.options.fileType === "jpg" ? "jpeg" : this.options.fileType
               }`,
-              this.options.quality
+              this.options.quality || 1
             );
             resolve(data);
             this.logger.info("截取canvas图片成功", data);
@@ -773,7 +782,7 @@ export class FreePoster {
   public async preloadImage(
     list: PosterItemConfig[] | ((instance: FreePoster) => PosterItemConfig[])
   ): Promise<boolean> {
-    this.logger.info("开始提前下载图片");
+    this.logger.group("[taro-free-poster]: 提前下载图片");
     this.logger.time("提前下载图片用时");
 
     const configs = Array.isArray(list) ? list : list(this);
@@ -791,6 +800,7 @@ export class FreePoster {
       needLoadImages.map((item) => this.loadImage(item))
     );
     this.logger.timeEnd("提前下载图片用时");
+    this.logger.groupEnd();
     return !loadedImages.includes(undefined);
   }
 
@@ -804,7 +814,7 @@ export class FreePoster {
       image: "paintImage",
       rect: "paintRect",
     };
-
+    this.logger.group("[taro-free-poster]: 渲染");
     this.logger.time("渲染海报完成");
     const configs = Array.isArray(list) ? list : list(this);
 
@@ -812,7 +822,7 @@ export class FreePoster {
 
     for await (const item of configs) {
       if (!funcMap[item.type]) {
-        const error = new Error(`[taro-poster-render]: ${item.type}类型不存在`);
+        const error = new Error(`[taro-free-poster]: ${item.type}类型不存在`);
         this.options?.onRenderFail?.(error);
         throw error;
       }
@@ -831,5 +841,6 @@ export class FreePoster {
       this.options?.onRender?.();
     }
     this.logger.timeEnd("渲染海报完成");
+    this.logger.groupEnd();
   }
 }

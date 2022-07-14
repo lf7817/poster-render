@@ -18,4 +18,16 @@ export default class Logger {
       console.timeEnd(message);
     }
   };
+
+  public group = (...labels: any[]) => {
+    if (this.debug) {
+      console.group(...labels);
+    }
+  };
+
+  public groupEnd = () => {
+    if (this.debug) {
+      console.groupEnd();
+    }
+  };
 }
