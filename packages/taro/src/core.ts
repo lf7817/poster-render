@@ -774,19 +774,29 @@ export class PosterRenderCore {
    */
   public async preloadImage(
     list:
+      | string[]
       | PosterItemConfig[]
       | ((instance: PosterRenderCore) => PosterItemConfig[])
   ): Promise<boolean> {
     this.logger.group("[poster-render]: 提前下载图片");
     this.logger.time("提前下载图片用时");
 
-    const configs = Array.isArray(list) ? list : list(this);
-    const images = configs.reduce((arr, item) => {
-      if (item.type === "image") {
-        arr.push(item.src);
+    let images: string[] = [];
+
+    if (Array.isArray(list)) {
+      if (list.some((item: any) => typeof item !== "string")) {
+        images = (list as PosterItemConfig[])
+          .filter((item) => item.type === "image")
+          .map((item) => (item as PaintImage).src);
+      } else {
+        images = list as string[];
       }
-      return arr;
-    }, [] as string[]);
+    } else if (typeof list === "function") {
+      const configs = list(this) || [];
+      images = configs
+        .filter((item) => item.type === "image")
+        .map((item) => (item as PaintImage).src);
+    }
 
     const needLoadImages = Array.from(
       new Set(images.filter((item) => !this.images.has(item)))

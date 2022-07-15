@@ -1,5 +1,11 @@
 # taro-free-poster
 
+## 3.1.1
+
+### Patch Changes
+
+- preloadImage 支持字符串数组
+
 ## 3.1.0
 
 ### Minor Changes

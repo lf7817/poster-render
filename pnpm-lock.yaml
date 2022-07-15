@@ -38,6 +38,13 @@ importers:
       tslib: 2.4.0
       typescript: 4.7.4
 
+  examples/taro-example-react:
+    specifiers:
+      '@poster-render/taro': ^3.1.0
+      '@poster-render/taro-react': ^3.1.0
+    dependencies:
+      '@poster-render/taro-react': link:../../packages/taro-react
+
   packages/taro:
     specifiers: {}
 

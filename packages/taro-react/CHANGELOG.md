@@ -1,5 +1,13 @@
 # taro-poster-render
 
+## 3.1.1
+
+### Patch Changes
+
+- preloadImage 支持字符串数组
+- Updated dependencies
+  - @poster-render/taro@3.1.1
+
 ## 3.1.0
 
 ### Minor Changes
