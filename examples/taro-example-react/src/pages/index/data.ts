@@ -1,4 +1,4 @@
-import { PosterItemConfig } from "taro-poster-render";
+import { PosterItemConfig } from "@poster-render/taro";
 
 export const data3: PosterItemConfig[] = [
   {
