@@ -8,22 +8,22 @@ import React, {
   memo,
 } from "react";
 import { nextTick, previewImage } from "@tarojs/taro";
-import { FreePoster, PosterItemConfig } from "taro-free-poster";
+import { PosterRenderCore, PosterItemConfig } from "@poster-render/taro";
 import type { PosterRenderProps, PosterRenderRef } from "./types";
 import { PosterRenerCanvas } from "./canvas";
 import { Image, View } from "@tarojs/components";
 
-const PosterRenderCore: ForwardRefRenderFunction<
+const PosterRenderReact: ForwardRefRenderFunction<
   PosterRenderRef,
   PosterRenderProps
 > = (props, ref) => {
-  const freePoster = useRef<FreePoster>();
+  const freePoster = useRef<PosterRenderCore>();
   const [url, setUrl] = useState<string>();
 
   useEffect(() => {
     nextTick(async () => {
-      const poster = new FreePoster({
-        id: props.canvasId || "taro-poster-render",
+      const poster = new PosterRenderCore({
+        id: props.canvasId || "poster-render",
         width: props.canvasWidth,
         height: props.canvasHeight,
         destWidth: props.destWidth,
@@ -67,7 +67,7 @@ const PosterRenderCore: ForwardRefRenderFunction<
     render: async (
       config?:
         | PosterItemConfig[]
-        | ((instance: FreePoster) => PosterItemConfig[])
+        | ((instance: PosterRenderCore) => PosterItemConfig[])
     ) =>
       await freePoster.current?.render(config || props.list, props.renderType),
   }));
@@ -134,16 +134,19 @@ function isEqual(prevList: PosterItemConfig[], nextList: PosterItemConfig[]) {
 }
 
 // @ts-ignore
-export const PosterRender = memo(forwardRef(PosterRenderCore), (prev, next) => {
-  if (next.disableRerender) {
-    return true;
-  }
+export const PosterRender = memo(
+  forwardRef(PosterRenderReact),
+  (prev, next) => {
+    if (next.disableRerender) {
+      return true;
+    }
 
-  if (typeof prev.list === "function" || typeof next.list === "function") {
-    return false;
-  }
+    if (typeof prev.list === "function" || typeof next.list === "function") {
+      return false;
+    }
 
-  return isEqual(prev.list, next.list);
-});
+    return isEqual(prev.list, next.list);
+  }
+);
 
 export type { PosterRenderProps, PosterRenderRef, PosterItemConfig };

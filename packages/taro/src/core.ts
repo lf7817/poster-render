@@ -11,7 +11,7 @@ import {
 } from "@tarojs/taro";
 import type {
   BaseLine,
-  FreePosterOptions,
+  PosterRenderCoreOptions,
   PaintImage,
   PaintLine,
   PaintRect,
@@ -30,7 +30,7 @@ import {
 } from "./utils";
 import Logger from "./utils/logger";
 
-export class FreePoster {
+export class PosterRenderCore {
   /**
    * Canvas 实例
    */
@@ -54,7 +54,7 @@ export class FreePoster {
   /**
    * 构造函数默认参数
    */
-  private options: FreePosterOptions = {
+  private options: PosterRenderCoreOptions = {
     id: "",
     debug: false,
     width: 300,
@@ -63,15 +63,15 @@ export class FreePoster {
     quality: 1,
   };
 
-  constructor(options: FreePosterOptions) {
+  constructor(options: PosterRenderCoreOptions) {
     this.options = { ...this.options, ...options };
 
     if (!this.options.id) {
-      throw new Error("[taro-free-poster]: canvas id must be specified");
+      throw new Error("[poster-render]: canvas id must be specified");
     }
 
     if (this.options.height >= 4096) {
-      throw new Error("[taro-free-poster]: height must be less than 4096");
+      throw new Error("[poster-render]: height must be less than 4096");
     }
 
     this.dpr = this.calculateDpr();
@@ -86,7 +86,7 @@ export class FreePoster {
 
     if (!canvas) {
       console.error(
-        `[taro-free-poster]: canvas id "${this.options.id}" not found`
+        `[poster-render]: canvas id "${this.options.id}" not found`
       );
       return;
     }
@@ -102,7 +102,7 @@ export class FreePoster {
     // 绘制前清空画布
     this.clearCanvas();
     this.logger.info(
-      "[taro-free-poster]: 画布尺寸：",
+      "[poster-render]: 画布尺寸：",
       this.canvas.width,
       this.canvas.height
     );
@@ -156,10 +156,7 @@ export class FreePoster {
               }
             },
             fail(failData) {
-              this.logger.info(
-                "[taro-free-poster]: openSetting fail",
-                failData
-              );
+              this.logger.info("[poster-render]: openSetting fail", failData);
             },
           });
       },
@@ -170,7 +167,7 @@ export class FreePoster {
    * 保存到相册
    */
   public async savePosterToPhoto(): Promise<string> {
-    this.logger.group("[taro-free-poster]: 保存到相册");
+    this.logger.group("[poster-render]: 保存到相册");
     return new Promise(async (resolve, reject) => {
       try {
         const tmp = await this.canvasToTempFilePath();
@@ -265,7 +262,7 @@ export class FreePoster {
       try {
         getFileSystemManager().accessSync(url);
       } catch (e) {
-        this.logger.info(`[taro-free-poster]: wxfile文件不存在`);
+        this.logger.info(`[poster-render]: wxfile文件不存在`);
         return Promise.resolve(undefined);
       }
     }
@@ -776,9 +773,11 @@ export class FreePoster {
    * @returns boolean 有一张图下载失败都会返回false,但不会阻塞后续图片下载
    */
   public async preloadImage(
-    list: PosterItemConfig[] | ((instance: FreePoster) => PosterItemConfig[])
+    list:
+      | PosterItemConfig[]
+      | ((instance: PosterRenderCore) => PosterItemConfig[])
   ): Promise<boolean> {
-    this.logger.group("[taro-free-poster]: 提前下载图片");
+    this.logger.group("[poster-render]: 提前下载图片");
     this.logger.time("提前下载图片用时");
 
     const configs = Array.isArray(list) ? list : list(this);
@@ -801,7 +800,9 @@ export class FreePoster {
   }
 
   public async render(
-    list: PosterItemConfig[] | ((instance: FreePoster) => PosterItemConfig[]),
+    list:
+      | PosterItemConfig[]
+      | ((instance: PosterRenderCore) => PosterItemConfig[]),
     type: "canvas" | "image" = "canvas"
   ) {
     const funcMap = {
@@ -810,7 +811,7 @@ export class FreePoster {
       image: "paintImage",
       rect: "paintRect",
     };
-    this.logger.group("[taro-free-poster]: 渲染");
+    this.logger.group("[poster-render]: 渲染");
     this.logger.time("渲染海报完成");
     const configs = Array.isArray(list) ? list : list(this);
 
@@ -818,7 +819,7 @@ export class FreePoster {
 
     for await (const item of configs) {
       if (!funcMap[item.type]) {
-        const error = new Error(`[taro-free-poster]: ${item.type}类型不存在`);
+        const error = new Error(`[poster-render]: ${item.type}类型不存在`);
         this.options?.onRenderFail?.(error);
         throw error;
       }

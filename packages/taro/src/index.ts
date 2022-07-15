@@ -1,2 +1,2 @@
-export { FreePoster } from "./FreePoster";
+export { PosterRenderCore } from "./core";
 export { type PosterItemConfig } from "./types";

@@ -3,10 +3,12 @@ import RollupNodeResolve from '@rollup/plugin-node-resolve';
 import RollupCommonjs from '@rollup/plugin-commonjs';
 import RollupTypescript from 'rollup-plugin-typescript2';
 import Package from './package.json';
-import cleanup from "rollup-plugin-cleanup";
 import {terser} from "rollup-plugin-terser";
 
 const externalPackages = [
+  'react',
+  'react-dom',
+  '@tarojs/components',
   '@tarojs/taro',
 ];
 const resolveFile = (path) => NodePath.resolve(__dirname, path);
@@ -17,22 +19,24 @@ export default {
     {
       file: resolveFile(Package.main),
       format: 'cjs',
-      exports: 'named',
       sourcemap: true,
+      exports: 'named',
     },
     {
       file: resolveFile(Package.module),
       format: 'es',
-      exports: 'named',
       sourcemap: true,
+      exports: 'named',
     },
     {
       file: resolveFile(Package.browser),
       format: 'umd',
-      name: 'taro-free-poster',
+      name: '@poster-render/taro-react',
       sourcemap: true,
       exports: 'named',
       globals: {
+        react: 'React',
+        '@tarojs/components': 'components',
         '@tarojs/taro': 'Taro',
       },
     },
@@ -48,7 +52,6 @@ export default {
     RollupTypescript({
       tsconfig: resolveFile('tsconfig.rollup.json'),
     }),
-    cleanup(),
     terser(),
   ],
 };

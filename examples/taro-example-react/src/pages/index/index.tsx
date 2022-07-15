@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef, useState } from "react";
 import { pxTransform } from "@tarojs/taro";
-import { PosterRender, PosterRenderRef } from "taro-poster-render";
+import { PosterRender, PosterRenderRef } from "@poster-render/taro-react";
 import { data1, data2, data3 } from "./data";
 
 const h5: FC = () => {

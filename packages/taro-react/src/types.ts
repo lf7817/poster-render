@@ -1,5 +1,5 @@
 import { CSSProperties } from "react";
-import { type PosterItemConfig, FreePoster } from "taro-free-poster";
+import { type PosterItemConfig, PosterRenderCore } from "@poster-render/taro";
 
 export interface PosterRenderBaseProps {
   /** canvasId，当有多个canvas时，需要指定canvasId，否则默认为第一个canvas */
@@ -30,7 +30,9 @@ export interface PosterRenderBaseProps {
   /** 禁用二次渲染 */
   disableRerender?: boolean;
   /** 配置列表 */
-  list: PosterItemConfig[] | ((instance: FreePoster) => PosterItemConfig[]);
+  list:
+    | PosterItemConfig[]
+    | ((instance: PosterRenderCore) => PosterItemConfig[]);
   /** 保存海报成功回调，h5不支持 */
   onSave?: (url: string) => void;
   /** 保存海报失败回调 */
@@ -84,6 +86,8 @@ export interface PosterRenderRef {
   preview: () => Promise<void>;
   /** 渲染方法 */
   render: (
-    config?: PosterItemConfig[] | ((instance: FreePoster) => PosterItemConfig[])
+    config?:
+      | PosterItemConfig[]
+      | ((instance: PosterRenderCore) => PosterItemConfig[])
   ) => Promise<void>;
 }

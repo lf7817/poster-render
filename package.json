@@ -1,11 +1,11 @@
 {
   "private": true,
-  "name": "taro-poster-render",
+  "name": "poster-render",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "clear": "rimraf 'packages/*/{dist,lib,types,node_modules}'",
-    "build:freePoster": "cd ./packages/taro-free-poster && npm run build",
-    "build:react": "cd ./packages/taro-poster-render && npm run build",
+    "build:taro": "cd ./packages/taro && npm run build",
+    "build:taro-react": "cd ./packages/taro-react && npm run build",
     "build": "pnpm -r --filter=./packages/* run build",
     "changeset": "changeset",
     "changeset:beta": "changeset pre enter beta",

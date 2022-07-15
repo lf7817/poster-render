@@ -1,6 +1,6 @@
-import { FreePoster } from "./FreePoster";
+import { PosterRenderCore } from "./core";
 
-export interface FreePosterOptions {
+export interface PosterRenderCoreOptions {
   id: string;
   /**
    * 画布宽度
@@ -121,9 +121,9 @@ export interface PaintRect extends Common<"rect"> {
 
 export interface PaintText {
   type: "text";
-  x: ((textWidth: number, instance: FreePoster) => number) | number;
+  x: ((textWidth: number, instance: PosterRenderCore) => number) | number;
   y: number;
-  width: ((textWidth: number, instance: FreePoster) => number) | number;
+  width: ((textWidth: number, instance: PosterRenderCore) => number) | number;
   height: number;
   text: string;
   /** 文字对齐方式 */

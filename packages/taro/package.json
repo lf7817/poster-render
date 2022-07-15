@@ -1,12 +1,12 @@
 {
-  "name": "taro-poster-render",
-  "version": "3.0.1",
+  "name": "@poster-render/taro",
+  "version": "3.1.0",
   "description": "taro海报组件，兼容企微、支付宝",
   "license": "MIT",
   "browser": "dist/index.umd.js",
   "module": "dist/index.esm.js",
   "main": "dist/index.js",
-  "source": "src/index.tsx",
+  "source": "src/index.ts",
   "types": "types/index.d.ts",
   "homepage": "https://github.com/lf7817/taro-poster-render",
   "files": [
@@ -39,13 +39,7 @@
     "ios >= 8"
   ],
   "author": "lf7817 <535536456@qq.com>",
-  "dependencies": {
-    "taro-free-poster": "workspace:*"
-  },
   "peerDependencies": {
-    "@tarojs/components": "3.4.13",
-    "@tarojs/taro": "3.4.13",
-    "react": "^17.0.0",
-    "react-dom": "^17.0.0"
+    "@tarojs/taro": "3.4.13"
   }
 }

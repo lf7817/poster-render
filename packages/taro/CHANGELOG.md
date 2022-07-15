@@ -1,5 +1,11 @@
 # taro-free-poster
 
+## 3.1.0
+
+### Minor Changes
+
+- 修改包名
+
 ## 3.0.1
 
 ### Patch Changes
