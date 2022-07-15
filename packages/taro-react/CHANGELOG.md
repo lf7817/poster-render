@@ -1,5 +1,13 @@
 # taro-poster-render
 
+## 3.1.2
+
+### Patch Changes
+
+- 修复 re-render 是 renderType 失效问题
+- Updated dependencies
+  - @poster-render/taro@3.1.2
+
 ## 3.1.1
 
 ### Patch Changes

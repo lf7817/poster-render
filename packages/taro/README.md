@@ -40,12 +40,74 @@ await poster.init();
 提前加载图片，可以省略这一步
 
 ```ts
-await poster.preloadImage(props.list);
+await poster.preloadImage(['https://img.1000.com/shumou/interaction/bg3.png']);
+```
+
+渲染图片
+
+```ts
+await poster.paintImage({
+    x: 60,
+    y: 380,
+    width: 400,
+    height: 300,
+    backgroundColor: "red",
+    mode: "cover",
+    src: "https://img.1000.com/shumou/interaction/img2.png",
+})
+```
+
+渲染矩形(radius设为宽高一半可以绘制圆)
+
+```ts
+poster.paintRect({
+    x: 294,
+    y: 30,
+    width: 96,
+    height: 96,
+    radius: 48,
+    src: "https://img.1000.com/shumou/interaction/avatar.png",
+})
+```
+
+渲染线
+
+```ts
+poster.paintline({
+    x: 50,
+    y: 50,
+    destX: 200,
+    destY: 50,
+    color: "#fff",
+    lineWidth: 4,
+})
+```
+
+渲染文字
+
+```ts
+// 绘制文字
+poster.paintText({
+    x: 100,
+    y: 180,
+    width: 150,
+    height: 30,
+    text: "中二猪猪猪",
+    color: "#fff",
+    fontSize: 28,
+  	lineNum:1,
+    textAlign: "left",
+    baseLine: "top",
+    textDecoration: "line-through",
+})
+
+
 ```
 
 
 
 ```tsx
+
 import { PosterRenderCore, PosterItemConfig } from '@poster-render/taro';
 
 const poster = new PosterRenderCore({

@@ -1,5 +1,11 @@
 # taro-free-poster
 
+## 3.1.2
+
+### Patch Changes
+
+- 修复 re-render 是 renderType 失效问题
+
 ## 3.1.1
 
 ### Patch Changes

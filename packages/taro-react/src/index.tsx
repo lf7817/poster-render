@@ -50,7 +50,7 @@ const PosterRenderReact: ForwardRefRenderFunction<
   }, []);
 
   useEffect(() => {
-    freePoster.current?.render(props.list);
+    freePoster.current?.render(props.list, props.renderType);
   }, [props.list]);
 
   useImperativeHandle(ref, () => ({

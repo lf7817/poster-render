@@ -10,7 +10,7 @@ const h5: FC = () => {
   useEffect(() => {
     setInterval(() => {
       setCount(Math.random());
-    }, 3000);
+    }, 4000);
   }, []);
 
   console.log(count);
@@ -19,10 +19,10 @@ const h5: FC = () => {
     <PosterRender
       ref={posterRender}
       canvasId="taro-poster-render"
-      renderType={"canvas"}
+      renderType={"image"}
       canvasWidth={644}
       canvasHeight={1104}
-      list={data2}
+      list={count > 0.5 ? data2 : data1}
       debug
       // showMenuByLongpress
       style={{
