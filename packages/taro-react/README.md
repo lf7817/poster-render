@@ -107,7 +107,7 @@ export default Index;
 | dpr                 | number                                                       | 否       | 指定dpr，默认会启用高清方案，画布最终会被放大dpr倍（默认为系统dpr），但是某些场景画布太大会报错，或者画布太大导致生成图片太慢，这种情况可以指定dpr调整画布大小解决问题；支付宝小程序不支持，固定为1，安卓下企微dpr为3时生成图片会报错，固定为1，另外，如果画布高度乘以dpr超过4096,则会取消放大 |
 | renderType          | "image" \| "canvas" | 是                                                                              | 渲染方式，默认是canvas, 新版canvas2d支持同层渲染（模拟器可能不支持），推荐canvas2d，如果想要实现长按海报识别二维码场景可以改为image，同时启用showMenuByLongpress |
 | disableRerender     | boolean                                                                                                          | 否 | 禁用re-render。只有list发生变化才会导致re-render，但是list如果传了函数或者字体x或者width为函数时就会导致优化失效，可以采用disableRerender禁用 |
-| list            | [PosterItemConfig](https://github.com/lf7817/taro-poster-render/blob/main/src/components/Poster/types.ts#L71)[] \| (instance: PosterRenderCore) => PosterItemConfig[] | 是       | 图片、文字、图形配置,当为函数时接受PosterRenderCore实例。一般传数组即可，如果要实现上面多段文字联动局中效果，可以改用函数（如果传函数的话需要自己处理re-render的问题） |
+| list            | PosterItemConfig[] \| (instance: PosterRenderCore) => PosterItemConfig[] | 是       | 图片、文字、图形配置,当为函数时接受PosterRenderCore实例。一般传数组即可，如果要实现上面多段文字联动局中效果，可以改用函数（如果传函数的话需要自己处理re-render的问题） |
 | onSave          | (url: string) => void                                        | 否       | 保存成功事件                                                 |
 | onSaveFail      | (err?: any) => void                                          | 否       | 保存失败事件                                                 |
 | onRenderFail    | (err?: any) => void                                          | 否       | 渲染失败事件                                                 |

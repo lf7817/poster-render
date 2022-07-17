@@ -8,7 +8,7 @@
   "main": "dist/index.js",
   "source": "src/index.ts",
   "types": "types/index.d.ts",
-  "homepage": "https://github.com/lf7817/taro-poster-render",
+  "homepage": "https://github.com/lf7817/poster-render",
   "files": [
     "dist",
     "lib",
@@ -24,7 +24,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git@github.com:lf7817/taro-poster-render.git"
+    "url": "git@github.com:lf7817/poster-render.git"
   },
   "scripts": {
     "clean": "rm -rf dist/ types/ lib/",
