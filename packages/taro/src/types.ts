@@ -162,3 +162,11 @@ export interface PaintLine extends Common<"line"> {
 }
 
 export type PosterItemConfig = PaintImage | PaintText | PaintRect | PaintLine;
+
+export interface MeasureTextOptions {
+  baseLine?: BaseLine;
+  fontSize: number;
+  fontWeight?: string;
+  fontStyle?: string;
+  fontFamily?: string;
+}

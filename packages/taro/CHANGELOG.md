@@ -1,5 +1,11 @@
 # taro-free-poster
 
+## 3.1.3
+
+### Patch Changes
+
+- 更新 types、docs
+
 ## 3.1.2
 
 ### Patch Changes

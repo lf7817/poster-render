@@ -10,7 +10,6 @@ import {
   type Image,
 } from "@tarojs/taro";
 import type {
-  BaseLine,
   PosterRenderCoreOptions,
   PaintImage,
   PaintLine,
@@ -18,6 +17,7 @@ import type {
   PaintText,
   Radius,
   PosterItemConfig,
+  MeasureTextOptions,
 } from "./types";
 import {
   getCanvasElementById,
@@ -685,16 +685,7 @@ export class PosterRenderCore {
    * 计算文本宽度
    * @param text
    */
-  public measureText(
-    text: string,
-    options?: {
-      baseLine?: BaseLine;
-      fontSize: number;
-      fontWeight?: string;
-      fontStyle?: string;
-      fontFamily?: string;
-    }
-  ): TextMetrics {
+  public measureText(text: string, options?: MeasureTextOptions): TextMetrics {
     this.ctx.save();
 
     if (options) {
