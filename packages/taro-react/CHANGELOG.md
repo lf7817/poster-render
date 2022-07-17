@@ -1,5 +1,13 @@
 # taro-poster-render
 
+## 3.1.4
+
+### Patch Changes
+
+- 更新仓库地址及文档
+- Updated dependencies
+  - @poster-render/taro@3.1.4
+
 ## 3.1.3
 
 ### Patch Changes

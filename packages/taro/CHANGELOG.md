@@ -1,5 +1,11 @@
 # taro-free-poster
 
+## 3.1.4
+
+### Patch Changes
+
+- 更新仓库地址及文档
+
 ## 3.1.3
 
 ### Patch Changes
