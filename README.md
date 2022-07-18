@@ -1,3 +1,7 @@
+
+
+# 海报渲染组件
+
 <p style="text-align: center">一款基于配置的海报组件，无需了解canvas语法</p>
 
 <p style="text-align: center"><a href="https://github.com/lf7817/poster-render"><img src="https://img.shields.io/github/stars/lf7817/poster-render?color=%23ffba15&logo=github&style=flat-square" /></a><a href="https://github.com/lf7817/poster-render"><img src="https://img.shields.io/github/license/lf7817/poster-render?color=%23ffba15&logo=github&style=flat-square" /></a><a href="https://github.com/lf7817"><img src="https://img.shields.io/badge/Author- lf7817 -7289da.svg?&logo=github&style=flat-square" /></a></p>
