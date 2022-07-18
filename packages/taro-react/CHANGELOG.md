@@ -1,5 +1,13 @@
 # taro-poster-render
 
+## 3.2.1
+
+### Patch Changes
+
+- 修复文件超出目录大小限制问题
+- Updated dependencies
+  - @poster-render/taro@3.2.1
+
 ## 3.2.0
 
 ### Minor Changes
