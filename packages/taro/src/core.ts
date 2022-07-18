@@ -190,7 +190,9 @@ export class PosterRenderCore {
           let filePath = tmp;
           if (isTT) {
             try {
-              const tmpPath = `${env.USER_DATA_PATH}/${new Date().getTime()}.${
+              const tmpPath = `${
+                env.USER_DATA_PATH
+              }/poster-render/${new Date().getTime()}.${
                 this.options.fileType || "png"
               }`;
               const body = tmp.replace(/^data:image\/\w+;base64,/, "");
@@ -202,9 +204,29 @@ export class PosterRenderCore {
               });
               filePath = tmpPath;
             } catch (e) {
-              this.logger.info("保存到相册失败", e);
-              this.options?.onSaveFail?.(e);
-              return reject(e);
+              if (e?.errNo === 21103 || e?.errNo === 21104) {
+                // 超出目录大小限制, 坑爹开发者工具报21104
+                getFileSystemManager().rmdir({
+                  dirPath: `${env.USER_DATA_PATH}/poster-render`,
+                  recursive: true,
+                  success: () => {
+                    this.logger.info(
+                      "超出目录大小限制，已清理成功，开始重新保存到相册"
+                    );
+                    this.savePosterToPhoto();
+                  },
+                  fail: (err) => {
+                    this.logger.info("清理目录失败", err);
+                    this.logger.info("保存到相册失败", e);
+                    this.options?.onSaveFail?.(e);
+                    return reject(e);
+                  },
+                });
+              } else {
+                this.logger.info("保存到相册失败", e);
+                this.options?.onSaveFail?.(e);
+                return reject(e);
+              }
             }
           }
 
