@@ -16,6 +16,7 @@ export const isAndroid = platform?.toLocaleLowerCase()?.includes("android");
 export const isAlipay = getEnv() === "ALIPAY";
 export const isWeb = getEnv() === "WEB";
 export const isWeapp = getEnv() === "WEAPP";
+export const isTT = getEnv() === "TT";
 
 /**
  * 获取canvas元素

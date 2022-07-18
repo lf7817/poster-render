@@ -7,13 +7,13 @@ const h5: FC = () => {
   const posterRender = useRef<PosterRenderRef>(null);
   const [count, setCount] = useState(0);
 
-  useEffect(() => {
-    setInterval(() => {
-      setCount(Math.random());
-    }, 4000);
-  }, []);
+  // useEffect(() => {
+  //   setInterval(() => {
+  //     setCount(Math.random());
+  //   }, 4000);
+  // }, []);
 
-  console.log(count);
+  // console.log(count);
 
   return (
     <PosterRender
@@ -22,7 +22,7 @@ const h5: FC = () => {
       renderType={"image"}
       canvasWidth={644}
       canvasHeight={1104}
-      list={count > 0.5 ? data2 : data1}
+      list={data2}
       debug
       // showMenuByLongpress
       style={{

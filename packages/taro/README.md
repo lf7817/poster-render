@@ -1,6 +1,6 @@
 # @poster-render/taro
 
-通过配置的方式渲染海报，无需了解canvas语法。采用canvas2d api封装，支持同层渲染，支持微信/企微、支付宝、h5
+通过配置的方式渲染海报，无需了解canvas语法。采用canvas2d api封装，支持同层渲染，支持微信/企微、支付宝、头条、h5
 
 ## 安装
 

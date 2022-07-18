@@ -1,4 +1,9 @@
-import { getFileSystemManager } from "@tarojs/taro";
+import {
+  getFileSystemManager,
+  env,
+  base64ToArrayBuffer,
+  FileSystemManager,
+} from "@tarojs/taro";
 import {
   hideLoading,
   showModal,
@@ -24,6 +29,7 @@ import {
   isAlipay,
   isAndroid,
   isQiwei,
+  isTT,
   isWeapp,
   isWeb,
   pixelRatio,
@@ -181,8 +187,29 @@ export class PosterRenderCore {
           link.click();
           this.logger.groupEnd();
         } else {
+          let filePath = tmp;
+          if (isTT) {
+            try {
+              const tmpPath = `${env.USER_DATA_PATH}/${new Date().getTime()}.${
+                this.options.fileType || "png"
+              }`;
+              const body = tmp.replace(/^data:image\/\w+;base64,/, "");
+              const arrayBuffer = base64ToArrayBuffer(body);
+              await this.writeFile({
+                filePath: tmpPath,
+                data: arrayBuffer,
+                encoding: "binary",
+              });
+              filePath = tmpPath;
+            } catch (e) {
+              this.logger.info("保存到相册失败", e);
+              this.options?.onSaveFail?.(e);
+              return reject(e);
+            }
+          }
+
           saveImageToPhotosAlbum({
-            filePath: tmp,
+            filePath,
             success: () => {
               this.logger.info("保存到相册成功");
               this.options?.onSave?.(tmp);
@@ -213,6 +240,17 @@ export class PosterRenderCore {
     });
   }
 
+  private async writeFile(
+    options: FileSystemManager.WriteFileOption
+  ): Promise<void> {
+    return new Promise((resolve, reject) => {
+      getFileSystemManager().writeFile({
+        ...options,
+        success: () => resolve(),
+        fail: (error) => reject(error),
+      });
+    });
+  }
   /**
    * 解析圆角半径
    * @param radius
@@ -711,7 +749,7 @@ export class PosterRenderCore {
       setTimeout(async () => {
         this.logger.info("开始截取canvas图片");
         this.logger.time("截取canvas图片时间");
-        if (isWeb) {
+        if (isWeb || isTT) {
           try {
             const data = this.canvas.toDataURL(
               `image/${
@@ -719,9 +757,9 @@ export class PosterRenderCore {
               }`,
               this.options.quality || 1
             );
-            resolve(data);
-            this.logger.info("截取canvas图片成功", data);
+            this.logger.info("截取canvas图片成功");
             this.logger.timeEnd("截取canvas图片时间");
+            resolve(data);
           } catch (e) {
             this.logger.info("截取canvas目前的图像失败", e);
             reject(e);
@@ -754,7 +792,7 @@ export class PosterRenderCore {
             this
           );
         }
-      }, 50);
+      }, 1000);
     });
   };
 

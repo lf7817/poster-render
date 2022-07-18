@@ -1,5 +1,16 @@
 # taro-poster-render
 
+## 3.2.0
+
+### Minor Changes
+
+- 支持头条
+
+### Patch Changes
+
+- Updated dependencies
+  - @poster-render/taro@3.2.0
+
 ## 3.1.4
 
 ### Patch Changes

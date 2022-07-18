@@ -28,8 +28,8 @@ const PosterRenderReact: ForwardRefRenderFunction<
         height: props.canvasHeight,
         destWidth: props.destWidth,
         destHeight: props.destHeight,
-        quality: props.quality,
-        fileType: props.fileType,
+        quality: props.quality || 1,
+        fileType: props.fileType || "png",
         dpr: props.dpr,
         debug: props.debug,
         onRender: (url) => {

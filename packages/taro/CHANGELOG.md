@@ -1,5 +1,11 @@
 # taro-free-poster
 
+## 3.2.0
+
+### Minor Changes
+
+- 支持头条
+
 ## 3.1.4
 
 ### Patch Changes
