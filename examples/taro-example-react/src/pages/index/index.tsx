@@ -19,7 +19,7 @@ const h5: FC = () => {
     <PosterRender
       ref={posterRender}
       canvasId="taro-poster-render"
-      renderType={"image"}
+      renderType={"canvas"}
       canvasWidth={644}
       canvasHeight={1104}
       list={data2}

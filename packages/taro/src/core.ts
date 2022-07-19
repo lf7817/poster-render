@@ -185,49 +185,44 @@ export class PosterRenderCore {
           link.download = `${new Date().getTime()}.${this.options.fileType}`;
           //让a标签的click函数，直接下载图片
           link.click();
+          this.logger.info("H5不支持onSave事件");
           this.logger.groupEnd();
         } else {
           let filePath = tmp;
           if (isTT) {
-            try {
-              const tmpPath = `${
-                env.USER_DATA_PATH
-              }/poster-render/${new Date().getTime()}.${
-                this.options.fileType || "png"
-              }`;
-              const body = tmp.replace(/^data:image\/\w+;base64,/, "");
-              const arrayBuffer = base64ToArrayBuffer(body);
-              await this.writeFile({
-                filePath: tmpPath,
-                data: arrayBuffer,
-                encoding: "binary",
+            const tmpPath = `${env.USER_DATA_PATH}/poster-render.${
+              this.options.fileType || "png"
+            }`;
+            const body = tmp.replace(/^data:image\/\w+;base64,/, "");
+            const arrayBuffer = base64ToArrayBuffer(body);
+            const writeFileError = await this.writeFile({
+              filePath: tmpPath,
+              data: arrayBuffer,
+              encoding: "binary",
+            });
+
+            if (
+              // @ts-ignore
+              writeFileError?.errNo === 21103 ||
+              // @ts-ignore
+              writeFileError?.errNo === 21104
+            ) {
+              const rmdirError = await this.rmdir({
+                dirPath: `${env.USER_DATA_PATH}`,
+                recursive: true,
               });
-              filePath = tmpPath;
-            } catch (e) {
-              if (e?.errNo === 21103 || e?.errNo === 21104) {
-                // 超出目录大小限制, 坑爹开发者工具报21104
-                getFileSystemManager().rmdir({
-                  dirPath: `${env.USER_DATA_PATH}/poster-render`,
-                  recursive: true,
-                  success: () => {
-                    this.logger.info(
-                      "超出目录大小限制，已清理成功，开始重新保存到相册"
-                    );
-                    this.savePosterToPhoto();
-                  },
-                  fail: (err) => {
-                    this.logger.info("清理目录失败", err);
-                    this.logger.info("保存到相册失败", e);
-                    this.options?.onSaveFail?.(e);
-                    return reject(e);
-                  },
-                });
-              } else {
-                this.logger.info("保存到相册失败", e);
-                this.options?.onSaveFail?.(e);
-                return reject(e);
+              if (rmdirError) {
+                this.logger.info("清理目录失败", rmdirError);
+                this.logger.info("保存到相册失败", rmdirError);
+                this.options?.onSaveFail?.(rmdirError);
+                return reject(rmdirError);
               }
+
+              this.logger.info("超出目录大小限制，已清理成功，请重新保存");
+              return reject(writeFileError);
             }
+
+            filePath = tmpPath;
           }
 
           saveImageToPhotosAlbum({
@@ -262,14 +257,31 @@ export class PosterRenderCore {
     });
   }
 
+  /**
+   * 写文件
+   * @param options
+   * @returns
+   */
   private async writeFile(
     options: FileSystemManager.WriteFileOption
-  ): Promise<void> {
-    return new Promise((resolve, reject) => {
+  ): Promise<FileSystemManager.WriteFileFailCallbackResult | undefined> {
+    return new Promise((resolve) => {
       getFileSystemManager().writeFile({
         ...options,
-        success: () => resolve(),
-        fail: (error) => reject(error),
+        success: () => resolve(undefined),
+        fail: (error) => resolve(error),
+      });
+    });
+  }
+
+  private async rmdir(
+    option: FileSystemManager.RmdirOption
+  ): Promise<FileSystemManager.RmdirFailCallbackResult | undefined> {
+    return new Promise((resolve) => {
+      getFileSystemManager().rmdir({
+        ...option,
+        success: () => resolve(undefined),
+        fail: (error) => resolve(error),
       });
     });
   }
@@ -814,7 +826,7 @@ export class PosterRenderCore {
             this
           );
         }
-      }, 1000);
+      }, 50);
     });
   };
 
