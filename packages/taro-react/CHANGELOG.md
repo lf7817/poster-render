@@ -1,5 +1,13 @@
 # taro-poster-render
 
+## 3.2.2
+
+### Patch Changes
+
+- 优化头条保存到相册逻辑
+- Updated dependencies
+  - @poster-render/taro@3.2.2
+
 ## 3.2.1
 
 ### Patch Changes
