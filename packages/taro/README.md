@@ -44,7 +44,8 @@ await poster.preloadImage(['https://img.1000.com/shumou/interaction/bg3.png']);
 渲染图片
 
 ```ts
-await poster.paintImage({
+await poster.renderItem({
+  	type: "image",
     x: 60,
     y: 380,
     width: 400,
@@ -58,7 +59,8 @@ await poster.paintImage({
 渲染矩形(radius设为宽高一半可以绘制圆)
 
 ```ts
-poster.paintRect({
+poster.renderItem({
+  	type: "rect",
     x: 294,
     y: 30,
     width: 96,
@@ -71,7 +73,8 @@ poster.paintRect({
 渲染线
 
 ```ts
-poster.paintline({
+poster.renderItem({
+  	type: "line",
     x: 50,
     y: 50,
     destX: 200,
@@ -85,7 +88,8 @@ poster.paintline({
 
 ```ts
 // 绘制文字
-poster.paintText({
+poster.renderItem({
+  	type: "text",
     x: 100,
     y: 180,
     width: 150,
@@ -104,7 +108,8 @@ poster.paintText({
 
 ```ts
 // 用户昵称不定长
-poster.paintText({
+poster.renderItem({
+  	type: "text",
     x: (textWidth, instance) =>
       (644 - textWidth - instance.measureText("的助力邀请").width) / 2,
     y: 180,
@@ -118,7 +123,8 @@ poster.paintText({
     textDecoration: "line-through",
 })
 // ”的助力邀请“长度固定
-poster.paintText({
+poster.renderItem({
+  	type: "text",
     x: (textWidth, instance) =>
       (644 - textWidth - instance.measureText("中二猪猪猪").width) / 2 +
       instance.measureText("中二猪猪猪").width +
@@ -134,7 +140,7 @@ poster.paintText({
 })
 ```
 
-渲染一组数据
+渲染一组数据（不会清清除画布，需要手动操作）
 
 ```tsx
 await poster.render([
@@ -264,14 +270,9 @@ Methods
 | savePosterToPhoto    | () => Promise<string>                                        | 保存到相册                                                   |
 | canvasToTempFilePath | () => Promise<string>                                        | 生成临时图片，h5返回base64，小程序返回临时文件路径           |
 | preloadImage         | (list: string[] \| PosterItemConfig[] \| ((instance: PosterRenderCore) => PosterItemConfig[])) => promise<boolean> | 预加载图片，建议在渲染前调用，减少时间，否则图片会按顺序下载，有一张图片失败就会返回false，但不会阻塞后续图片下载 |
-| paintImage           | (options: Omit<PaintImage, "type">): Promise<void>           | 绘制图片，支持圆角，填充模式                                 |
-| paintRect            | (options: Omit<PaintRect, "type">): Promise<void>            | 绘制矩形，支持圆角，如果要绘制圆形，宽高一样radius设为宽高一半即可 |
-| paintLine            | (options: Omit<PaintLine, "type">): Promise<void>            | 绘制线                                                       |
-| paintText            | (options: Omit<PaintText, "type">): Promise<number>          | 绘制文字                                                     |
-| measureText          | (text: string, options?: MeasureTextOptions): TextMetrics    | 测量文字信息（主要是宽度），如果要测量的文字字体大小与当前渲染文字大小不一致，需要传入第二个参数指定字体信息 |
+| renderItem           | (options: PosterItemConfig): Promise<void>                   | 绘制图片、文字、矩形、线                                     |
 | render               | (list: PosterItemConfig[] \| ((instance: PosterRenderCore) => PosterItemConfig[]), type?: "canvas" \| "image"): Promise<void> | 渲染一组数据                                                 |
-
-
+| measureText          | (text: string, options?: MeasureTextOptions): TextMetrics    | 测量文字信息（主要是宽度），如果要测量的文字字体大小与当前渲染文字大小不一致，需要传入第二个参数指定字体信息 |
 
 list支持四种原子类型：``image``、``text``、``rect``、``line``，复杂的效果可用通过相互组合实现，自由发挥吧（如果有无法实现的场景请一定要给我提个issue，我会尽快支持的）
 
@@ -345,25 +346,13 @@ line类型(PaintLine)
 
 - canvas没有层级，后渲染的可能会盖住之前的内容，所以list要注意顺序，这里使用了``for await...of``特性实现“同步”渲染
 
-  ```ts
-  for await (const item of props.list) {
-    await $freePoster.current.exec(item);
-  }
-  ```
-
 - 小程序图片域名要提前配置到下载白名单
-
 - 建议预加载图，否则图片会按顺序下载，增加渲染时长
-
 - 受网路影响图片可能会下载失败，这里做了两次下载重试
-
 - canvas宽高跟css宽高不是一个概念不要搞混了
-
 - 微信小程序canvas2d 画布高度不能超过4096（其他小程序没测试），所以初始化时画布超过4096会抛错
-
 - 默认渲染会开启高清模式，即画布会放大dpr倍，但是放大后画布尺寸可能会超限，所以，检测到画布高度超过4096后会取消高清模式，避免报错
-
 - 部分安卓手机企微下会报“canvasToTempFilePath:fail:convert native buffer parameter fail. native buffer exceed size limit.”，查了下说是高清方案引起的，dpr超过3都会出现该问题，为了不报错，安卓手机企微下默认不启用高清模式，如果觉着海报不清楚，可以手动指定dpr
-
 - 生成海报模糊？采用高清图、画布调大点、调高dpr（注意渲染速度，自己权衡吧）
+- 支付宝小程序要启用基础库2.0
 - 如果想要兼容其他小程序可以给我提个issue

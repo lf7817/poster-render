@@ -44,8 +44,8 @@ export const data2: PosterItemConfig[] = [
   },
   {
     type: "text",
-    x: (textWidth, instance) =>
-      (644 - textWidth - instance.measureText("的助力邀请").width) / 2,
+    x: (textWidth, measureText) =>
+      (644 - textWidth - measureText("的助力邀请").width) / 2,
     y: 180,
     width: (textWidth) => textWidth,
     height: 30,
@@ -58,9 +58,9 @@ export const data2: PosterItemConfig[] = [
   },
   {
     type: "text",
-    x: (textWidth, instance) =>
-      (644 - textWidth - instance.measureText("中二猪猪猪").width) / 2 +
-      instance.measureText("中二猪猪猪").width +
+    x: (textWidth, measureText) =>
+      (644 - textWidth - measureText("中二猪猪猪").width) / 2 +
+      measureText("中二猪猪猪").width +
       10,
     y: 180,
     width: 200,

@@ -17,7 +17,7 @@ const PosterRenderReact: ForwardRefRenderFunction<
   PosterRenderRef,
   PosterRenderProps
 > = (props, ref) => {
-  const freePoster = useRef<PosterRenderCore>();
+  const posterRenderCore = useRef<PosterRenderCore>();
   const [url, setUrl] = useState<string>();
 
   useEffect(() => {
@@ -43,23 +43,25 @@ const PosterRenderReact: ForwardRefRenderFunction<
 
       await poster.init();
       await poster.preloadImage(props.list);
+      poster.clearCanvas();
       await poster.render(props.list, props.renderType);
 
-      freePoster.current = poster;
+      posterRenderCore.current = poster;
     });
   }, []);
 
   useEffect(() => {
-    freePoster.current?.render(props.list, props.renderType);
+    posterRenderCore.current?.clearCanvas();
+    posterRenderCore.current?.render(props.list, props.renderType);
   }, [props.list]);
 
   useImperativeHandle(ref, () => ({
     savePosterToPhoto: async () =>
-      await freePoster.current?.savePosterToPhoto?.(),
+      await posterRenderCore.current?.savePosterToPhoto?.(),
     preview: async () => {
       try {
-        if (freePoster.current) {
-          const res = await freePoster.current?.canvasToTempFilePath();
+        if (posterRenderCore.current) {
+          const res = await posterRenderCore.current?.canvasToTempFilePath();
           await previewImage({ urls: [res], current: res });
         }
       } catch (e) {}
@@ -68,8 +70,13 @@ const PosterRenderReact: ForwardRefRenderFunction<
       config?:
         | PosterItemConfig[]
         | ((instance: PosterRenderCore) => PosterItemConfig[])
-    ) =>
-      await freePoster.current?.render(config || props.list, props.renderType),
+    ) => {
+      posterRenderCore.current?.clearCanvas();
+      return await posterRenderCore.current?.render(
+        config || props.list,
+        props.renderType
+      );
+    },
   }));
 
   if (props.renderType === "canvas") {

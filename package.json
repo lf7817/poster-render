@@ -4,6 +4,7 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "clear": "rimraf 'packages/*/{dist,lib,types,node_modules}'",
+    "build:shared": "cd ./packages/shared && npm run build",
     "build:taro": "cd ./packages/taro && npm run build",
     "build:taro-react": "cd ./packages/taro-react && npm run build",
     "build": "pnpm -r --filter=./packages/* run build",

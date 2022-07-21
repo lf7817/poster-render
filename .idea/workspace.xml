@@ -1,234 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2aeb080f-10c5-439e-9ef6-f1da8958c64a" name="Changes" comment="chore: 更新版本号">
-      <change afterPath="$PROJECT_DIR$/packages/taro-free-poster/package-lock.json" afterDir="false" />
+    <list default="true" id="cc5fbde2-4097-4aac-a960-d152160dfde4" name="变更" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/shared/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/shared/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/shared/rollup.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/shared/src/canvas.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/shared/src/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/shared/src/types.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/shared/tsconfig.build.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/shared/tsconfig.rollup.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/taro-poster-render.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/poster-render.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/taro-example-react/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/examples/taro-example-react/pnpm-lock.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-free-poster/rollup.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-free-poster/rollup.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-free-poster/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-free-poster/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-poster-render/rollup.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-poster-render/rollup.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-poster-render/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-poster-render/src/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/taro-poster-render/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro-poster-render/src/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/taro-example-react/src/pages/index/data.ts" beforeDir="false" afterPath="$PROJECT_DIR$/examples/taro-example-react/src/pages/index/data.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro/src/core.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro/src/core.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/taro/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/taro/src/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="GitToolBoxStore">
-    <option name="recentBranches">
-      <RecentBranches>
-        <option name="branchesForRepo">
-          <list>
-            <RecentBranchesForRepo>
-              <option name="branches">
-                <list>
-                  <RecentBranch>
-                    <option name="branchName" value="feat/canvas2d" />
-                    <option name="lastUsedInstant" value="1657182296" />
-                  </RecentBranch>
-                  <RecentBranch>
-                    <option name="branchName" value="main" />
-                    <option name="lastUsedInstant" value="1657182295" />
-                  </RecentBranch>
-                </list>
-              </option>
-              <option name="repositoryRootUrl" value="file://$PROJECT_DIR$" />
-            </RecentBranchesForRepo>
-          </list>
-        </option>
-      </RecentBranches>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+      </list>
     </option>
   </component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/.changeset/config.json" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/.idea/modules.xml" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/.idea/vcs.xml" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/.idea/workspace.xml" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/.vscode/settings.json" root0="SKIP_INSPECTION" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="PackageJsonUpdateNotifier">
-    <dismissed value="$PROJECT_DIR$/examples/taro-example-react/package.json" />
-    <dismissed value="$PROJECT_DIR$/packages/taro-poster-render/package.json" />
-  </component>
-  <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
-  </component>
-  <component name="ProjectId" id="2AKf6imXJnnrTICV0GtUhfh4rFu" />
-  <component name="ProjectLevelVcsManager">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
+  <component name="ProjectId" id="2CA0RqnxPDFPkxKXuVD8uCSS7sS" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/fan/workspaces/taro-poster-render/packages&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/fan/workspaces/taro-poster-render/node_modules/typescript/lib&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;pnpm&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/fan/workspaces/poster-render/node_modules/prettier&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/fan/workspaces/poster-render/node_modules/typescript/lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/packages" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/examples" />
-    </key>
-  </component>
-  <component name="RunManager" selected="npm.release">
-    <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/packages/taro-poster-render/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="build" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
-    <configuration name="changeset" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="changeset" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
-    <configuration name="changeset:beta" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="changeset:beta" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
-    <configuration name="release" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="release" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
-    <configuration name="version-packages" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="version-packages" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="npm.release" />
-        <item itemvalue="npm.version-packages" />
-        <item itemvalue="npm.changeset" />
-        <item itemvalue="npm.changeset:beta" />
-        <item itemvalue="npm.build" />
-      </list>
-    </recent_temporary>
-  </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="2aeb080f-10c5-439e-9ef6-f1da8958c64a" name="Changes" comment="" />
-      <created>1654763024085</created>
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="cc5fbde2-4097-4aac-a960-d152160dfde4" name="变更" comment="" />
+      <created>1658230076425</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1654763024085</updated>
-      <workItem from="1654763025327" duration="109000" />
-      <workItem from="1654763153965" duration="3666000" />
-      <workItem from="1654825912852" duration="6713000" />
-      <workItem from="1654841481819" duration="1161000" />
-      <workItem from="1654842874645" duration="5271000" />
-      <workItem from="1656318714707" duration="3160000" />
-      <workItem from="1656560233137" duration="83000" />
-      <workItem from="1656989528330" duration="2827000" />
-      <workItem from="1656999903026" duration="9077000" />
-      <workItem from="1657011356960" duration="3189000" />
-      <workItem from="1657076326058" duration="9212000" />
-      <workItem from="1657096997282" duration="4097000" />
-      <workItem from="1657101759233" duration="170000" />
-      <workItem from="1657157706161" duration="7077000" />
-      <workItem from="1657173859697" duration="9671000" />
-      <workItem from="1657184679320" duration="2057000" />
-      <workItem from="1657247082261" duration="2043000" />
+      <updated>1658230076425</updated>
+      <workItem from="1658230077527" duration="67000" />
+      <workItem from="1658230147390" duration="1147000" />
+      <workItem from="1658231303043" duration="9351000" />
+      <workItem from="1658325505935" duration="2524000" />
+      <workItem from="1658328457492" duration="13000" />
+      <workItem from="1658362695871" duration="1300000" />
     </task>
-    <task id="LOCAL-00001" summary="chore: add .idea">
-      <created>1654763807312</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1654763807312</updated>
-    </task>
-    <task id="LOCAL-00002" summary="chore: 切换到pnpm">
-      <created>1654846367373</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1654846367373</updated>
-    </task>
-    <task id="LOCAL-00003" summary="chore: 更新版本号">
-      <created>1654846601305</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1654846601305</updated>
-    </task>
-    <task id="LOCAL-00004" summary="chore: 更新版本号">
-      <created>1654847410297</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1654847410297</updated>
-    </task>
-    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="chore: add .idea" />
-    <MESSAGE value="chore: 切换到pnpm" />
-    <MESSAGE value="chore: 更新版本号" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore: 更新版本号" />
   </component>
 </project>

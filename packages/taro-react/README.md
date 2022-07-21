@@ -215,12 +215,6 @@ line类型(PaintLine)
 
 - canvas没有层级，后渲染的可能会盖住之前的内容，所以list要注意顺序，这里使用了`for await...of`特性实现“同步”渲染
 
-  ```
-  for await (const item of props.list) {
-    await $freePoster.current.exec(item);
-  }
-  ```
-
 - 小程序图片域名要提前配置到下载白名单
 
 - 建议预加载图，否则图片会按顺序下载，增加渲染时长
@@ -236,6 +230,8 @@ line类型(PaintLine)
 - 部分安卓手机企微下会报“canvasToTempFilePath:fail:convert native buffer parameter fail. native buffer exceed size limit.”，查了下说是高清方案引起的，dpr超过3都会出现该问题，为了不报错，安卓手机企微下默认不启用高清模式，如果觉着海报不清楚，可以手动指定dpr
 
 - 生成海报模糊？采用高清图、画布调大点、调高dpr（注意渲染速度，自己权衡吧）
+
+- 支付宝小程序要启用基础库2.0
 
 - 如果想要兼容其他小程序可以给我提个issue
 
