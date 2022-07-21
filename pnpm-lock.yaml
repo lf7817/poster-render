@@ -38,6 +38,10 @@ importers:
       tslib: 2.4.0
       typescript: 4.7.4
 
+  examples/taro-example-react:
+    specifiers:
+      '@poster-render/shared': ^3.3.0
+
   packages/shared:
     specifiers: {}
 
