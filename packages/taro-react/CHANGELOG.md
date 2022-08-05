@@ -1,5 +1,13 @@
 # taro-poster-render
 
+## 3.3.1
+
+### Patch Changes
+
+- fix(core): 移除保存成功默认提示
+- Updated dependencies
+  - @poster-render/taro@3.3.1
+
 ## 3.3.0
 
 ### Minor Changes
