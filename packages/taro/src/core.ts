@@ -222,10 +222,6 @@ export class PosterRenderCore {
             success: () => {
               this.logger.info("保存到相册成功");
               this.options?.onSave?.(tmp);
-              showToast({
-                icon: "none",
-                title: "已保存到相册，快去分享哟～",
-              });
               resolve(tmp);
             },
             fail: (err) => {
