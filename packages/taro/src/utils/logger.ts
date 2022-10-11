@@ -1,9 +1,26 @@
+import { platform } from "./index";
+
 export default class Logger {
   constructor(private readonly debug: boolean) {}
 
   public info = (message?: any, ...optionalParams: any[]) => {
     if (this.debug) {
-      console.info(message, ...optionalParams);
+      const data = optionalParams.map((item) => {
+        if (
+          platform !== "devtools" &&
+          ((item.src && item.src.startsWith("data:image")) ||
+            (item.defaultSrc && item.defaultSrc.startsWith("data:image")))
+        ) {
+          return {
+            ...item,
+            src: item.src.slice(0, 100) + "...",
+          };
+        }
+
+        return item;
+      });
+
+      console.info(message, ...data);
     }
   };
 

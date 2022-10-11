@@ -139,7 +139,9 @@ export async function downloadImage<R = any>(
       resolve(image);
     };
     image.onerror = () => {
-      console.error("[poster-render]: downloadImage error", options.src);
+      if (!options.src.startsWith("data:image")) {
+        console.error("[poster-render]: downloadImage error", options.src);
+      }
       resolve(undefined);
     };
     image.src = options.src;

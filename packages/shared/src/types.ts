@@ -87,7 +87,7 @@ export interface DownloadImageOptions {
 
 export type MeasureTextFunc = (
   text: string,
-  options: MeasureTextOptions
+  options?: MeasureTextOptions
 ) => TextMetrics;
 
 export interface DrawTextOptions {
