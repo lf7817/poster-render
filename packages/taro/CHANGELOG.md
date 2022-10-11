@@ -1,5 +1,13 @@
 # taro-free-poster
 
+## 3.3.2
+
+### Patch Changes
+
+- 修复 base64 导致真机控制台卡死问题
+- Updated dependencies
+  - @poster-render/shared@3.3.2
+
 ## 3.3.1
 
 ### Patch Changes
