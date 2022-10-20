@@ -1,5 +1,11 @@
 # @poster-render/shared
 
+## 3.3.3
+
+### Patch Changes
+
+- 源码打包里
+
 ## 3.3.2
 
 ### Patch Changes
