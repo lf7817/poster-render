@@ -12,6 +12,7 @@
   "files": [
     "dist",
     "lib",
+    "src",
     "types"
   ],
   "keywords": [
