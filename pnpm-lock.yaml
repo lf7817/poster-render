@@ -40,7 +40,13 @@ importers:
 
   examples/taro-example-react:
     specifiers:
-      '@poster-render/shared': ^3.3.0
+      '@poster-render/shared': ^3.3.3
+      '@poster-render/taro': ^3.3.3
+      '@poster-render/taro-react': ^3.3.3
+    dependencies:
+      '@poster-render/shared': link:../../packages/shared
+      '@poster-render/taro': link:../../packages/taro
+      '@poster-render/taro-react': link:../../packages/taro-react
 
   packages/shared:
     specifiers: {}

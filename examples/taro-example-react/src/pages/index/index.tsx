@@ -1,19 +1,33 @@
 import { FC, useEffect, useRef, useState } from "react";
 import { pxTransform } from "@tarojs/taro";
-import { PosterRender, PosterRenderRef } from "@poster-render/taro-react";
-import { data1, data2, data3 } from "./data";
+import {
+  PosterItemConfig,
+  PosterRender,
+  PosterRenderRef,
+} from "@poster-render/taro-react";
+import { data2 } from "./data";
 
 const h5: FC = () => {
   const posterRender = useRef<PosterRenderRef>(null);
-  const [count, setCount] = useState(0);
+  const [list, setList] = useState<PosterItemConfig[]>([]);
 
-  // useEffect(() => {
-  //   setInterval(() => {
-  //     setCount(Math.random());
-  //   }, 4000);
-  // }, []);
-
-  // console.log(count);
+  useEffect(() => {
+    setInterval(() => {
+      setList([
+        ...data2,
+        {
+          type: "text",
+          width: 400,
+          height: 100,
+          x: 100,
+          y: 100,
+          text: Math.random().toString(),
+          fontSize: 34,
+          color: "#fff",
+        },
+      ]);
+    }, 1000);
+  }, []);
 
   return (
     <PosterRender
@@ -22,7 +36,7 @@ const h5: FC = () => {
       renderType={"canvas"}
       canvasWidth={644}
       canvasHeight={1104}
-      list={data2}
+      list={list}
       debug
       // showMenuByLongpress
       style={{

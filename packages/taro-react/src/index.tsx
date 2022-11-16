@@ -128,6 +128,10 @@ const PosterRenderReact: ForwardRefRenderFunction<
 };
 
 function isEqual(prevList: PosterItemConfig[], nextList: PosterItemConfig[]) {
+  if (prevList.length !== nextList.length) {
+    return false;
+  }
+
   // @ts-ignore
   for (let [i, item] of prevList.entries()) {
     for (let [k, v] of Object.entries(item)) {
