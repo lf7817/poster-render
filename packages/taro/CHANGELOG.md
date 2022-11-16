@@ -1,5 +1,13 @@
 # taro-free-poster
 
+## 3.3.4
+
+### Patch Changes
+
+- 修复 list 默认值为空数组后续更改时不渲染问题
+- Updated dependencies
+  - @poster-render/shared@3.3.4
+
 ## 3.3.3
 
 ### Patch Changes
