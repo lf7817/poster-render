@@ -14,11 +14,12 @@ import {
   type Canvas,
 } from "@tarojs/taro";
 import {
-  preloadImage,
+  preloadImage as sharedPreloadImage,
   clearCanvas,
   renderItem,
   DrawImageOptions,
   PosterItemConfig,
+  PreloadImageItem,
 } from "@poster-render/shared";
 import type { PosterRenderCoreOptions } from "./types";
 import {
@@ -352,31 +353,37 @@ export class PosterRenderCore {
    */
   public async preloadImage(
     list:
-      | string[]
+      | PreloadImageItem[]
       | PosterItemConfig[]
       | ((instance: PosterRenderCore) => PosterItemConfig[])
   ): Promise<boolean> {
     this.logger.group("[poster-render]: 提前下载图片");
     this.logger.time("提前下载图片用时");
 
-    let images: string[] = [];
+    let images: PreloadImageItem[] = [];
 
     if (Array.isArray(list)) {
       if (list.some((item: any) => typeof item !== "string")) {
         images = (list as PosterItemConfig[])
           .filter((item) => item.type === "image")
-          .map((item) => (item as DrawImageOptions).src);
+          .map((item) => ({
+            src: (item as DrawImageOptions).src,
+            cacheKey: (item as DrawImageOptions).cacheKey,
+          }));
       } else {
-        images = list as string[];
+        images = list as PreloadImageItem[];
       }
     } else if (typeof list === "function") {
       const configs = list(this) || [];
       images = configs
         .filter((item) => item.type === "image")
-        .map((item) => (item as DrawImageOptions).src);
+        .map((item) => ({
+          src: (item as DrawImageOptions).src,
+          cacheKey: (item as DrawImageOptions).cacheKey,
+        }));
     }
 
-    const rtn = await preloadImage(this.ctx, this.canvas, images);
+    const rtn = await sharedPreloadImage(this.ctx, this.canvas, images);
     this.logger.timeEnd("提前下载图片用时");
     this.logger.groupEnd();
     return rtn;

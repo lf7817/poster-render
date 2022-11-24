@@ -8,6 +8,7 @@ import {
   MeasureTextOptions,
   Radius,
   PosterItemConfig,
+  PreloadImageItem,
 } from "./types";
 
 /**
@@ -132,19 +133,28 @@ export async function downloadImage<R = any>(
   return new Promise((resolve) => {
     const isWeb = !!document && !options.canvas.createImage;
     const image = isWeb ? new Image() : options.canvas.createImage();
-    // 解决web端跨域问题
-    isWeb && image.setAttribute("crossOrigin", "Anonymous");
-    image.onload = () => {
-      imageCache.set(options.src, image);
-      resolve(image);
-    };
+
+    if (isWeb) {
+      // 解决web端跨域问题
+      image.setAttribute("crossOrigin", "Anonymous");
+    }
+
+    image.onload = () => resolve(image);
+
     image.onerror = () => {
+      // 真机下不要打印base64,会导致控制台卡死
       if (!options.src.startsWith("data:image")) {
         console.error("[poster-render]: downloadImage error", options.src);
       }
+      // TODO base64下载失败时转成临时文件
       resolve(undefined);
     };
+
     image.src = options.src;
+
+    if (options.src.startsWith("data:image") && !options.cacheKey) {
+      console.warn("[poster-render]: 使用base64图片时建议指定cacheKey");
+    }
   });
 }
 
@@ -159,11 +169,19 @@ export async function loadImage<R = any>(
     return Promise.resolve(undefined);
   }
 
-  if (imageCache.has(options.src)) {
-    return Promise.resolve(imageCache.get(options.src));
+  const cacheKey = options.cacheKey ?? options.src;
+
+  if (imageCache.has(cacheKey)) {
+    return Promise.resolve(imageCache.get(cacheKey));
   }
 
-  return await downloadImage(options);
+  const img = await downloadImage(options);
+
+  if (img) {
+    imageCache.set(options.cacheKey ?? options.src, img);
+  }
+
+  return img;
 }
 
 /**
@@ -174,10 +192,20 @@ export async function drawImage(
   options: DrawImageOptions
 ) {
   const { ctx, canvas } = common;
-  let image = await loadImage({ ctx, canvas, src: options.src });
+  let image = await loadImage({
+    ctx,
+    canvas,
+    src: options.src,
+    cacheKey: options.cacheKey,
+  });
 
   if (!image && options.defaultSrc) {
-    image = await loadImage({ ctx, canvas, src: options.defaultSrc });
+    image = await loadImage({
+      ctx,
+      canvas,
+      src: options.defaultSrc,
+      cacheKey: options.cacheKey,
+    });
   }
 
   if (!image) {
@@ -458,17 +486,18 @@ export async function drawText(common: CommonParams, options: DrawTextOptions) {
 export async function preloadImage(
   ctx: CanvasRenderingContext2D,
   canvas: any,
-  images: string[]
+  images: PreloadImageItem[]
 ) {
   const needLoadImages = Array.from(
-    new Set(images.filter((item) => !imageCache.has(item)))
+    new Set(images.filter((item) => !imageCache.has(item.cacheKey ?? item.src)))
   );
   const loadedImages = await Promise.all(
     needLoadImages.map((item) =>
       loadImage({
         ctx,
         canvas,
-        src: item,
+        src: item.src,
+        cacheKey: item.cacheKey,
       })
     )
   );

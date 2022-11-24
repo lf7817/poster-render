@@ -13,6 +13,11 @@ export interface DrawImageOptions {
   /** 默认图片，src下载失败时采用 */
   defaultSrc?: string;
   /**
+   * 图片缓存key，不填时使用src做缓存key，如果使用base64时建议指定cacheKey, 不指定的话
+   * 用base64做Map键不知道能不能撑住
+   */
+  cacheKey?: string;
+  /**
    * fill-填充模式，图片会占满绘制区域
    * contain-保持纵横比缩放图片，使图片的长边能完全显示出来
    * cover-保持纵横比缩放图片，只保证图片的短边能完全显示出来
@@ -83,6 +88,7 @@ export interface DownloadImageOptions {
   src: string;
   ctx: CanvasRenderingContext2D;
   canvas: any;
+  cacheKey?: string;
 }
 
 export type MeasureTextFunc = (
@@ -138,3 +144,14 @@ export interface CommonParams {
 }
 
 export type PosterItemConfig = PaintRect | PaintLine | PaintText | PaintImage;
+
+export interface PreloadImageItem {
+  /**
+   * 图片路径
+   */
+  src: string;
+  /**
+   * 缓存key
+   */
+  cacheKey?: string;
+}
