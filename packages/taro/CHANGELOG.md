@@ -1,5 +1,24 @@
 # taro-free-poster
 
+## 3.4.1
+
+### Patch Changes
+
+- image 类型增加 cacheKey 字段
+- Updated dependencies
+  - @poster-render/shared@3.4.1
+
+## 3.4.0
+
+### Minor Changes
+
+- image 类型增加 cacheKey 字段
+
+### Patch Changes
+
+- Updated dependencies
+  - @poster-render/shared@3.4.0
+
 ## 3.3.4
 
 ### Patch Changes
