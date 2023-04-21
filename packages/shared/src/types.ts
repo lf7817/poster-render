@@ -59,6 +59,10 @@ export interface DrawRectOptions {
   borderWidth?: number;
   /** 背景色 */
   backgroundColor?: string;
+  /** 设置虚线 */
+  lineDash?: number[];
+  /** 设置虚线偏移量 */
+  lineDashOffset?: number;
 }
 
 export interface DrawLineOptions {
@@ -74,6 +78,19 @@ export interface DrawLineOptions {
   color: string;
   /** 线宽 */
   lineWidth: number;
+  /**
+   * 设置虚线
+   * @see https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/setLineDash
+   */
+  lineDash?: number[];
+  /** 设置虚线偏移量 */
+  lineDashOffset?: number;
+  /** 线段末端的属性，默认butt
+   * butt - 线段末端以方形结束
+   * round - 线段末端以圆形结束
+   * square - 线段末端以方形结束，但是增加了一个宽度和线段相同，高度是线段厚度一半的矩形区域
+   */
+  lineCap?: "butt" | "round" | "square";
 }
 
 export interface MeasureTextOptions {

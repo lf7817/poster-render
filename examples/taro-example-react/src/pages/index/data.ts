@@ -89,6 +89,8 @@ export const data2: PosterItemConfig[] = [
     radius: 20,
     borderColor: "#000",
     borderWidth: 10,
+    lineDashOffset: 0,
+    lineDash: [4, 2],
   },
   {
     type: "rect",
@@ -117,10 +119,22 @@ export const data2: PosterItemConfig[] = [
     type: "line",
     x: 50,
     y: 50,
-    destX: 200,
+    destX: 300,
     destY: 50,
     color: "#fff",
-    lineWidth: 4,
+    lineWidth: 2,
+    lineDashOffset: 4,
+    lineDash: [4, 16],
+  },
+  {
+    type: "line",
+    x: 50,
+    y: 80,
+    destX: 400,
+    destY: 80,
+    color: "#fff",
+    lineWidth: 6,
+    lineCap: "round",
   },
 ];
 

@@ -12,7 +12,7 @@ const h5: FC = () => {
   const [list, setList] = useState<PosterItemConfig[]>([]);
 
   useEffect(() => {
-    setInterval(() => {
+    setTimeout(() => {
       setList([
         ...data2,
         {

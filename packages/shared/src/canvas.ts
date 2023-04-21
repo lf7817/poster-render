@@ -19,12 +19,15 @@ import {
 export async function drawLine(common: CommonParams, options: DrawLineOptions) {
   const { ctx } = common;
   ctx.save();
+  ctx.setLineDash(options.lineDash || []);
+  ctx.lineWidth = options.lineWidth;
+  ctx.strokeStyle = options.color;
+  ctx.lineCap = options.lineCap || "butt";
+  ctx.lineDashOffset = options.lineDashOffset ?? 0.0;
   ctx.beginPath();
   ctx.moveTo(options.x, options.y);
   ctx.lineTo(options.destX, options.destY);
   ctx.closePath();
-  ctx.lineWidth = options.lineWidth;
-  ctx.strokeStyle = options.color;
   ctx.stroke();
   ctx.restore();
 }
@@ -41,6 +44,8 @@ export async function drawRect(common: CommonParams, options: DrawRectOptions) {
     options;
 
   ctx.save();
+  ctx.setLineDash(options.lineDash ?? []);
+  ctx.lineDashOffset = options.lineDashOffset ?? 0.0;
   ctx.beginPath();
   ctx.moveTo(x + radius.topLeft, y);
   // 绘制上边
