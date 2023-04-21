@@ -183,6 +183,8 @@ rect类型(PaintRect)
 | borderWidth     | number                                    | 否       | 边框宽                                                       |
 | backgroundColor | string                                    | 否       | 填充色                                                       |
 | radius          | number \| [number, number, number,number] | 否       | 圆角半径，顺序：左上 -> 右上 -> 右下 -> 左下，如果要绘制圆形，宽高一致，radius设为宽高一半 |
+| lineDash | number[] | 否       | 虚线设置     |
+| lineDashOffset | number | 否       | 虚线偏移量       |
 
 line类型(PaintLine)
 
@@ -195,6 +197,9 @@ line类型(PaintLine)
 | destY     | number | 是       | 目标点y    |
 | color     | string | 否       | 线颜色     |
 | lineWidth | number | 否       | 线款       |
+| lineDash | number[] | 否       | 虚线设置     |
+| lineDashOffset | number | 否       | 虚线偏移量       |
+| lineCap | string | 否       | 指定如何绘制每一条线段末端的属性。有 3 个可能的值，分别是：butt, round and square。默认值是 butt       | 
 
 ## 实例方法
 
