@@ -1,5 +1,16 @@
 # taro-poster-render
 
+## 3.5.0
+
+### Minor Changes
+
+- 增加虚线配置
+
+### Patch Changes
+
+- Updated dependencies
+  - @poster-render/taro@3.5.0
+
 ## 3.4.1
 
 ### Patch Changes
