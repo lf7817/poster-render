@@ -1,5 +1,13 @@
 # taro-free-poster
 
+## 3.5.1
+
+### Patch Changes
+
+- 修复 peerDependencies
+- Updated dependencies
+  - @poster-render/shared@3.5.1
+
 ## 3.5.0
 
 ### Minor Changes

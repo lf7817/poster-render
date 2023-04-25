@@ -1,5 +1,11 @@
 # @poster-render/shared
 
+## 3.5.1
+
+### Patch Changes
+
+- 修复 peerDependencies
+
 ## 3.5.0
 
 ### Minor Changes
