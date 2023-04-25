@@ -54,7 +54,7 @@ export class PosterRenderCore {
    * 构造函数默认参数
    */
   private options: PosterRenderCoreOptions = {
-    id: "",
+    id: "taro-poster-render",
     debug: false,
     width: 300,
     height: 150,

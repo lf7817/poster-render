@@ -23,7 +23,7 @@ const PosterRenderReact: ForwardRefRenderFunction<
   useEffect(() => {
     nextTick(async () => {
       const poster = new PosterRenderCore({
-        id: props.canvasId || "poster-render",
+        id: props.canvasId || "taro-poster-render",
         width: props.canvasWidth,
         height: props.canvasHeight,
         destWidth: props.destWidth,

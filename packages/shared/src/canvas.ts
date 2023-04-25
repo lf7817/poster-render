@@ -214,7 +214,7 @@ export async function drawImage(
   }
 
   if (!image) {
-    console.info(`图片下载失败，跳过渲染`);
+    console.info(`图片下载失败，跳过渲染!`);
     return;
   }
 
