@@ -44,6 +44,7 @@
     "@poster-render/shared": "workspace:*"
   },
   "peerDependencies": {
-    "@tarojs/taro": "3.4.13"
+    "@tarojs/components": ">=3.4.0",
+    "@tarojs/taro": ">=3.4.0"
   }
 }

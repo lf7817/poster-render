@@ -44,9 +44,9 @@
     "@poster-render/taro": "workspace:*"
   },
   "peerDependencies": {
-    "@tarojs/components": "3.4.13",
-    "@tarojs/taro": "3.4.13",
-    "react": "^17.0.0",
-    "react-dom": "^17.0.0"
+    "@tarojs/components": ">=3.4.0",
+    "@tarojs/taro": ">=3.4.0",
+    "react": ">=17.0.0",
+    "react-dom": ">=17.0.0"
   }
 }
