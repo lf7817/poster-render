@@ -1,11 +1,9 @@
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
 import dts from "vite-plugin-dts";
 import path from "node:path";
 
 export default defineConfig({
   plugins: [
-    react(),
     dts({
       entryRoot: path.resolve(__dirname, "src"),
       outputDir: path.resolve(__dirname, "dist"),
