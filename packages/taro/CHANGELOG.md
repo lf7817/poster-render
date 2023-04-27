@@ -1,5 +1,12 @@
 # @poster-render/taro
 
+## 3.6.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @poster-render/shared@3.6.1
+
 ## 3.6.0
 
 ### Minor Changes
