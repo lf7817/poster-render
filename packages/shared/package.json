@@ -1,0 +1,10 @@
+{
+  "name": "@poster-render/shared",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "private": true,
+  "keywords": [],
+  "author": "lf7817",
+  "license": "ISC"
+}
