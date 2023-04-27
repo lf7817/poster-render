@@ -4,9 +4,25 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "preinstall": "npx only-allow pnpm",
+    "clean": "pnpm -r --filter=./packages/* run clean",
+    "build": "turbo run clean build",
+    "build:taro": "cd ./packages/taro && npm run build",
+    "build:taro-react": "cd ./packages/taro-react && npm run build",
+    "changeset": "changeset",
+    "changeset:beta": "changeset pre enter beta",
+    "changeset:rc": "changeset pre enter rc",
+    "changeset:alpha": "changeset pre enter alpha",
+    "changeset:exit": "changeset pre exit",
+    "version-packages": "changeset version",
+    "release": "pnpm build && pnpm release:only",
+    "release:only": "changeset publish --registry=https://registry.npmjs.com/"
   },
   "keywords": [],
   "author": "lf7817",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "turbo": "^1.9.3",
+    "@changesets/cli": "^2.23.0"
+  }
 }

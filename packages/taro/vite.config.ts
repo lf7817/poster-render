@@ -44,8 +44,8 @@ export default defineConfig({
       },
     },
     lib: {
-      entry: "./src/index.tsx",
-      name: "@poster-render/taro-react",
+      entry: "./src/index.ts",
+      name: "@poster-render/taro",
       fileName: "index",
       formats: ["es", "cjs"],
     },

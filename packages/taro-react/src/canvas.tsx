@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Canvas } from "@tarojs/components";
 import { getEnv } from "@tarojs/taro";
 import { FC, CSSProperties } from "react";
