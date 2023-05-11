@@ -1,5 +1,11 @@
 # @poster-render/shared
 
+## 3.6.3
+
+### Patch Changes
+
+- 修复@poster-render/shared 依赖问题
+
 ## 3.6.2
 
 ### Patch Changes

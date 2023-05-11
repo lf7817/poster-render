@@ -1,5 +1,13 @@
 # @poster-render/taro-react
 
+## 3.6.3
+
+### Patch Changes
+
+- 修复@poster-render/shared 依赖问题
+- Updated dependencies
+  - @poster-render/taro@3.6.3
+
 ## 3.6.2
 
 ### Patch Changes
