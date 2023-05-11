@@ -1,5 +1,13 @@
 # @poster-render/taro-react
 
+## 3.6.2
+
+### Patch Changes
+
+- fix canvas id "taro-poster-render" not found
+- Updated dependencies
+  - @poster-render/taro@3.6.2
+
 ## 3.6.1
 
 ### Patch Changes

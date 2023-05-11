@@ -1,5 +1,11 @@
 # @poster-render/shared
 
+## 3.6.2
+
+### Patch Changes
+
+- fix canvas id "taro-poster-render" not found
+
 ## 3.6.1
 
 ### Patch Changes
