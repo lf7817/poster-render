@@ -135,11 +135,10 @@ importers:
   packages/shared: {}
 
   packages/taro:
-    dependencies:
+    devDependencies:
       '@poster-render/shared':
         specifier: workspace:*
         version: link:../shared
-    devDependencies:
       '@tarojs/taro':
         specifier: 3.6.5
         version: registry.npmjs.org/@tarojs/taro@3.6.5(@types/react@18.2.0)
