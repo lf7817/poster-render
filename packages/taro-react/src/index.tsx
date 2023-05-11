@@ -22,31 +22,33 @@ const PosterRenderReact: ForwardRefRenderFunction<
 
   useEffect(() => {
     nextTick(async () => {
-      const poster = new PosterRenderCore({
-        id: props.canvasId || "taro-poster-render",
-        width: props.canvasWidth,
-        height: props.canvasHeight,
-        destWidth: props.destWidth,
-        destHeight: props.destHeight,
-        quality: props.quality || 1,
-        fileType: props.fileType || "png",
-        dpr: props.dpr,
-        debug: props.debug,
-        onRender: (url) => {
-          props?.onRender?.(url!);
-          setUrl(url || "");
-        },
-        onRenderFail: props.onRenderFail,
-        onSave: props.onSave,
-        onSaveFail: props.onSaveFail,
-      });
-
-      await poster.init();
-      await poster.preloadImage(props.list);
-      poster.clearCanvas();
-      await poster.render(props.list, props.renderType);
-
-      posterRenderCore.current = poster;
+      setTimeout(async () => {
+        const poster = new PosterRenderCore({
+          id: props.canvasId || "taro-poster-render",
+          width: props.canvasWidth,
+          height: props.canvasHeight,
+          destWidth: props.destWidth,
+          destHeight: props.destHeight,
+          quality: props.quality || 1,
+          fileType: props.fileType || "png",
+          dpr: props.dpr,
+          debug: props.debug,
+          onRender: (url) => {
+            props?.onRender?.(url!);
+            setUrl(url || "");
+          },
+          onRenderFail: props.onRenderFail,
+          onSave: props.onSave,
+          onSaveFail: props.onSaveFail,
+        });
+  
+        await poster.init();
+        await poster.preloadImage(props.list);
+        poster.clearCanvas();
+        await poster.render(props.list, props.renderType);
+  
+        posterRenderCore.current = poster;
+      }, 50)
     });
   }, []);
 
