@@ -31,7 +31,7 @@ const Index: FC = () => {
         height: pxTransform(1104),
       }}
       onRender={() => console.log("onRender")}
-      onLongTap={() => posterRender.current?.savePosterToPhoto())}
+      onLongTap={() => posterRender.current?.savePosterToPhoto()}
       onRenderFail={(err) => console.error("onRenderFail", err?.message)}
       onSave={(url) => console.log("onSave", url)}
       onSaveFail={(err) => console.error("onSaveFail", err?.message)}
